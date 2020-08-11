@@ -1,0 +1,241 @@
+html, body {
+    margin: 0;
+    font-family: sans-serif;
+}
+
+
+nav {
+    padding: 1em 0;
+    background: initial;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+    box-shadow: 2px 2px lightgrey;
+}
+nav ul {
+    justify-self: right;
+}
+nav ul > li {
+    display: inline;
+    margin: 0 0.5em;
+}
+
+
+.btn-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    width: 50%;
+}
+
+.nav-logo-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+.main-container {
+    outline: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: auto;
+    align-items: center;
+    text-align: center;
+}
+
+.scan-area {
+    width: 95vw;
+    min-height: 500px;
+    background: grey;
+}
+
+.donate-content {
+    display: flex;
+    flex-direction: column;
+    width: 66%;
+    outline: 1px solid red;
+    margin: 0 auto;
+}
+
+.book-item {
+    display: flex;
+    flex-direction: column;
+    width: 66%;
+    outline: 1px solid red;
+    margin: 0 auto;
+}
+.partner-item {
+    display: flex;
+    flex-direction: column;
+    width: 66%;
+    outline: 1px solid red;
+    margin: 0 auto;
+}
+
+.book-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: auto;
+    width: 100%;
+}
+.partner-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+.book-description-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    outline: 1px solid blue;
+    text-align: left;
+    flex-grow: 2;
+    flex-basis: 90%;
+}
+.partner-description-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    outline: 1px solid blue;
+    text-align: left;
+    width: 50%;
+}
+.book-description-wrapper > h1 {
+    margin-bottom: 0.75em;
+}
+.partner-description-wrapper > h1{
+    margin-bottom: 0.75em;
+}
+
+.book-description-wrapper--details > * {
+    margin: 0.33em 0;
+}
+.partner-description-wrapper--details > *{
+    margin: 0.33em 0;
+}
+.book-wrapper button {
+    width: 180px;
+    margin: 2em auto 0;
+}
+.partner-wrapper button {
+    width: 180px;
+    margin: 2em auto 0; 
+}
+.book-img-wrapper > img {
+    max-height: 200px;
+    height: 8vw;
+    min-height: 88px;
+    width: auto;
+}
+.partner-img-wrapper > img {
+    max-height: 200px;
+    height: 8vw;
+    min-height: 88px;
+    width: auto;
+}
+
+.book-img-wrapper {
+    padding: 4%;
+}
+.partner-img-wrapper {
+   padding: 4%;
+} 
+
+.list > .book-item {
+    width: 100%;
+}
+.list > .partner-item {
+    width: 100%;
+}
+
+.condition-box {
+    display: flex;
+    flex-direction: row;
+}
+.condition-box > * {
+    margin-right: 0.66em;
+}
+
+
+
+.rewards-container {
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    align-items: center
+}
+.rewards-container .points-wrapper{
+    margin: 0 0.44em;
+    max-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+
+}
+.points-wrapper > h1 {
+    margin: 0;
+    font-size: 1em;
+    padding: 0.1em 0.33em;
+    border-radius: 20px;
+    background: lightgoldenrodyellow;
+    border: 1px solid grey;
+}
+.summary-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+
+}
+
+.status-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 20%;
+    margin: 0 auto;
+    flex-grow: 1;
+
+}
+
+.book-status {
+    background: whitesmoke;
+    width: 80%;
+    text-align: center;
+    border-radius: 20px;
+}
+.book-status > p {
+    padding: 0;
+    margin: 0.5em;
+}
+
+.select-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 10%;
+    outline: 1px solid pink;
+
+}
+.select-box {
+    border: 1px solid grey;
+    border-radius: 5px;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+}
+.total-pts-wrapper {
+    display: flex;
+    flex-direction: row;
+    font-size: 17px;
+}
