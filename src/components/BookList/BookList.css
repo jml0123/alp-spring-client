@@ -1,0 +1,15 @@
+
+.list > .book-item {
+    width: 100%;
+}
+.list > .partner-item {
+    width: 100%;
+}
+
+.donate-content {
+    display: flex;
+    flex-direction: column;
+    width: 66%;
+    outline: 1px solid red;
+    margin: 0 auto;
+}

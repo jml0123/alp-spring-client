@@ -1,0 +1,20 @@
+
+.main-container {
+    outline: 1px solid red;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: auto;
+    align-items: center;
+    text-align: center;
+}
+
+
+.btn-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0 auto;
+    width: 50%;
+}
