@@ -1,0 +1,24 @@
+
+nav {
+    padding: 1em 0;
+    background: initial;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-direction: row;
+    box-shadow: 2px 2px lightgrey;
+}
+nav ul {
+    justify-self: right;
+}
+nav ul > li {
+    display: inline;
+    margin: 0 0.5em;
+}
+
+.nav-logo-wrapper {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
