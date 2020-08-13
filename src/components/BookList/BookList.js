@@ -9,22 +9,27 @@ import Button from "@material-ui/core/Button"
 import Container from "@material-ui/core/Container"
 
 export default function BookList(props) {
-    let books;
-    if (props.readOnly) {
-        books = props.books.map((book, i) => {
-            return(
-                <BookItem book={book} listItem={true} key={i} readOnly={true} condition={book.condition}/>
-            )
-        })
-    }
-    else {
-        books = props.books.map((book, i) => {
-            return(
-                <BookItem book={book} listItem={true} key={i} id={book.id} listId={i} condition={book.condition}/>
-            )
-        })
-    }
-   
+    const books = props.books.map((book, i) => {
+        return(
+            <BookItem 
+                book={book} 
+                key={i} 
+                id={book.id} 
+                listId={i} 
+                activeListItem={props.readOnly? false: true} 
+                readOnly={props.readOnly? true: false}
+                ready={props.finished? true: false}
+                condition={book.condition}
+                itemSmall={props.condensed? true: false}
+                noSelect={props.simpleItems? true: false}
+                collectionControls={props.collection? true: false}
+                preQueueHandler={props.preQueueHandler? 
+                    props.preQueueHandler 
+                    : false
+                }
+            />
+        )
+    })
     return (
         <Container maxWidth="lg">
             <Box 
@@ -36,9 +41,6 @@ export default function BookList(props) {
                 m={2}
                 mx="auto"
             >
-                <div className="container-header">
-                    {(!props.finished)? <h1>Your Box</h1> : <h1>Donation Reciept</h1>}
-                </div>
                     {books}
             </Box>
         

@@ -1,3 +1,3 @@
-import DonationPage from './DonationPage.js';
+import DonationPage from './DonationPage';
 
 export default DonationPage;

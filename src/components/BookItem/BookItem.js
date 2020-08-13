@@ -33,16 +33,17 @@ export default function BookItem(props) {
     const xsScreen = useMediaQuery(theme.breakpoints.down(550));
 
     const donationContext = useContext(UserContext)
-    console.log(donationContext)
     const conditions = ["Select", "New", "Very good", "Slightly Used", "Very Used"]
     let conditionArea;
-    
+    let controls;
+
     if (!props.readOnly) {
         const selectList = 
         conditions.map((c, i) => {
         return <MenuItem value={c} key={i}>{c}</MenuItem > }
         )
-        conditionArea = <>
+        conditionArea = 
+                <>
                 <Box display="flex" 
                     flexDirection="column" 
                     my={1}
@@ -50,52 +51,57 @@ export default function BookItem(props) {
                 >
                     <InputLabel htmlFor="condition">Condition</InputLabel>
                     <Select 
-
                         id="condition" 
                         onChange=
                             {(props.bookScan)? (e) => props.handleSelectConditionScanner(e.target.value)
                             : (e) => donationContext.handleSelectCondition(props.listId, e.target.value)}
-                        defaultValue={props.condition}>
-                        {selectList}
+                            defaultValue={props.condition}>
+                            {selectList}
                     </Select> 
                 </Box>
-                <ButtonGroup>
-                    {
-                    (props.listItem)? 
-                    <Button 
-                        variant = "contained" 
-                        size = "small"
-                        startIcon={<HighlightOffIcon/>} 
-                        onClick={() => donationContext.handleRemoveBook(props.id)}
-                        disableElevation
-                    >
-                            Remove
-                    </Button>
-                    : (props.bookScan)? 
-                    <Button 
-                        variant = "contained" 
-                        color={toggled? "secondary" : "primary"}
-                        size = "small"
-                        startIcon={<AddToLibraryIcon/>} 
-                        onClick = {() => {
-                            donationContext.handleAddBook(props.book)
-                            setToggled(toggled = true)
-                            console.log(toggled)
-                        }}>
-                            {toggled? "Added To Box!" : "Add to Box"}
-                    </Button>
-                    : null
-                    }
-                </ButtonGroup> 
-            </>
+                </>
         }
-    else {
-        conditionArea =  
+
+        let finalDetails = (props.ready)? 
         <>
-        <Typography variant="p">Donation Id: {props.book.id}</Typography>   
-        <Typography variant="p">Condition: {props.condition}</Typography>   
-        </>
-    }
+            <Typography variant="h2">Id: {props.book.id}</Typography>   
+            <Typography variant="h2">Condition: {props.condition}</Typography>   
+        </> : null
+
+   
+        controls =          
+            <ButtonGroup>
+            {
+                (props.activeListItem)? 
+                <Button 
+                    variant = "contained" 
+                    size = "small"
+                    startIcon={<HighlightOffIcon/>} 
+                    onClick={() => 
+                        {
+                            (!props.preQueueHandler)? donationContext.handleRemoveBook(props.id)
+                            : props.preQueueHandler(props.id)
+                        }
+                    }
+                    disableElevation
+                >
+                        Remove
+                </Button>
+                : (props.bookScan)? 
+                <Button 
+                    variant = "contained" 
+                    color={toggled? "secondary" : "primary"}
+                    size = "small"
+                    startIcon={<AddToLibraryIcon/>} 
+                    onClick = {() => {
+                        donationContext.handleAddBook(props.book)
+                        setToggled(toggled = true)
+                    }}>
+                        {toggled? "Added To Box!" : "Add to Box"}
+                </Button>
+                : null
+                }
+        </ButtonGroup> 
   
     return (
         <Box width={1} m={1}>
@@ -132,8 +138,10 @@ export default function BookItem(props) {
                     >
                         <Typography variant="h2">{xsScreen || props.itemSmall ? null : "ISBN:"} {props.book.isbn}</Typography>
                         <Typography variant="h2">{xsScreen || props.itemSmall ? "Published: " : "Original Date Published:"}{props.book.originalDate}</Typography>
+                        {props.ready? finalDetails : null}
                     </Box>
-                    {conditionArea}
+                        {props.noSelect ? null : conditionArea}
+                        {props.noControls? null: controls}
                     </ThemeProvider>
                 </CardContent>
             </Box>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import BookItem from '../BookItem'
-import './BarcodeScanner.css' 
+
 import UserContext from '../../UserContext';
 
 import Container from '@material-ui/core/Container';
@@ -54,3 +54,4 @@ export default class BarcodeScanner extends Component {
     }
 }
 
+// Create a separate slide out widget when scan is successful

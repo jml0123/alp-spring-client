@@ -29,7 +29,13 @@ export default function Ticket(props) {
     return (
         <Card maxWidth="md">
             <ThemeProvider theme={ListItemStyle}>
-            <BookList books={props.queued} finished={true} readOnly={true}/>
+            <BookList 
+                books={props.queued} 
+                finished={true} 
+                readOnly={true}
+                simpleItems={true}
+                condensed={true}
+            />
             <CardContent>
             <Box
                 display="flex"
@@ -42,12 +48,16 @@ export default function Ticket(props) {
                     display="flex"
                     flexDirection="column"
                 >
-                    <Typography variant="h1">Dropoff Location</Typography>
-                    <Typography>{props.partner.name}</Typography>
-                    <Typography>Address: {props.partner.address}</Typography>
-                    <Typography>Hours: {props.partner.hours}</Typography>
-                    <Typography>Details: {props.partner.description}</Typography>
-                    <Typography>Contact #: {props.partner.contactNum}</Typography>
+                {props.partner ? 
+                    <>
+                        <Typography variant="h1">Dropoff Location</Typography>
+                        <Typography>{props.partner.name}</Typography>
+                        <Typography>Address: {props.partner.address}</Typography>
+                        <Typography>Hours: {props.partner.hours}</Typography>
+                        <Typography>Details: {props.partner.description}</Typography>
+                        <Typography>Contact #: {props.partner.contactNum}</Typography>
+                    </>
+                : null}
                 </Box>
                 <Box
                     display="flex"
