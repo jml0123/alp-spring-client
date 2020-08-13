@@ -3,7 +3,6 @@
     display: flex;
     flex-direction: column;
     width: 66%;
-    outline: 1px solid red;
     margin: 0 auto;
 }
 
@@ -14,24 +13,17 @@
     width: 100%;
 }
 
-.book-img-wrapper {
-    padding: 5%;
-    max-width: 10%;
-    min-width: 10%;
-}
 
-.book-img-wrapper > img {
-    max-height: 200px;
-    height: 8vw;
-    min-height: 88px;
-    width: auto;
+
+.book-img {
+    max-height: 70%;
+    max-width: 70%;
 }
 
 .book-description-wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    outline: 1px solid blue;
     text-align: left;
     flex-grow: 2;
     flex-basis: 90%;
@@ -60,8 +52,6 @@
 .condition-box > * {
     margin-right: 0.66em;
 }
-
-
 
 
 .book-status {

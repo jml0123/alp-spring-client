@@ -3,6 +3,11 @@ import BookItem from '../BookItem';
 
 import './BookList.css'
 
+import Typography from "@material-ui/core/Typography"
+import Box from "@material-ui/core/Box"
+import Button from "@material-ui/core/Button"
+import Container from "@material-ui/core/Container"
+
 export default function BookList(props) {
     let books;
     if (props.readOnly) {
@@ -21,11 +26,23 @@ export default function BookList(props) {
     }
    
     return (
-        <div className="donate-content list">
-        <div className="container-header">
-            {(!props.finished)? <h1>Your Box</h1> : <h1>Donation Reciept</h1>}
-        </div>
-            {books}
-        </div>
+        <Container maxWidth="lg">
+            <Box 
+                display="flex" 
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                width={1}
+                m={2}
+                mx="auto"
+            >
+                <div className="container-header">
+                    {(!props.finished)? <h1>Your Box</h1> : <h1>Donation Reciept</h1>}
+                </div>
+                    {books}
+            </Box>
+        
+        </Container>
+       
     )
 }
