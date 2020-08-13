@@ -66,7 +66,7 @@ export default function Ticket(props) {
                     <h1>Add QR CODE HERE</h1>
                 </Box>
             </Box>
-            <Typography align="center">Print this reciept and scan it at the dropoff location.</Typography>
+            <Typography align="center">Save or print this reciept and scan it at the dropoff location.</Typography>
             </CardContent>
             </ThemeProvider>
         </Card>

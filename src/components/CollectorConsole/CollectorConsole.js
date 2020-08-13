@@ -106,7 +106,7 @@ export default class CollectorConsole extends Component {
             justifyContent="center"
             flexDirection="column"
             m={3}
-            maxWidth="500px"
+            maxWidth="800px"
             mx="auto"
             textAlign="center"
         >    
@@ -118,33 +118,30 @@ export default class CollectorConsole extends Component {
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
-                justifyContent="center"
+                justifyContent="space-evenly"
+                w={1}
                 m={3}
             >
-            <ButtonGroup
-                m={1}
-            >
-                <Box m={2}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={() => this.setPhase(0)}
-                    >
-                        QR Scanner
-                    </Button>
-                </Box>
-                <Box m={2}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        onClick={() => this.setPhase(-1)}
-                    >
-                        Barcode Scanner
-                    </Button>
-                </Box>
-            </ButtonGroup>
+            <Box m={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={() => this.setPhase(0)}
+                >
+                    QR Scanner
+                </Button>
+            </Box>
+            <Box m={2}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="small"
+                    onClick={() => this.setPhase(-1)}
+                >
+                    Barcode Scanner
+                </Button>
+            </Box>
             </Box>
         </Box>
         </Container>
@@ -155,23 +152,21 @@ export default class CollectorConsole extends Component {
                 <BarcodeScanner/>
                 <Box
                     display="flex"
-                    flexDirection="column"
+                    flexDirection="row"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent="space-evenly"
                     m={3}
                 >
-                    <ButtonGroup>
-                        <Box m={1}>
-                            <Button variant="contained" size="small" onClick={() => this.setPhase(0)}>
-                                Scan Donor QR Codes Instead
-                            </Button>
-                        </Box>
-                        <Box m={1}>
-                            <Button size="medium" onClick={() => this.setPhase(1)}>
-                                Back To Queue
-                            </Button>
-                        </Box>
-                    </ButtonGroup>
+                    <Box m={1}>
+                        <Button size="small" onClick={() => this.setPhase(0)}>
+                            Scan Donor QR Codes Instead
+                        </Button>
+                    </Box>
+                    <Box m={1}>
+                        <Button size="small" onClick={() => this.setPhase(1)}>
+                            Back To Queue
+                        </Button>
+                    </Box>
                 </Box>
             </UserContext.Provider>
         </>
@@ -182,23 +177,21 @@ export default class CollectorConsole extends Component {
                 <QRScanner collection={true} onAddCollection={(c) => this.handleAddCollection(c)}/>
                 <Box
                     display="flex"
-                    flexDirection="column"
+                    flexDirection="row"
                     alignItems="center"
-                    justifyContent="center"
+                    justifyContent="space-evenly"
                     m={3}
                 >
-                    <ButtonGroup>
-                        <Box m={1}>
-                            <Button  size="small" onClick={() => this.setPhase(-1)}>
-                                Scan Barcodes Manually
-                            </Button>
-                        </Box>
-                        <Box m={1}>
-                            <Button size="small" onClick={() => this.setPhase(1)}>
-                                Back To Queue
-                            </Button>
-                        </Box>
-                    </ButtonGroup>
+                    <Box m={1}>
+                        <Button  size="small" onClick={() => this.setPhase(-1)}>
+                            Scan Barcodes Manually
+                        </Button>
+                    </Box>
+                    <Box m={1}>
+                        <Button size="small" onClick={() => this.setPhase(1)}>
+                            Back To Queue
+                        </Button>
+                    </Box>
                 </Box>
             </UserContext.Provider>
         </>
@@ -240,15 +233,17 @@ export default class CollectorConsole extends Component {
             <PartnerList partners={this.state.partners} selected={this.state.selectedPartner}/>
             <Box
                 m={4}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-evenly"
             >
-                <ButtonGroup className="btn-row">
-                    <Button variant="contained"  size="small"  onClick={() => this.setPhase(1)}>
-                        Back to your queue
-                    </Button>
-                    <Button variant="contained"  size="small" color="primary" onClick={() => this.setPhase(3)} disabled = {(!this.state.selectedPartner)? true: false}>
-                        Confirm shipping
-                    </Button>
-                </ButtonGroup>
+                <Button variant="contained"  size="small"  onClick={() => this.setPhase(1)}>
+                    Back to your queue
+                </Button>
+                <Button variant="contained"  size="small" color="primary" onClick={() => this.setPhase(3)} disabled = {(!this.state.selectedPartner)? true: false}>
+                    Confirm shipping
+                </Button>
             </Box>
          </UserContext.Provider>
          </>
@@ -258,15 +253,18 @@ export default class CollectorConsole extends Component {
             <Ticket queued={this.state.books}/>
             <Box
                 m={4}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-evenly"
             >
-                <ButtonGroup class="btn-row">
-                        <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>
-                            Add more books!
-                        </Button>
-                        <Button variant="contained"  size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>
-                            Print Shipping Details
-                        </Button>
-                </ButtonGroup>
+                <Button size="small" onClick={() => this.setPhase(1)}>
+                    Add more books first!
+                </Button>
+                <Button variant="contained"  size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>
+                    Print Collection Details
+                </Button>
+   
             </Box>
         </>
 

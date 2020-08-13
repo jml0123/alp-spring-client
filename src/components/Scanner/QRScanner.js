@@ -170,9 +170,13 @@ export default class QRScanner extends Component {
                                 Try another scan
                         </Button>
                      
-                        <Button variant="contained" size="small" color="primary" onClick={() => {
+                        <Button 
+                            variant="contained" 
+                            size="small" 
+                            color="primary" onClick={() => {
                             this.props.onAddCollection(this.state.scanned)
-                        }}>
+                            }}
+                        >
                             Add all to queue
                         </Button>
                         </>

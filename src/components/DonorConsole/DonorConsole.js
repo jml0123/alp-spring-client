@@ -36,7 +36,9 @@ export default class DonorConsole extends Component {
                     originalDate: "Jan 25, 2020",
                     thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
                     condition: "Select",
-                },
+                }
+                // status
+                // 
             ],
             partners: [
                 {
@@ -153,13 +155,15 @@ export default class DonorConsole extends Component {
             <UserContext.Provider value = {userContextVal}>
                 <BarcodeScanner/>
                 <Box
-                    m={3}
+                    m={4}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-evenly"
                 >
-                    <ButtonGroup  className="btn-row">
                         <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>
                             I'm done scanning
                         </Button>
-                    </ButtonGroup>
                 </Box>
             </UserContext.Provider>
         </>
@@ -170,21 +174,26 @@ export default class DonorConsole extends Component {
                 <BookList books={this.state.books}/>
                 <Box
                     m={4}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-evenly"
                  >
                     {this.state.books.length? 
-                    <ButtonGroup className="btn-row">
+                    <>
                         <Button 
                             variant="contained" 
                             size="small"  
-                            onClick={() => this.setPhase(0)}>
+                            onClick={() => this.setPhase(0)}
+                        >
                                 Scan more books
                         </Button>
                         <Button 
-                            variant="contained" size="small" 
+                            size="small" 
                             color="primary"
                             onClick={() => this.setPhase(2)} 
                             disabled = {unloggedConditions? true : false}>Choose a drop-off</Button>
-                    </ButtonGroup>
+                    </>
                     : null}
                 </Box>
                 
@@ -196,12 +205,25 @@ export default class DonorConsole extends Component {
         <UserContext.Provider value = {userContextVal}>
             <PartnerList partners={this.state.partners} selected={this.state.selectedPartner}/>
             <Box
-                m={4}
+                       m={4}
+                       display="flex"
+                       flexDirection="row"
+                       alignItems="center"
+                       justifyContent="space-evenly"
             >
-                <ButtonGroup className="btn-row">
-                    <Button variant="contained"  size="small"  onClick={() => this.setPhase(1)}>Back to your box</Button>
-                    <Button variant="contained"  size="small" color="primary" onClick={() => this.setPhase(3)} disabled = {(!this.state.selectedPartner)? true: false}>Confirm Donation</Button>
-                </ButtonGroup>
+                <Button 
+                    size="small"  
+                    onClick={() => this.setPhase(1)}>
+                        Back to your box
+                </Button>
+                <Button 
+                    variant="contained"
+                    size="small" 
+                    color="secondary" 
+                    onClick={() => this.setPhase(3)} 
+                    disabled = {(!this.state.selectedPartner)? true: false}>
+                        Confirm Donation
+                </Button>
             </Box>
          </UserContext.Provider>
          </>
@@ -210,12 +232,14 @@ export default class DonorConsole extends Component {
         <>  
             <Ticket queued={this.state.books} partner={this.state.selectedPartner}/>
             <Box
-                m={4}
+                      m={4}
+                      display="flex"
+                      flexDirection="row"
+                      alignItems="center"
+                      justifyContent="space-evenly"
             >
-                <ButtonGroup class="btn-row">
-                        <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
-                        <Button variant="contained"  size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>Print Reciept</Button>
-                </ButtonGroup>
+                <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
+                <Button size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>Print Reciept</Button>
             </Box>
         </>
 

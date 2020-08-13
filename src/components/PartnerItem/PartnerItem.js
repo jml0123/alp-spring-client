@@ -64,7 +64,8 @@ export default function PartnerItem(props) {
                     <Button 
                         variant="contained"
                         color="primary"
-                        onClick={() => donationContext.handleSelectPartner(props.partnerId)}>
+                        onClick={() => donationContext.handleSelectPartner(props.partnerId)}
+                    >
                         Select
                     </Button>
                 :
@@ -72,8 +73,10 @@ export default function PartnerItem(props) {
                         variant="contained"
                         color="secondary"
                         endIcon={<CheckCircleOutlineIcon>Check</CheckCircleOutlineIcon>}
-                        onClick={() => donationContext.handleSelectPartner(props.partnerId)}>
-                    Ready to Donate!
+                        onClick={() => donationContext.handleSelectPartner(props.partnerId)}
+                        disableElevation
+                    >
+                        Ready to Donate!
                     </Button>
                 }
             </Box>
