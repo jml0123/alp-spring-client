@@ -1,7 +1,6 @@
 import React from 'react';
 import BookList from '../BookList'
-
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+import PointsCircle from '../PointsCircle'
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme} from '@material-ui/core/styles';
@@ -12,7 +11,6 @@ import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 
-import ListItemStyle from '../../themes/ListItem.style'
 import './Ticket.css'
 
 export default function Ticket(props) {
@@ -26,9 +24,21 @@ export default function Ticket(props) {
         }
         // Add a button that copies address
     }
+
+    const numBooks = props.queued.length
+    const points = numBooks * 12
+    
     return (
         <Card maxWidth="md">
-            <ThemeProvider theme={ListItemStyle}>
+            <Box
+                m={3}
+            >
+                <Typography 
+                    variant="h1"
+                    align="center">
+                    {props.user.userName}'s Donation
+                </Typography>
+            </Box>
             <BookList 
                 books={props.queued} 
                 finished={true} 
@@ -62,13 +72,16 @@ export default function Ticket(props) {
                 <Box
                     display="flex"
                     flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
                 >
-                    <h1>Add QR CODE HERE</h1>
+                    <Typography variant="h2" align="center">Estimated Points Earned<br/>(for {numBooks} books)</Typography>
+                    <PointsCircle pointsVal={points}/>
                 </Box>
             </Box>
             <Typography align="center">Save or print this reciept and scan it at the dropoff location.</Typography>
             </CardContent>
-            </ThemeProvider>
         </Card>
     )
 }
+// Add expected # of points here

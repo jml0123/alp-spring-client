@@ -3,10 +3,9 @@ import UserContext from '../../UserContext'
 
 import './BookItem.css'
 
-import ListItemStyle from '../../themes/ListItem.style'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme} from '@material-ui/core/styles';
-import ThemeProvider from '@material-ui/styles/ThemeProvider';
+
 
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container';
@@ -24,6 +23,7 @@ import Select from '@material-ui/core/Select';
 
 import AddToLibraryIcon from '@material-ui/icons/LibraryAdd';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import defaultBookIcon from '../../assets/img/book.png';
 
 export default function BookItem(props) {
 
@@ -102,8 +102,15 @@ export default function BookItem(props) {
                 : null
                 }
         </ButtonGroup> 
-  
+        console.log(props.book.authors)
+        let authorString = ""
+        props.book.authors.forEach((author) => {
+            authorString += `${author}, `
+        })
+        authorString = authorString.replace(/,\s*$/, "");
+
     return (
+
         <Box width={1} m={1}>
             <Box 
                 display="flex" 
@@ -111,8 +118,8 @@ export default function BookItem(props) {
                 flexWrap="nowrap"
                 justifyContent="flex-start"
                 alignItems="center"
-                border="1px solid lightgrey"
-                borderRadius = "5px"
+                border="1px solid #0f0f0f"
+                borderRadius="1.5px"
             >
                 <CardContent display="flex" flexDirection="column" className="book-img-wrapper">
                     <Box
@@ -121,15 +128,14 @@ export default function BookItem(props) {
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
-                        border={smScreen? "none" : "1px solid lightgrey"}
+                        border={smScreen? "none" : "1px solid rgba(209,209,209,0.36)"}
                         borderRadius = "5px"
                         p= {smScreen? 0.3 : 1}
                     >
-                        <img src={props.book.thumbnail} className="book-img"/>
+                        <img src={(!props.book.thumbnail)? defaultBookIcon: props.book.thumbnail} className="book-img"/>
                     </Box>
                 </CardContent>
                 <CardContent display="flex" flexDirection="column" className="book-img-wrapper">
-                    <ThemeProvider theme={ListItemStyle}>
                     <Typography variant="h1">{props.book.title}</Typography>
                     <Box   
                         display="flex"
@@ -137,12 +143,11 @@ export default function BookItem(props) {
                         my={1.33}
                     >
                         <Typography variant="h2">{xsScreen || props.itemSmall ? null : "ISBN:"} {props.book.isbn}</Typography>
-                        <Typography variant="h2">{xsScreen || props.itemSmall ? "Published: " : "Original Date Published:"}{props.book.originalDate}</Typography>
+                        <Typography variant="h2">{xsScreen || props.itemSmall ? "" : "Author/s: "}{authorString}</Typography>
                         {props.ready? finalDetails : null}
                     </Box>
                         {props.noSelect ? null : conditionArea}
                         {props.noControls? null: controls}
-                    </ThemeProvider>
                 </CardContent>
             </Box>
         </Box>

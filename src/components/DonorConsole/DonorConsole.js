@@ -6,23 +6,30 @@ import BookItem from '../BookItem';
 import PartnerList from '../PartnerList';
 import BarcodeScanner from '../Scanner/BarcodeScanner';
 import Ticket from '../Ticket/Ticket';
-import UserContext from '../../UserContext';
-import Container from '@material-ui/core/Container';
 
+import UserContext from '../../UserContext';
+
+import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
+
 
 import './DonorConsole.css'
 import { Typography } from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
+import HorizontalLinearStepper from '../Stepper/Stepper';
 
 export default class DonorConsole extends Component {
     state = {
-            userName: "Kelly",
+            user: {
+                userName: "Kelly",
+                points: 24
+            },
             books: [
                 {   
                     id: 1,
+                    authors: "Don Norman",
                     title: "Design Of Everyday Things",
                     isbn: "111-111-111-1111",
                     originalDate: "July 25, 1978",
@@ -32,6 +39,7 @@ export default class DonorConsole extends Component {
                 {
                     id: 2,
                     title: "Test Book",
+                    authors: "Winnie Ng",
                     isbn: "111-111-111-1111",
                     originalDate: "Jan 25, 2020",
                     thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
@@ -59,7 +67,7 @@ export default class DonorConsole extends Component {
                 },
             ],
             selectedPartner: null,
-            currentPhase: 1
+            currentPhase: 3
         }
 
         
@@ -111,7 +119,7 @@ export default class DonorConsole extends Component {
  
  
     render() {
-        const unloggedConditions = this.state.books.filter(book => book.condition === "Select").length
+        const unloggedConditions = this.state.books.filter(book => book.condition === "Select" || book.condition === "").length
         const userContextVal = {
             books: this.state.books,
             handleSelectCondition: this.handleSelectCondition, 
@@ -133,7 +141,7 @@ export default class DonorConsole extends Component {
             mx="auto"
             textAlign="center"
         >    
-            <Typography>Welcome {this.state.userName}!</Typography>
+            <Typography>Welcome {this.state.user.userName}!</Typography>
             <Typography>Give your books a new meaning.</Typography>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={3.33}>
                 <Typography>Start scanning to add to your donation box.</Typography>
@@ -230,7 +238,11 @@ export default class DonorConsole extends Component {
 
         const exportView = 
         <>  
-            <Ticket queued={this.state.books} partner={this.state.selectedPartner}/>
+            <Ticket 
+                user={this.state.user}
+                queued={this.state.books} 
+                partner={this.state.selectedPartner}
+            />
             <Box
                       m={4}
                       display="flex"
@@ -251,13 +263,28 @@ export default class DonorConsole extends Component {
         : (this.state.currentPhase === 3)? exportView
         : null;
 
+        const currentStatus = 
+        (!this.state.books.length && this.state.currentPhase !== 0)? "Welcome to Kitabu!"
+        : (this.state.currentPhase === 0)? "Give Your Used Books a New Life" 
+        : (this.state.currentPhase === 1)? "Give Your Used Books a New Life" 
+        : (this.state.currentPhase === 2)? "Select a drop-off location"
+        : (this.state.currentPhase === 3)? "Confirm your donation"
+        : null;
+
         return (
+            <>
                 <Container maxWidth="lg">
-                  
-                    <p>*Add Material UI stepper here*</p>
-                    {currentView} 
-             
+                    <Typography variant = "h4" align="center" className="console-header">{currentStatus}</Typography>
+                    <HorizontalLinearStepper activeStep={this.state.currentPhase}/>
+                    <Box
+                        borderRadius="5px"
+                        py={2}
+                        px={0}
+                    >
+                        {currentView}  
+                    </Box>
                 </Container>
+            </>
         )
     }
 }
