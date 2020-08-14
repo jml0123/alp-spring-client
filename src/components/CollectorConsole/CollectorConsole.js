@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import uuid from 'react-uuid'
 
+import HorizontalLinearStepper from '../Stepper';
 import BookList from '../BookList'
 import BookItem from '../BookItem';
 import PartnerList from '../PartnerList';
@@ -112,7 +113,7 @@ export default class CollectorConsole extends Component {
         >    
             <Typography>Welcome {this.state.userName}!</Typography>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={3.33}>
-                <Typography>Start scanning to add to your book drive</Typography>
+                <Typography>Start scanning QR Codes to add to your book drive!</Typography>
             </Box>
             <Box
                 display="flex"
@@ -286,12 +287,26 @@ export default class CollectorConsole extends Component {
             : barcodeScannerView 
         }
 
+        const currentStatus = 
+        (!this.state.books.length && this.state.currentPhase !== 0)? "Welcome to Kitabu!"
+        : (!this.state.books.length && this.state.currentPhase !== -1)? "Welcome to Kitabu!"
+        : (this.state.currentPhase === 1)? "Host Book Drives for Local Donors" 
+        : (this.state.currentPhase === 2)? "Package Your Collection"
+        : null;
+
+        let preQueue = false
+        if (!this.state.books.length && this.state.currentPhase !== 0) {
+            preQueue = true;
+        }
+        if (!this.state.books.length && this.state.currentPhase !== -1) {
+            preQueue = true;
+        }
+
         return (
                 <Container maxWidth="lg">
-                  
-                    <p>*Add Material UI stepper here*</p>
+                    <Typography variant = "h1" align="center" className="console-header">{currentStatus}</Typography>
+                    <HorizontalLinearStepper preQueue={preQueue} activeStep={(this.state.currentPhase)}/>
                     {currentView} 
-             
                 </Container>
         )
     }

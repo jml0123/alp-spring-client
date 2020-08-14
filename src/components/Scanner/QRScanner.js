@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import QRScannerCore from 'react-qr-reader'
 
 import UserContext from '../../UserContext';
 
@@ -11,92 +12,12 @@ import Button from '@material-ui/core/Button';
 import Box from '@material-ui/core/Box';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 
-
+import jsonpack from 'jsonpack'
 
 export default class QRScanner extends Component {
   state = {
-    scanned: [
-        {   
-            id: 1,
-            title: "Design Of Everyday Things",
-            isbn: "111-111-111-1111",
-            originalDate: "July 25, 1978",
-            thumbnail: "https://images-na.ssl-images-amazon.com/images/I/410RTQezHYL._SX326_BO1,204,203,200_.jpg",
-            condition: "Select",
-        },
-        {
-            id: 2,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 3,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 4,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 5,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 6,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 7,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 8,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 8,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-        {
-            id: 10,
-            title: "Test Book",
-            isbn: "111-111-111-1111",
-            originalDate: "Jan 25, 2020",
-            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-            condition: "Select",
-        },
-    ],    
+    scanned: [   
+        ],    
         toggled: false,
   }
 
@@ -117,9 +38,23 @@ export default class QRScanner extends Component {
     })
 }
 
+  handleScan = (data) => {
+      if(data) {
+        console.log(data)
+        const unpackedJSON = jsonpack.unpack(data)
+        this.setState({
+            ...this.state,
+            scanned: unpackedJSON
+        })
+      }
+  }
+
+  handleError = (e) => {
+    window.alert("Error" + e)
+  }
+
 
   render() {
-      console.log(this.state.scanned)
       return (
             <Container maxWidth="lg">
                 <Box
@@ -133,10 +68,19 @@ export default class QRScanner extends Component {
                     <Typography align="center">Focus QR code at the center of the frame</Typography>
                     <Box
                         minHeight="30vh"
+                        maxHeight="500px"
+                        maxWidth="500px"
+                        mx="auto"
+                        p={4.44}
                         style={{
                             backgroundColor: "lightgrey",
                         }}
                     >
+                        <QRScannerCore
+                            delay={300}
+                            onError={this.handleError}
+                            onScan={this.handleScan}
+                        />
                     </Box>
                   </>
                   : null}
