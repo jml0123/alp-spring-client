@@ -26,51 +26,19 @@ export default class DonorConsole extends Component {
                 userName: "Kelly",
                 points: 24
             },
-            books: [
-                {   
-                    id: 1,
-                    authors: ["Don Norman"],
-                    title: "Design Of Everyday Things",
-                    isbn: "111-111-111-1111",
-                    originalDate: "July 25, 1978",
-                    thumbnail: "https://images-na.ssl-images-amazon.com/images/I/410RTQezHYL._SX326_BO1,204,203,200_.jpg",
-                    condition: "Select",
-                },
-                {
-                    id: 2,
-                    title: "Test Book",
-                    authors: ["Winnie Ng"],
-                    isbn: "111-111-111-1111",
-                    originalDate: "Jan 25, 2020",
-                    thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
-                    condition: "Select",
-                }
-                // status
-                // 
-            ],
-            partners: [
-                {
-                    id: 1,
-                    name: "Allen W. Roberts Elementary",
-                    address: "123 Abv. Lane, New Providence NJ, 07974",
-                    hours: "8:00am - 5:00pm",
-                    description: "",
-                    contactNum: "111-111-1111",
-                },
-                {
-                    id: 2,
-                    name: "Jane Doe Household",
-                    address: "12 Pal Ct, Summit NJ, 07902",
-                    hours: "9:00am - 9:00pm",
-                    description: "call to coordinate",
-                    contactNum: "111-111-1111",
-                },
-            ],
+            books: [],
+            partners: [],
             selectedPartner: null,
-            currentPhase: 3
+            currentPhase: 1,
+            cID: "",
         }
 
-        
+        componentDidMount() {
+            // TODO
+            // GET USER INFORMATION
+            // GET USER COLLECTIONS
+        }
+
         // Refactor to use bookId
         handleSelectCondition = (bookKey, cond) => {
             const newBookState = this.state.books
@@ -82,7 +50,6 @@ export default class DonorConsole extends Component {
         }
 
         handleAddBook = (newBook) => {
-            newBook.id = uuid()
             console.log(newBook.id)
             this.setState({
                 ...this.state,
@@ -90,8 +57,7 @@ export default class DonorConsole extends Component {
                     ...this.state.books,
                     newBook
                 ]
-            })
-         
+            })   
         }
 
         handleRemoveBook = (bookId) => {
@@ -114,6 +80,30 @@ export default class DonorConsole extends Component {
             this.setState({
                 ...this.state,
                 currentPhase: (phase)
+            })
+        }
+
+        handleCreateCollection = (collection) => {
+            // TODO 
+            // CREATE NEW COLLECTION WITH APPROPRIATE VALUE OF BOOKS
+            // POST NEW COLLECTION
+            // THEN cID ---> handleCreateQRCode
+            // Then purge queue
+            // 
+        }
+
+        handleCreateQRCode = (API, cID) => {
+            // TODO 
+            // create QR CODE using (a string) 
+            // QR Code will have the value of API + cID
+            // e.g. https://{kitabu_api}/collections/cID
+            // Redirect to new page with QR CODE
+        }
+
+        handlePurgeQueue = () => {
+            this.setState({
+                ...this.state,
+                books: []
             })
         }
  
@@ -230,7 +220,7 @@ export default class DonorConsole extends Component {
                     color="secondary" 
                     onClick={() => this.setPhase(3)} 
                     disabled = {(!this.state.selectedPartner)? true: false}>
-                        Confirm Donation
+                        Summary Page
                 </Button>
             </Box>
          </UserContext.Provider>
@@ -251,7 +241,7 @@ export default class DonorConsole extends Component {
                       justifyContent="space-evenly"
             >
                 <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
-                <Button size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>Print Reciept</Button>
+                <Button size="small"  color="primary" onClick={() => {window.alert("POST NEW COLLECTION")}}>Confirm Donation</Button>
             </Box>
         </>
 

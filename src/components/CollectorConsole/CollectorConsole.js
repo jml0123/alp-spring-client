@@ -28,7 +28,16 @@ export default class CollectorConsole extends Component {
             selectedPartner: null,
             currentPhase: 1
         }
-        // Refactor to use bookId
+
+
+        componentDidMount() {
+            // TODO
+            // GET USER INFORMATION
+            // GET USER COLLECTIONS
+            // GET USER DRIVE
+        }
+
+
         handleSelectCondition = (bookKey, cond) => {
             const newBookState = this.state.books
             newBookState[bookKey]['condition'] = cond
@@ -39,7 +48,6 @@ export default class CollectorConsole extends Component {
         }
 
         handleAddBook = (newBook) => {
-            newBook.id = uuid()
             console.log(newBook.id)
             this.setState({
                 ...this.state,
@@ -48,6 +56,7 @@ export default class CollectorConsole extends Component {
                     newBook
                 ]
             })
+            // PATCH USER DRIVE
          
         }
         handleAddCollection = (collectionArray) => {
@@ -60,6 +69,7 @@ export default class CollectorConsole extends Component {
                 currentPhase: 1
             })
             console.log(this.state.books)
+            // PATCH USER DRIVE
         }
 
         handleRemoveBook = (bookId) => {
@@ -87,6 +97,24 @@ export default class CollectorConsole extends Component {
 
         }
  
+
+        handleCreateCollection = (collection) => {
+            // TODO 
+            // CREATE NEW COLLECTION WITH APPROPRIATE VALUE OF BOOKS
+            // POST NEW COLLECTION
+            // THEN cID ---> handleCreateQRCode
+            // Then purge queue
+        }
+
+        handleCreateQRCode = (API, cID) => {
+            // TODO 
+            // create QR CODE using (a string) 
+            // QR Code will have the value of API + cID
+            // e.g. https://{kitabu_api}/collections/cID
+            // Redirect to new page with QR CODE
+        }
+
+
  
     render() {
         const unloggedConditions = this.state.books.filter(book => book.condition === "Select").length
@@ -243,7 +271,7 @@ export default class CollectorConsole extends Component {
                     Back to your queue
                 </Button>
                 <Button variant="contained"  size="small" color="primary" onClick={() => this.setPhase(3)} disabled = {(!this.state.selectedPartner)? true: false}>
-                    Confirm shipping
+                    Summary
                 </Button>
             </Box>
          </UserContext.Provider>
@@ -263,7 +291,7 @@ export default class CollectorConsole extends Component {
                     Add more books first!
                 </Button>
                 <Button variant="contained"  size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>
-                    Print Collection Details
+                    Confirm Collection Details
                 </Button>
    
             </Box>

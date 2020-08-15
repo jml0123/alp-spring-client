@@ -41,13 +41,10 @@ export default function HorizontalLinearStepper(props) {
   const classes = useStyles();
   const activeStep = props.activeStep
   const steps = getSteps();
-  if (props.preQueue) {
-      return null
-  }
-  
+
   return (
     <div className={classes.root}>
-      <Stepper activeStep={props.activeStep}>
+      <Stepper activeStep={props.preQueue? 0: props.activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
