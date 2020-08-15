@@ -4,14 +4,19 @@ import CoreScanner from './__barcodeScanner.core';
 import BookItem from '../BookItem'
 import UserContext from '../../UserContext';
 
-import Container from '@material-ui/core/Container';
-import Box from '@material-ui/core/Box';
+import {Container, Box, Button, TextField, Input, FormControlLabel, Typography} from '@material-ui/core';
+import AddToLibraryIcon from '@material-ui/icons/LibraryAdd';
+
+import Alert from '@material-ui/lab/Alert';
 
 import config from "../../config";
 
 export default class BarcodeScanner extends Component {
   state = {
     scanned: [],
+    error: null,
+    manualInput: null
+    
   }
 
   static contextType = UserContext;
@@ -26,10 +31,12 @@ export default class BarcodeScanner extends Component {
       scanned: [newState]
     })
   }
-  handleManualInput = (isbn) => {
 
-    //.then this.context.handleAddBook(book)
+  handleAddBook = () => {
+    this.context.handleAddBook(this.state.manualInput)
+    window.alert("Manually added book")
   }
+
   handleScanSuccess = (results) => {
     const isbn =(results[0].barcodeText) 
     window.alert(results[0].barcodeText)
@@ -43,6 +50,36 @@ export default class BarcodeScanner extends Component {
     })
   }
 
+  setManualInput = () => {
+    this.setState({
+      ...this.state,
+      manualInput: {
+        title: null,
+        authors: null,
+        isbn: null
+      }
+    })
+  }
+
+  closeManualInput = () => {
+    this.setState({
+      ...this.state,
+      manualInput: false
+    })
+  }
+
+  handleSetData = async (e) => {
+    const value = (e.target.name === "authors")? 
+    e.target.value.split(",") : e.target.value;
+    await this.setState({
+        ...this.state,
+         manualInput: {
+            ...this.state.manualInput,
+            [e.target.name]: value
+        }  
+    })
+    console.log(this.state.manualInput)
+}
   getBookInfo = (isbn) => {
     const serializedBookData = {
       isbn: "",
@@ -67,12 +104,20 @@ export default class BarcodeScanner extends Component {
             this.setScannedState(serializedBookData)
         }
         else {
-            window.alert("Book not found")
+            this.setState({
+              ...this.state,
+              error: "Book not found. Try again"
+            })
         }
     })
 }
 
   render() {
+      const message = (this.state.error? 
+      <Alert severity="info">{this.state.error}</Alert>          
+      : this.state.scanned.length?
+      <Alert severity="success">Book found! {this.state.scanned[0].title}</Alert>    
+      : null)
       return (
             <Container maxWidth="lg">
                   <Box
@@ -82,6 +127,7 @@ export default class BarcodeScanner extends Component {
                     p={4.44}
                   >
                     <CoreScanner onScan={this.handleScanSuccess}/>
+                    {message}
                   </Box>
                   <Box
                     display="flex"
@@ -94,7 +140,31 @@ export default class BarcodeScanner extends Component {
                         bookScan={true} 
                         handleSelectConditionScanner={(e) => this.handleSelectConditionScanner(e)}
                       />
-                      : null }  
+                      : 
+                        this.state.error && !this.state.manualInput? <Button onClick={e => this.setManualInput()}>Type Manually?</Button> : null
+                      }
+                      {this.state.manualInput? 
+                      <>
+                      <Box display="flex" flexDirection="column">
+                        <TextField label="Title" id="title" name="title" onChange={e => this.handleSetData(e)} />
+                        <TextField label="Author/s" id="authors" name="authors" onChange={e => this.handleSetData(e)}/>
+                        <Typography variant="h2">Author (Separate multiple authors by using ',')</Typography> 
+                        <TextField label="ISBN" id="isbn" name="isbn" onChange={e => this.handleSetData(e)}/>
+                        <Button 
+                            variant = "contained" 
+                            color="secondary"
+                            size = "small"
+                            startIcon={<AddToLibraryIcon/>} 
+                            onClick = {() => {
+                                this.handleAddBook(this.state.manualInput)
+                            }}>
+                              Add to Box
+                      </Button>
+                    </Box>
+                      <Button onClick={e => this.closeManualInput()}>Use the Scanner?</Button>
+                      </>
+                        : null
+                      }  
                   </Box>  
             </Container>
         );
