@@ -9,7 +9,7 @@ import "./LandingPage.css"
 export default function DonationPage() {
   return (
     <>
-      <Nav landing={true}/>
+      <Nav activeUser={false}/>
       <Box
         display="flex"
         flex-direction="column"

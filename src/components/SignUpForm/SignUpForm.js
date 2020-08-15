@@ -6,12 +6,12 @@ import Autocomplete from 'react-google-autocomplete';
 import scriptLoader from 'react-async-script-loader'
 import uuid from 'react-uuid'
 
-import {Typography, Container, Box, Card, 
+import {Typography, Container, Box, 
     Button, TextField, Input, FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 
-import "./SignUp.css"
+import "./SignUpForm.css"
 
 const google = window.google;
 
@@ -21,11 +21,14 @@ class SignUpForm extends Component {
                 name: "",
                 email: "",
                 class: "",
+                area: "",
+                coordinates: [],
                 password: "",
                 confirmPass: "",
+
+                // 
                 phoneNum: "",
                 orgName: "",
-                area: "",
                 address: "",
                 hours: "",
                 description: "",
@@ -75,11 +78,12 @@ class SignUpForm extends Component {
             <Box className="signup-container">
                 <Typography variant = "h3" align="center" className="console-header">Welcome</Typography>
                 <Typography align="center" variant="h2">Kitabu is a place to donate your gently used children's books.<br/>Each book you donate contributes to a library in rural Africa. <br/>1 Kitabu (1k, or 1,000 books) = 1 library</Typography>
-                <Box
-                    m={3}
+                <div
+                    className="form-controls"
                 >
+                    <Link to="/login" className="link"><Button>Already have an account?</Button></Link>
                     <Button color="secondary" size="large" onClick={() => this.setPhase(1)}>Next</Button>
-                </Box>
+                </div>
             </Box>
         </>
 
@@ -227,7 +231,7 @@ class SignUpForm extends Component {
         <Box className="signup-container">
             <Typography variant = "h1" align="center" className="console-header">You're all set!</Typography>
             <div class="form-controls">
-                <Link className="finish-link" to ={(this.state.user.class === "donor")?  "/donate" : "/partners"}>
+                <Link className="link" to ={(this.state.user.class === "donor")?  "/donate" : "/partners"}>
                     <Button color="secondary" size="large" >Go to my dashboard</Button>
                 </Link>
             </div>

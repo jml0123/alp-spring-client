@@ -55,25 +55,34 @@ function Nav(props) {
         </Box>
         </Link>
         <Box>
-        <Button 
-          aria-controls="simple-menu" 
-          aria-haspopup="true" 
-          onClick={handleClick}
-          color="primary"
-        >
-          Menu
-        </Button>
-          <Menu
-            id="simple-menu"
-            anchorEl={anchorEl}
-            keepMounted
-            open={Boolean(anchorEl)}
-            onClose={handleClose}
+        {props.activeUser === true? 
+        <>
+          <Button 
+            aria-controls="simple-menu" 
+            aria-haspopup="true" 
+            onClick={handleClick}
+            color="primary"
           >
-            <MenuItem component={Link} to="/donate" onClick={handleClose}>Donate Books</MenuItem>
-            <MenuItem component={Link} to="/points"  onClick={handleClose}>Points</MenuItem>
-            <MenuItem component={Link} to="/login"  onClick={handleClose}>Sign Out</MenuItem>
-          </Menu>
+            Menu
+          </Button>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem component={Link} to="/donate" onClick={handleClose}>Donate Books</MenuItem>
+              <MenuItem component={Link} to="/collections"  onClick={handleClose}>Collections</MenuItem>
+              <MenuItem component={Link} to="/login"  onClick={handleClose}>Sign Out</MenuItem>
+            </Menu>
+          </>
+          :
+          <div className="nav-ctrls">
+            <Link to="/join" className="link"><Button>Join</Button></Link>
+            <Link to="/login" className="link"><Button>Login</Button></Link>
+          </div>
+          }
           </Box>
         </Box>
     </nav>

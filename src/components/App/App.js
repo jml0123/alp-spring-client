@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from "react-router-dom";
 import DonationPage from "../../views/DonationPage"
 import CollectionPage from '../../views/CollectionPage';
+import CollectionsPage from '../../views/CollectionsPage';
 import LandingPage from '../../views/LandingPage';
 
 import SignUpPage from '../../views/SignUpPage';
@@ -39,6 +40,11 @@ function App() {
           exact
           path={"/join"}
           component={SignUpPage}
+      />
+      <Route
+        exact
+        path={"/collections"}
+        component={CollectionsPage}
       />
       </ThemeProvider>
     </>
