@@ -56,7 +56,10 @@ class SignUpForm extends Component {
     }
 
     handleSubmitUser = (user) => {
-
+        // TODO 
+        // CHECK TO SEE IF A USER IS A COLLECTOR OR DONOR
+        // CREATE NEW USER BASED ON DATA
+        // POST USER
     }
 
     handleSetLocation = (location) => {
