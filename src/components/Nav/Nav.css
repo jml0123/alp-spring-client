@@ -22,3 +22,17 @@ nav ul > li {
     justify-content: center;
 }
 
+
+.nav-logo {
+    text-decoration: none;
+    color: initial
+}
+
+.nav-ctrls {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.nav-ctrls > * {
+    margin: 0 0.66em;
+}

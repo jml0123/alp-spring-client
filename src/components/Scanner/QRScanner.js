@@ -16,8 +16,64 @@ import jsonpack from 'jsonpack'
 
 export default class QRScanner extends Component {
   state = {
-    scanned: [   
-        ],    
+    scanned: [
+        {   
+            id: 1,
+            authors: ["Don Norman"],
+            title: "Design Of Everyday Things",
+            isbn: "111-111-111-1111",
+            originalDate: "July 25, 1978",
+            thumbnail: "https://images-na.ssl-images-amazon.com/images/I/410RTQezHYL._SX326_BO1,204,203,200_.jpg",
+            condition: "Select",
+        },
+        {
+            id: 2,
+            title: "Test Book",
+            authors: ["Winnie Ng"],
+            isbn: "111-111-111-1111",
+            originalDate: "Jan 25, 2020",
+            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
+            condition: "Select",
+        },
+        {   
+            id: 1,
+            authors: ["Don Norman"],
+            title: "Design Of Everyday Things",
+            isbn: "111-111-111-1111",
+            originalDate: "July 25, 1978",
+            thumbnail: "https://images-na.ssl-images-amazon.com/images/I/410RTQezHYL._SX326_BO1,204,203,200_.jpg",
+            condition: "Select",
+        },
+        {
+            id: 2,
+            title: "Test Book",
+            authors: ["Winnie Ng"],
+            isbn: "111-111-111-1111",
+            originalDate: "Jan 25, 2020",
+            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
+            condition: "Select",
+        },
+        {   
+            id: 1,
+            authors: ["Don Norman"],
+            title: "Design Of Everyday Things",
+            isbn: "111-111-111-1111",
+            originalDate: "July 25, 1978",
+            thumbnail: "https://images-na.ssl-images-amazon.com/images/I/410RTQezHYL._SX326_BO1,204,203,200_.jpg",
+            condition: "Select",
+        },
+        {
+            id: 2,
+            title: "Test Book",
+            authors: ["Winnie Ng"],
+            isbn: "111-111-111-1111",
+            originalDate: "Jan 25, 2020",
+            thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
+            condition: "Select",
+        }
+        // status
+        // 
+        ],   
         toggled: false,
   }
 

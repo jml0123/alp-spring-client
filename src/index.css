@@ -12,10 +12,7 @@ code {
     monospace;
 }
 
-
-.container-header {
-  text-align: left;
-  align-items: left;
-  display: flex;
-  width: 100%;
+.link {
+  text-decoration: none;
+  color: initial
 }

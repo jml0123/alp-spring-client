@@ -5,7 +5,7 @@ import CollectorConsole from "../../components/CollectorConsole"
 export default function CollectionPage() {
   return (
     <>
-      <Nav/>
+      <Nav activeUser={true}/>
       <CollectorConsole/>
     </>
   );

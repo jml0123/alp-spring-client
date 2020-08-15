@@ -29,7 +29,7 @@ export default class DonorConsole extends Component {
             books: [
                 {   
                     id: 1,
-                    authors: "Don Norman",
+                    authors: ["Don Norman"],
                     title: "Design Of Everyday Things",
                     isbn: "111-111-111-1111",
                     originalDate: "July 25, 1978",
@@ -39,7 +39,7 @@ export default class DonorConsole extends Component {
                 {
                     id: 2,
                     title: "Test Book",
-                    authors: "Winnie Ng",
+                    authors: ["Winnie Ng"],
                     isbn: "111-111-111-1111",
                     originalDate: "Jan 25, 2020",
                     thumbnail: "https://image.shutterstock.com/image-vector/book-icon-sign-design-260nw-553945819.jpg",
@@ -271,11 +271,16 @@ export default class DonorConsole extends Component {
         : (this.state.currentPhase === 3)? "Confirm your donation"
         : null;
 
+        let preQueue = false;
+        if (!this.state.books.length && this.state.currentPhase !== 0) {
+            preQueue = true;
+        }
+
         return (
             <>
                 <Container maxWidth="lg">
                     <Typography variant = "h4" align="center" className="console-header">{currentStatus}</Typography>
-                    <HorizontalLinearStepper activeStep={this.state.currentPhase}/>
+                    <HorizontalLinearStepper preQueue={preQueue? true: false} activeStep={this.state.currentPhase}/>
                     <Box
                         borderRadius="5px"
                         py={2}
