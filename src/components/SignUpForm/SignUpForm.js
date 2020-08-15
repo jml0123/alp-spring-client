@@ -20,20 +20,20 @@ class SignUpForm extends Component {
            user: {
                 name: "",
                 email: "",
-                class: "",
+                type: "",
                 area: "",
-                coordinates: [],
+                location: {},
                 password: "",
                 confirmPass: "",
-
-                // 
+                // Collector
                 phoneNum: "",
                 orgName: "",
                 address: "",
                 hours: "",
                 description: "",
             },
-            currentPhase: 0
+            currentPhase: 0,
+            error: null
         } 
         
     setPhase = (phase) => {
@@ -55,12 +55,46 @@ class SignUpForm extends Component {
         })
     }
 
-    handleSubmitUser = (user) => {
-        // TODO 
-        // CHECK TO SEE IF A USER IS A COLLECTOR OR DONOR
-        // CREATE NEW USER BASED ON DATA
-        // POST USER
+    handleSubmitUser = () => {
+        const {email, name, location, password, confirmPass, type} = this.state.user
+        const newUser = {
+                name: name,
+                email: email,
+                class: type,
+                location: {
+                    coordinates: [-74.155096, 40.745951],
+                },
+                password: password,
+                password2: confirmPass,
+        }
+        if (newUser.class.toLowerCase() === "collector") {
+            const {phoneNum, orgName, address, hours, description} = this.state
+            newUser.number = phoneNum;
+            newUser.orgName = orgName;
+            newUser.address = address;
+            newUser.description = description
+        }
+        console.log(newUser)
+        this.postUser(newUser).then(user => {
+            console.log(user)
+        })
+        // Then set phase to 8
     }
+
+    postUser = (user) => {
+        return fetch(`${config.API_ENDPOINT}/users/register`, {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }).then((res) => {
+          return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
+        });
+      }
+
+
+
 
     handleSetLocation = (location) => {
         const formatted = location.formatted_address
@@ -76,6 +110,7 @@ class SignUpForm extends Component {
 
     render() {
       
+
         const startView = 
         <>
             <Box className="signup-container">
@@ -141,12 +176,12 @@ class SignUpForm extends Component {
             <Typography variant = "h2" align="center" className="console-header">You said {this.state.user.area}</Typography>
             <Typography variant = "h1" align="center" className="console-header">Are you a donor, or collector?</Typography>
             <Typography variant = "h2" align="center" className="console-header">Now choose if you would like to donate books, or become a partnered collector (collectors host book drives)</Typography>
-            <RadioGroup aria-label = "user-type" value={this.state.user.class}  row>
+            <RadioGroup aria-label = "user-type" defaultValue={this.state.user.type}  row>
             <FormControlLabel
                 control={
                 <Radio
                     onChange={(e) => this.handleSetData(e)}
-                    name="class"
+                    name="type"
                     value="donor"
                     color="primary"
                 />
@@ -157,7 +192,7 @@ class SignUpForm extends Component {
                 control={
                 <Radio
                     onChange={(e) => this.handleSetData(e)}
-                    name="class"
+                    name="type"
                     value="collector"
                     color="primary"
                 />
@@ -168,8 +203,8 @@ class SignUpForm extends Component {
           
             <div class="form-controls">
                 <Button color="secondary" size="large" onClick={() => this.setPhase(3)}>Back</Button>
-                <Button color="secondary" size="large" onClick={() => (this.state.user.class === "donor")? (this.setPhase(6)) :( this.setPhase(5))  }>
-                    {(this.state.user.class !== "collector") ? "Almost Done" : "Additional Details"}
+                <Button color="secondary" size="large" onClick={() => (this.state.user.type === "donor")? (this.setPhase(6)) :( this.setPhase(5))  }>
+                    {(this.state.user.type !== "collector") ? "Almost Done" : "Additional Details"}
                 </Button>
             </div>
 
@@ -178,7 +213,7 @@ class SignUpForm extends Component {
   
         const additionalInfoView = 
         <Box className="signup-container">
-            <Typography variant = "h2" align="center" className="console-header">You said {this.state.user.class}</Typography>
+            <Typography variant = "h2" align="center" className="console-header">You said {this.state.user.type}</Typography>
             <Typography variant = "h1" align="center" className="console-header">We just need a few more details...</Typography>
             <Typography variant = "h2" align="center" className="console-header">We collect this information to make it easier for people to find your book drive</Typography>
             <Box mx="auto" w={0.88}>
@@ -223,7 +258,7 @@ class SignUpForm extends Component {
             <TextField id="confirmPass" value={this.state.user.confirmPass} type="password" name="confirmPass" label="Confirm Password" variant="standard" onChange={(e) => this.handleSetData(e)} />
             <div class="form-controls">
                 <Button color="secondary" size="large" onClick={() => this.setPhase(7)}>Back</Button>
-                <Button color="secondary" size="large" onClick={() => this.setPhase(8)} disabled= {this.state.user.password !== this.state.user.confirmPass ? true: false }>Finish</Button>
+                <Button color="secondary" size="large" onClick={() => this.handleSubmitUser()} disabled= {this.state.user.password !== this.state.user.confirmPass ? true: false }>Finish</Button>
             </div>
         </Box>
         </>
@@ -234,7 +269,7 @@ class SignUpForm extends Component {
         <Box className="signup-container">
             <Typography variant = "h1" align="center" className="console-header">You're all set!</Typography>
             <div class="form-controls">
-                <Link className="link" to ={(this.state.user.class === "donor")?  "/donate" : "/partners"}>
+                <Link className="link" to ={(this.state.user.type === "donor")?  "/donate" : "/partners"}>
                     <Button color="secondary" size="large" >Go to my dashboard</Button>
                 </Link>
             </div>
