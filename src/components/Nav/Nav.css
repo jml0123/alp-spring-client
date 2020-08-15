@@ -22,3 +22,8 @@ nav ul > li {
     justify-content: center;
 }
 
+
+.nav-logo {
+    text-decoration: none;
+    color: initial
+}

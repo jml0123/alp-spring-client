@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {Link} from 'react-router-dom';
 import './Nav.css';
 
 import LeafLogo from '../../assets/img/leaf.png';
@@ -35,6 +36,7 @@ function Nav(props) {
           py={2}
           px={3}
         >
+        <Link to="/" className="nav-logo">
         <Box
           display="flex"
           alignItems="center"
@@ -51,6 +53,7 @@ function Nav(props) {
             </Box>
             <Typography variant="h1">Kitabu</Typography>
         </Box>
+        </Link>
         <Box>
         <Button 
           aria-controls="simple-menu" 
@@ -67,9 +70,9 @@ function Nav(props) {
             open={Boolean(anchorEl)}
             onClose={handleClose}
           >
-            <MenuItem onClick={handleClose}>Donate Books</MenuItem>
-            <MenuItem onClick={handleClose}>Points</MenuItem>
-            <MenuItem onClick={handleClose}>Sign Out</MenuItem>
+            <MenuItem component={Link} to="/donate" onClick={handleClose}>Donate Books</MenuItem>
+            <MenuItem component={Link} to="/points"  onClick={handleClose}>Points</MenuItem>
+            <MenuItem component={Link} to="/login"  onClick={handleClose}>Sign Out</MenuItem>
           </Menu>
           </Box>
         </Box>

@@ -54,7 +54,7 @@ export default class BarcodeScanner extends Component {
     }
 
     const GBooksAPI = "https://www.googleapis.com/books/v1"
-    fetch(`${GBooksAPI}/volumes?q=isbn:${isbn}&key=${config.GBOOKS_KEY}`).then(res => res.json())
+    fetch(`${GBooksAPI}/volumes?q=isbn:${isbn}&key=${config.gAPI_KEY}`).then(res => res.json())
     .then((data) =>{
         if (data.totalItems !== 0) {
             const bookData = data.items[0]
@@ -79,7 +79,7 @@ export default class BarcodeScanner extends Component {
                     minHeight="30vh"
                     maxWidth="500px"
                     mx="auto"
-                    p={5}
+                    p={4.44}
                   >
                     <CoreScanner onScan={this.handleScanSuccess}/>
                   </Box>

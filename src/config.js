@@ -3,6 +3,6 @@ export default {
     PRODUCTION: ``,
     API_ENDPOINT: ``,
     PRODUCT_KEY: 't0068NQAAAF99HGwRJ9EuwsC08wMYh26EgMvuRMXfDr/5mbhMa7mOug8W8E5PNMrak38ags5vRckkajg9x8UDSSv8cjHQkU0=',
-    GBOOKS_KEY: "AIzaSyD4RrXXgTTAfOitL33YA-sXdHSvBcWSU_Q"
+    gAPI_KEY: "AIzaSyD4RrXXgTTAfOitL33YA-sXdHSvBcWSU_Q"
   };
   
