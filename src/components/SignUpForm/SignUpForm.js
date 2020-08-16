@@ -77,6 +77,7 @@ export default class SignUpForm extends Component {
             newUser.description = description;
             newUser.hours = hours
         }
+        console.log(newUser)
         this.postUser(newUser).then(res => {
             TokenService.saveAuthToken(res.token);
             TokenService.saveUserId(res.user.id);
@@ -185,7 +186,7 @@ export default class SignUpForm extends Component {
                 <Radio
                     onChange={(e) => this.handleSetData(e)}
                     name="type"
-                    value="donor"
+                    value="Donor"
                     color="primary"
                 />
                 }
@@ -196,18 +197,18 @@ export default class SignUpForm extends Component {
                 <Radio
                     onChange={(e) => this.handleSetData(e)}
                     name="type"
-                    value="collector"
+                    value="Collector"
                     color="primary"
                 />
                 }
-                label="I am a collector"
+                label="I am a Collector"
             />
             </RadioGroup>
           
             <div class="form-controls">
                 <Button color="secondary" size="large" onClick={() => this.setPhase(3)}>Back</Button>
-                <Button color="secondary" size="large" onClick={() => (this.state.user.type === "donor")? (this.setPhase(6)) :( this.setPhase(5))  }>
-                    {(this.state.user.type !== "collector") ? "Almost Done" : "Additional Details"}
+                <Button color="secondary" size="large" onClick={() => (this.state.user.type === "Donor")? (this.setPhase(6)) :( this.setPhase(5))  }>
+                    {(this.state.user.type !== "Collector") ? "Almost Done" : "Additional Details"}
                 </Button>
             </div>
 
@@ -244,39 +245,39 @@ export default class SignUpForm extends Component {
 
         const passwordView = 
         <>  
-        <Box className="signup-container">
-            <Typography variant = "h1" align="center" className="console-header">Set a password</Typography>
-            <TextField id="password" type="password" name="password" label="Password" variant="standard" onChange={(e) => this.handleSetData(e)} />
-            <div class="form-controls">
-                <Button color="secondary" size="large" onClick={() => this.setPhase(6)}>Back</Button>
-                <Button color="secondary" size="large" onClick={() => this.setPhase(7)}>Next</Button>
-            </div>
-        </Box>
+            <Box className="signup-container">
+                <Typography variant = "h1" align="center" className="console-header">Set a password</Typography>
+                <TextField id="password" type="password" name="password" label="Password" variant="standard" onChange={(e) => this.handleSetData(e)} />
+                <div class="form-controls">
+                    <Button color="secondary" size="large" onClick={() => (this.state.user.type === "Donor" ? this.setPhase(4) :  this.setPhase(5)) }>Back</Button>
+                    <Button color="secondary" size="large" onClick={() => this.setPhase(7)}>Next</Button>
+                </div>
+            </Box>
         </>
 
         const confirmPasswordView = 
         <>  
-        <Box className="signup-container">
-            <Typography variant = "h1" align="center" className="console-header">Confirm your Password</Typography>
-            <TextField id="confirmPass" value={this.state.user.confirmPass} type="password" name="confirmPass" label="Confirm Password" variant="standard" onChange={(e) => this.handleSetData(e)} />
-            <div class="form-controls">
-                <Button color="secondary" size="large" onClick={() => this.setPhase(7)}>Back</Button>
-                <Button color="secondary" size="large" onClick={() => this.handleSubmitUser()} disabled= {this.state.user.password !== this.state.user.confirmPass ? true: false }>Finish</Button>
-            </div>
-        </Box>
+            <Box className="signup-container">
+                <Typography variant = "h1" align="center" className="console-header">Confirm your Password</Typography>
+                <TextField id="confirmPass" value={this.state.user.confirmPass} type="password" name="confirmPass" label="Confirm Password" variant="standard" onChange={(e) => this.handleSetData(e)} />
+                <div class="form-controls">
+                    <Button color="secondary" size="large" onClick={() => this.setPhase(6)}>Back</Button>
+                    <Button color="secondary" size="large" onClick={() => this.handleSubmitUser()} disabled= {this.state.user.password !== this.state.user.confirmPass ? true: false }>Finish</Button>
+                </div>
+            </Box>
         </>
 
 
         const finishedView = 
         <>  
-        <Box className="signup-container">
-            <Typography variant = "h1" align="center" className="console-header">You're all set!</Typography>
-            <div class="form-controls">
-                <Link className="link" to ={(this.state.user.type === "donor")?  "/donate" : "/partners"}>
-                    <Button color="secondary" size="large" >Go to my dashboard</Button>
-                </Link>
-            </div>
-        </Box>
+            <Box className="signup-container">
+                <Typography variant = "h1" align="center" className="console-header">You're all set!</Typography>
+                <div class="form-controls">
+                    <Link className="link" to ={(this.state.user.type === "Donor")?  "/donate" : "/partners"}>
+                        <Button color="secondary" size="large" >Go to my dashboard</Button>
+                    </Link>
+                </div>
+            </Box>
         </>
         
         let currentView;

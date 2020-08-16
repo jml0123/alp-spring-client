@@ -55,6 +55,17 @@ export default class LoginForm extends Component {
   };
 
 render() {
+    let button;
+    if (!this.context.user) {
+      button = null
+    }
+    else if (this.context.user.class === "donor") {
+      button =  <Button component = {Link} to ="/donate" color="secondary">Go To Dashboard</Button>
+
+    }
+    else if (this.context.user.class === "collector") {
+        button =  <Button component = {Link} to ="/partners" color="secondary">Go To Dashboard</Button>
+    }
     return (
         <Box className="form-container">
                 <Typography variant = "h1" align="center" className="console-header">Welcome Back!</Typography>
@@ -68,10 +79,10 @@ render() {
                         <Typography variant="h2" color="secondary">{this.state.error}</Typography>
                         : null
                     }
-                    {this.state.message ?
+                    {this.state.message?
                           <Box flexDirection="column" alignItems="center" justifyContent="center">
                          <Alert severity="success">{this.state.message}</Alert> 
-                         <Button component = {Link} to ={(this.context.user.class === "donor" ? "/donate" : "/partners")} color="secondary">Go To Dashboard</Button>
+                         {button}
                           </Box> : null
                     }
                 </div>

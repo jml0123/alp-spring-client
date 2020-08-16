@@ -38,6 +38,8 @@ function Nav(props) {
 
   const theme = useTheme();
   const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+console.log(userContext.user)
   return (
     <nav>
         <Box
@@ -68,11 +70,11 @@ function Nav(props) {
         </Box>
         </Link>
         <Box>
-        {props.activeUser === true || userContext.user._id? 
+        {userContext.user && userContext.user._id !== "" ? 
         <>
           <Button 
             aria-controls="simple-menu" 
-            aria-haspopup="true" 
+            aria-haspopup="true"  d
             onClick={handleClick}
             color="primary"
           >
@@ -85,7 +87,14 @@ function Nav(props) {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem component={Link} to="/donate" onClick={handleClose}>Donate Books</MenuItem>
+              {userContext.user && userContext.user.class === "Collector" ? 
+                <MenuItem component={Link} to="/partners" onClick={handleClose}>Collect Books</MenuItem>
+                : null
+              }
+              {userContext.user && userContext.user.class === "donor" ? 
+                <MenuItem component={Link} to="/donate" onClick={handleClose}>Donate Books</MenuItem>
+                : null
+              }
               <MenuItem component={Link} to="/collections"  onClick={handleClose}>Collections</MenuItem>
               <MenuItem component={Link} to="/login"  onClick={handleLogoutClick}>Sign Out</MenuItem>
             </Menu>
