@@ -27,12 +27,10 @@ import Bobst from '../../assets/img/bobst.jpeg'
 export default class DonorConsole extends Component {
     state = {
             user: null,
-            books: [
-                "afe"
-            ],
+            books: [],
             partners: [],
             selectedPartner: null,
-            currentPhase: 2,
+            currentPhase: 1,
             _cID: null
         }
 
