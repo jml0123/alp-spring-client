@@ -71,7 +71,7 @@ render() {
                     {this.state.message ?
                           <Box flexDirection="column" alignItems="center" justifyContent="center">
                          <Alert severity="success">{this.state.message}</Alert> 
-                         <Link to={(this.context.user.class === "donor" ? "/donate" : "/partners")}><Button color="secondary" onClick={() => this.handleSubmit()}>Go To Dashboard</Button></Link> 
+                         <Button component = {Link} to ={(this.context.user.class === "donor" ? "/donate" : "/partners")} color="secondary">Go To Dashboard</Button>
                           </Box> : null
                     }
                 </div>
