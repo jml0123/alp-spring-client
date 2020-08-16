@@ -46,6 +46,8 @@ export default class LoginForm extends Component {
         console.log(res)
         this.context.setUser(res.user)
         TokenService.saveAuthToken(res.token);
+        TokenService.saveUserId(res.user._id);
+        console.log(res.user.id)
         this.setState({
           ...this.state,
           message: `Success! Welcome back ${this.context.user.name}!`

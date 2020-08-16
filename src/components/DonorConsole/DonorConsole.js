@@ -20,13 +20,19 @@ import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import AuthContext from '../../AuthContext';
 
+import BatteryPark from '../../assets/img/battery.jpeg'
+import Bobst from '../../assets/img/bobst.jpeg'
+
+
 export default class DonorConsole extends Component {
     state = {
             user: null,
-            books: [],
+            books: [
+                "afe"
+            ],
             partners: [],
             selectedPartner: null,
-            currentPhase: 1,
+            currentPhase: 2,
             _cID: null
         }
 
@@ -112,7 +118,25 @@ export default class DonorConsole extends Component {
         setPartners = (nearbyDrives) => {
             this.setState({
                 ...this.state,
-                partners: nearbyDrives
+                partners: [
+                    {
+                    donorId: 1,
+                    name: "Bobst Library (DEMO)",
+                    address: "14 Bleecker Street",
+                    hours: "24/7",
+                    description: "Call to coordinate",
+                    contactNum: "888-222-3333"
+                    },
+                    {
+                    donorId: 2,
+                    name: "Battery Park Collective (DEMO)",
+                    address: "88 Battery Place",
+                    hours: "M-F 9am - 5pm",
+                    description: "Come anytime during business hours",
+                    contactNum: "222-544-1123"
+                },
+
+                ]
             })
         }
 
