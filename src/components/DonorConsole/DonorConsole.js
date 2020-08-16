@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import uuid from 'react-uuid'
 import config from '../../config'
 
 import BookList from '../BookList'
@@ -15,7 +14,6 @@ import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import Button from '@material-ui/core/Button';
 
-
 import './DonorConsole.css'
 import { Typography } from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
@@ -25,11 +23,18 @@ import AuthContext from '../../AuthContext';
 export default class DonorConsole extends Component {
     state = {
             user: null,
-            books: [],
+            books: [{
+                authors: [],
+                condition: "",
+                isbn: "9781250038821",
+                publishedDate: "2013-10-15",
+                thumbnail: "http://books.google.com/books/content?id=tWVEAQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
+                title: "Humans of New York"
+            }],
             partners: [],
             selectedPartner: null,
-            currentPhase: 1,
-            collections: null,
+            currentPhase: 3,
+            _cID: null
         }
 
         static contextType = AuthContext
@@ -41,23 +46,10 @@ export default class DonorConsole extends Component {
                 user: userContext.user
             })
             await this.fetchUserCollections(userContext.user.id)
+            await this.fetchNearestDonors(userContext.user.coordinates)
             console.log(this.state)
         }
-        fetchUserCollections = async (id) => {
-            fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
-                if (!res.ok) {
-                  throw new Error(res.status);
-                }
-                return res.json();
-              }).then(res => this.setUserCollections(res))
-              .catch((error) => this.setState({ error }));
-        }
-
-        setUserCollections = (userCollections) => {
-            console.log(userCollections)
-            this.context.setCollections(userCollections)
-        }
-
+        
         // Refactor to use bookId
         handleSelectCondition = (bookKey, cond) => {
             const newBookState = this.state.books
@@ -102,39 +94,71 @@ export default class DonorConsole extends Component {
             })
         }
 
-
-        handleFinalizeDonation = () => {
-            this.handleAddCollection()
-            .then(collection => {
-                const cID = collection.id
-                this.handleCreateQRCode(collection) 
-            })
-            .then(() => this.fetchUserCollections())
-
+        fetchUserCollections = async (id) => {
+            fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).then(res => this.setUserCollections(res))
+              .catch((error) => this.setState({ error }));
         }
-        handleAddCollection = () => {
+
+        fetchNearestDonors = (coords) => {
+            fetch(`${config.API_ENDPOINT}/users/index?long=${coords[0]}&latt=${coords[1]}`).then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).then(res => this.setPartners(res))
+              .catch((error) => this.setState({ error }));
+        }
+
+
+        setPartners = (nearbyDrives) => {
+            this.setState({
+                ...this.state,
+                partners: nearbyDrives
+            })
+        }
+
+        setUserCollections = (userCollections) => {
+            console.log(userCollections)
+            this.context.setCollections(userCollections)
+        }
+
+
+        handleFinalizeDonation = async () => {
+            this.handleCreateCollection()
+        }
+
+        handleCreateCollection = async () => {
             const collection = {
                 books: this.state.books,
                 donorId: this.state.user.id,
             }
-            fetch(`${config.API_ENDPOINT}/collections`, {
+            fetch(`${config.API_ENDPOINT}/collections/new`, {
                 method: "POST",
                 headers: {
                   "content-type": "application/json",
                 },
-                body: JSON.stringify(collection)}).then(res => {
-                    return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
-               
-                })}
+                body: JSON.stringify(collection)}).then(res => 
+                    res.json()).then(data => {
+                        console.log(data)
+                        const cID = data._id
+                        this.handleCreateQRCode(cID)
+                        this.context.handleAddCollection(data)
+                    }).catch((error) => {
+                        this.setState({ error })
+                    })  
+        }
 
-        handleCreateQRCode = (collection) => {
-            window.alert("Collection created!")
-            console.log(collection)
-            // TODO 
-            // create QR CODE using (a string) 
-            // QR Code will have the value of API + cID
-            // e.g. https://{kitabu_api}/collections/cID
-            // Redirect to new page with QR CODE
+        handleCreateQRCode = (cID) => {
+            this.setState({
+                ...this.state,
+                _cID: cID
+            })
+            console.log(this.state)
         }
 
         handlePurgeQueue = () => {
@@ -269,6 +293,7 @@ export default class DonorConsole extends Component {
                 user={this.state.user}
                 queued={this.state.books} 
                 partner={this.state.selectedPartner}
+                QRVal={this.state._cID}
             />
             <Box
                       m={4}
@@ -278,7 +303,7 @@ export default class DonorConsole extends Component {
                       justifyContent="space-evenly"
             >
                 <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
-                <Button size="small"  color="primary" onClick={() => this.handleAddCollection()}>Confirm Donation</Button>
+                <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>Confirm Donation</Button>
             </Box>
         </>
 

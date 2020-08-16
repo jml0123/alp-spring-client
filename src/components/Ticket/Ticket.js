@@ -1,4 +1,6 @@
 import React from 'react';
+import { QRCode } from 'react-qr-svg'
+
 import BookList from '../BookList'
 import PointsCircle from '../PointsCircle'
 
@@ -27,7 +29,7 @@ export default function Ticket(props) {
 
     const numBooks = props.queued.length
     const points = numBooks * 12
-    
+    console.log(props)
     return (
         <Card maxWidth="md">
             <Box
@@ -36,7 +38,7 @@ export default function Ticket(props) {
                 <Typography 
                     variant="h1"
                     align="center">
-                    {props.user.userName}'s Donation
+                    {props.user.name}'s Donation
                 </Typography>
             </Box>
             <BookList 
@@ -75,6 +77,16 @@ export default function Ticket(props) {
                     alignItems="center"
                     justifyContent="center"
                 >
+                         {!props.QRVal || !props.QRVal.length? null : 
+                    <Box m={2}>
+                        <QRCode  bgColor="#FFFFFF"
+                        fgColor="#000000"
+                        level="Q"
+                        style={{ width: 150 }}
+                        value={props.QRVal}/>
+                    </Box>
+                    }
+
                     <Typography variant="h2" align="center">Estimated Points Earned<br/>(for {numBooks} books)</Typography>
                     <PointsCircle pointsVal={points}/>
                 </Box>

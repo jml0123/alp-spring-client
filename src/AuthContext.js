@@ -4,6 +4,7 @@ const AuthContext = React.createContext({
   user: "",
   id: "",
   collections: "",
+  coordinates: "",
   setCollections: () => {},
   setUser: () => {}
 });

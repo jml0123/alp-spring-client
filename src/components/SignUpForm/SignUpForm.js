@@ -3,9 +3,6 @@ import {Link} from 'react-router-dom';
 import config from '../../config'
 import Autocomplete from 'react-google-autocomplete';
 
-import scriptLoader from 'react-async-script-loader'
-import uuid from 'react-uuid'
-
 import {Typography, Container, Box, 
     Button, TextField, Input, FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
@@ -104,9 +101,6 @@ export default class SignUpForm extends Component {
         });
       }
 
-
-
-
     handleSetLocation = (location) => {
         const formatted = location.formatted_address
         this.setState({
@@ -120,8 +114,6 @@ export default class SignUpForm extends Component {
     }
 
     render() {
-      
-
         const startView = 
         <>
             <Box className="signup-container">

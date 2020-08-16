@@ -49,6 +49,7 @@ export default class BarcodeScanner extends Component {
       scanned: [book],
       error: null,
     })
+    console.log(this.state)
   }
 
   setManualInput = () => {
@@ -85,7 +86,7 @@ export default class BarcodeScanner extends Component {
     const serializedBookData = {
       isbn: "",
       title: "",
-      authors:"",
+      authors: [],
       publishedDate: "",
       thumbnail: "",
       condition: "",
@@ -99,10 +100,12 @@ export default class BarcodeScanner extends Component {
             console.log(bookData)
             serializedBookData.isbn = isbn
             serializedBookData.title = bookData.volumeInfo.title
-            serializedBookData.authors = bookData.volumeInfo.authors
+            serializedBookData.authors = (!bookData.volumeInfo.authors)? [] : bookData.volumeInfo.authors
             serializedBookData.publishedDate = bookData.volumeInfo.publishedDate
-            serializedBookData.thumbnail = bookData.volumeInfo.imageLinks.thumbnail
+            serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks.thumbnail)? '' : bookData.volumeInfo.imageLinks.thumbnail
+            console.log(serializedBookData)
             this.setScannedState(serializedBookData)
+         
         }
         else {
             this.setState({

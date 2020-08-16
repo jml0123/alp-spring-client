@@ -22,7 +22,7 @@ import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 
 export default class CollectorConsole extends Component {
     state = {
-            userName: "Usman",
+            name: "Usman",
             books: [],
             partners: [],
             selectedPartner: null,
@@ -72,6 +72,12 @@ export default class CollectorConsole extends Component {
             // PATCH USER DRIVE
         }
 
+        handlePatchCollection = (c_id) => {
+            // Patch collection id
+            // Status = finished
+            // Points = books * 12
+        }
+
         handleRemoveBook = (bookId) => {
             const booksQueue = this.state.books
             this.setState({
@@ -98,7 +104,7 @@ export default class CollectorConsole extends Component {
         }
  
 
-        handleCreateCollection = (collection) => {
+        a = (collection) => {
             // TODO 
             // CREATE NEW COLLECTION WITH APPROPRIATE VALUE OF BOOKS
             // POST NEW COLLECTION
@@ -106,7 +112,7 @@ export default class CollectorConsole extends Component {
             // Then purge queue
         }
 
-        handleCreateQRCode = (API, cID) => {
+        b = (API, cID) => {
             // TODO 
             // create QR CODE using (a string) 
             // QR Code will have the value of API + cID
@@ -114,6 +120,7 @@ export default class CollectorConsole extends Component {
             // Redirect to new page with QR CODE
         }
 
+    
 
  
     render() {
@@ -139,7 +146,7 @@ export default class CollectorConsole extends Component {
             mx="auto"
             textAlign="center"
         >    
-            <Typography>Welcome {this.state.userName}!</Typography>
+            <Typography>Welcome {this.state.name}!</Typography>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={3.33}>
                 <Typography>Start scanning QR Codes to add to your book drive!</Typography>
             </Box>

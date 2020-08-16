@@ -20,6 +20,7 @@ export default class App extends Component {
       class: "donor",
       name: "Miguel",
       id: "5f384437f47a7acd6b71c4c5",
+      coordinates: [-74.155096, 40.745951],
       collections: ""
     }
   }
@@ -42,7 +43,6 @@ export default class App extends Component {
     console.log(this.state)
   const AuthContextVal = {
       user: this.state.user,
-      id: this.state.id,
       collections: this.state.collections,
       setUser: this.setUser,
       setCollections: this.setCollections
