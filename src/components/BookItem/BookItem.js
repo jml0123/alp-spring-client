@@ -102,13 +102,18 @@ export default function BookItem(props) {
                 : null
                 }
         </ButtonGroup> 
-        console.log(props.book.authors)
+        console.log(props.book)
         let authorString = ""
-        props.book.authors.forEach((author) => {
-            authorString += `${author}, `
-        })
-        authorString = authorString.replace(/,\s*$/, "");
-
+        if (!props.book.authors || !props.book.authors.length) {
+            authorString = null
+        } 
+        else {
+            props.book.authors.forEach((author) => {
+                authorString += `${author}, `
+            })
+            authorString = authorString.replace(/,\s*$/, "");
+        }
+      
     return (
 
         <Box width={1} m={1}>
@@ -143,7 +148,7 @@ export default function BookItem(props) {
                         my={1.33}
                     >
                         <Typography variant="h2">{xsScreen || props.itemSmall ? null : "ISBN:"} {props.book.isbn}</Typography>
-                        <Typography variant="h2">{xsScreen || props.itemSmall ? "" : "Author/s: "}{authorString}</Typography>
+                        <Typography variant="h2">{xsScreen || props.itemSmall ? "" : "Author/s: "}{!authorString? null : authorString}</Typography>
                         {props.ready? finalDetails : null}
                     </Box>
                         {props.noSelect ? null : conditionArea}
