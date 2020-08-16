@@ -9,13 +9,17 @@ import uuid from 'react-uuid'
 import {Typography, Container, Box, 
     Button, TextField, Input, FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
-import HorizontalLinearStepper from '../Stepper/Stepper';
 
 import "./SignUpForm.css"
+import AuthContext from '../../AuthContext';
+import TokenService from "../../services/token-service";
 
 const google = window.google;
 
-class SignUpForm extends Component {
+export default class SignUpForm extends Component {
+
+    static contextType = AuthContext
+
     state = {
            user: {
                 name: "",
@@ -75,10 +79,17 @@ class SignUpForm extends Component {
             newUser.description = description
         }
         console.log(newUser)
-        this.postUser(newUser).then(user => {
-            console.log(user)
+        this.postUser(newUser).then(res => {
+            console.log(res)
+            TokenService.saveAuthToken(res.token);
+            this.context.setUser(res.user)
+            this.setPhase(8)
+            }).catch(err => {
+            this.setState({
+                ...this.state,
+                error: err
+            })
         })
-        // Then set phase to 8
     }
 
     postUser = (user) => {
@@ -310,4 +321,3 @@ class SignUpForm extends Component {
 }
 
 
-export default SignUpForm

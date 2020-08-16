@@ -46,7 +46,8 @@ export default class BarcodeScanner extends Component {
   setScannedState = (book) => {
     this.setState({
       ...this.state,
-      scanned: [book]
+      scanned: [book],
+      error: null,
     })
   }
 

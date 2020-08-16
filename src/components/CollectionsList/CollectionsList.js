@@ -1,14 +1,15 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import PointsCircle from '../PointsCircle';
 
 import './CollectionList.css';
 
 
 import {Button, ButtonGroup, Box, Container, Typography, Chip} from "@material-ui/core"
+import AuthContext from '../../AuthContext';
 
 export default function CollectionsList(props) {
-
-    const collections  = props.collections.map(collection => {
+    const userContext = React.useContext(AuthContext);
+    const collections  = userContext.collections.map(collection => {
         return(
             <Box border="1px solid #0f0f0f" className="collection-row" display="flex" justifyContent="left" alignItems="center" w={1}>
                 <Box
@@ -68,20 +69,3 @@ export default function CollectionsList(props) {
     )
 }
 
-
-CollectionsList.defaultProps = {
-    collections: [
-        {
-            books: [1, 2, 3, 4, 5, 6, 7],
-            status: "Pending",
-            points: 7,
-            date: "15-Aug-2020",
-        },
-        {
-            books: [1, 2, 3, 4, 5, 6, 7, 8, 9],
-            status: "Confirmed",
-            points: 9,
-            date: "27-Jul-2020",
-        },
-    ]
-}

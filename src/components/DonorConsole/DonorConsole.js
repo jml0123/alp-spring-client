@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import uuid from 'react-uuid'
+import config from '../../config'
 
 import BookList from '../BookList'
 import BookItem from '../BookItem';
@@ -19,24 +20,42 @@ import './DonorConsole.css'
 import { Typography } from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 import HorizontalLinearStepper from '../Stepper/Stepper';
+import AuthContext from '../../AuthContext';
 
 export default class DonorConsole extends Component {
     state = {
-            user: {
-                userName: "Kelly",
-                points: 24
-            },
+            user: null,
             books: [],
             partners: [],
             selectedPartner: null,
             currentPhase: 1,
-            cID: "",
+            collections: null,
         }
 
-        componentDidMount() {
-            // TODO
-            // GET USER INFORMATION
-            // GET USER COLLECTIONS
+        static contextType = AuthContext
+        
+        async componentWillMount(){ 
+            const userContext = this.context;
+            await this.setState({
+                ...this.state,
+                user: userContext.user
+            })
+            await this.fetchUserCollections(userContext.user.id)
+            console.log(this.state)
+        }
+        fetchUserCollections = async (id) => {
+            fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).then(res => this.setUserCollections(res))
+              .catch((error) => this.setState({ error }));
+        }
+
+        setUserCollections = (userCollections) => {
+            console.log(userCollections)
+            this.context.setCollections(userCollections)
         }
 
         // Refactor to use bookId
@@ -83,16 +102,34 @@ export default class DonorConsole extends Component {
             })
         }
 
-        handleCreateCollection = (collection) => {
-            // TODO 
-            // CREATE NEW COLLECTION WITH APPROPRIATE VALUE OF BOOKS
-            // POST NEW COLLECTION
-            // THEN cID ---> handleCreateQRCode
-            // Then purge queue
-            // 
-        }
 
-        handleCreateQRCode = (API, cID) => {
+        handleFinalizeDonation = () => {
+            this.handleAddCollection()
+            .then(collection => {
+                const cID = collection.id
+                this.handleCreateQRCode(collection) 
+            })
+            .then(() => this.fetchUserCollections())
+
+        }
+        handleAddCollection = () => {
+            const collection = {
+                books: this.state.books,
+                donorId: this.state.user.id,
+            }
+            fetch(`${config.API_ENDPOINT}/collections`, {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(collection)}).then(res => {
+                    return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
+               
+                })}
+
+        handleCreateQRCode = (collection) => {
+            window.alert("Collection created!")
+            console.log(collection)
             // TODO 
             // create QR CODE using (a string) 
             // QR Code will have the value of API + cID
@@ -131,7 +168,7 @@ export default class DonorConsole extends Component {
             mx="auto"
             textAlign="center"
         >    
-            <Typography>Welcome {this.state.user.userName}!</Typography>
+            <Typography>Welcome {this.state.user.name}!</Typography>
             <Typography>Give your books a new meaning.</Typography>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={3.33}>
                 <Typography>Start scanning to add to your donation box.</Typography>
@@ -241,7 +278,7 @@ export default class DonorConsole extends Component {
                       justifyContent="space-evenly"
             >
                 <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
-                <Button size="small"  color="primary" onClick={() => {window.alert("POST NEW COLLECTION")}}>Confirm Donation</Button>
+                <Button size="small"  color="primary" onClick={() => this.handleAddCollection()}>Confirm Donation</Button>
             </Box>
         </>
 
