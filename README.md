@@ -1,68 +1,64 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Kitabu *(Client-site)*
+Kitabu is a seamless digital portal to donate, collect and catalogue books. The platform makes it easy for collectors to scan QR codes and catalogue donations, and donors recieve points for every book that they donate. Kitabu was created for the African Library Project hackathon.
 
-## Available Scripts
 
-In the project directory, you can run:
+[Link to Site](https://kitabu-client.vercel.app/)
 
-### `yarn start`
+## Purpose
+- Broaden ALP's donor and collector base through a digtal portal 
+- Develop an incentivized, points-based donation process that facilitates consistent use
+- Create a seamless donation system for new and returning donors
+- Create a seamless cataloguing experience for collectors that can be expanded to librarians
+- Help donors and collectors visualize the impact of their donations
+- Make donating easier during COVID-19 by digitizing the donation process
+- Bring awareness to black owned businesses
+- Generate socially conscious partnerships that further strengthen incentive/point system
+  
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+## User Stories
 
-### `yarn test`
+#### Before building the app, we came up with rough user stories to inform the development. Below are some of our notes:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### As a donor...
+    - I want to scan books on my browser
+    - I can list the condition of each book I donate
+    - I can create a ticket logging my donation batch (i.e. list of books they'll be sending out)
+    - I can view where to drop off the books to based on my location
+    - I can select who to give to
+    - I can see past books I've sent and points I've accumulated, and the status of each donation
+    - I can show the collector a QR code with my donation
+    - I can see other information near the QR code detailing  the name of the collector, their address, business hours and phone number for help
+    
+#### As a collection partner...
+    - I can recieve tickets of users donating books via QR code which adds their donation to my queue
+    - I can add my whole queue into my shipping box in one button
+    - I can create shipping details out of my donations that has a QR code to scan the whole inventory
+    - I can approve and deny donations based on their condition
+    - I can add individual books to my shipping list if I want to ship a collection
+    - I can log out and log back in to view my saved queue in case I want to revisit later
+    - Shipped books are deleted from my queue
+  
 
-### `yarn build`
+![Kitabu Diagram](./src/assets/img/mvp-diagram.png)
+### *With the user stories outlined, we sketched out a preliminary diagram to determine how data is passing through the platform*
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+# For the future
+We built Kitabu to be scalable. For example, the collector model can eventually be extended to a librarian, where they may scan QR shipment codes to catalogue all books within a box to avoid having to write down the books manually. 
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Collectors may eventually also have points for every collection that gets successfully scanned by a library in Africa. Kitabu is meant to facilitate a self-sustaining donation and point system that encourages both donors and collectors to donate and host book drives.
 
-### `yarn eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+  
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# Technology Used
+- MongoDB
+- Express.js
+- Node.js
+- React.js
+- Barcode Scanner
+- Google Books API
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+Here's a 
+[link]() to the Kitabu API repo.
