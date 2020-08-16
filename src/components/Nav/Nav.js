@@ -68,7 +68,7 @@ function Nav(props) {
         </Box>
         </Link>
         <Box>
-        {props.activeUser === true || userContext.user? 
+        {props.activeUser === true || userContext.user._id? 
         <>
           <Button 
             aria-controls="simple-menu" 

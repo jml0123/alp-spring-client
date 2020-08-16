@@ -1,4 +1,5 @@
 import React, {useContext} from 'react';
+import {Link} from 'react-router-dom'
 import PointsCircle from '../PointsCircle';
 
 import './CollectionList.css';
@@ -9,7 +10,8 @@ import AuthContext from '../../AuthContext';
 
 export default function CollectionsList(props) {
     const userContext = React.useContext(AuthContext);
-    const collections  = userContext.collections.map(collection => {
+    const userCollections = userContext.collections ? userContext.collections : []
+    const collections  = userCollections.map(collection => {
         return(
             <Box border="1px solid #0f0f0f" className="collection-row" display="flex" justifyContent="left" alignItems="center" w={1}>
                 <Box
@@ -44,11 +46,7 @@ export default function CollectionsList(props) {
                 : null
                 }
             </Box>
-        )
-
-    })
-    
-
+        )})
     
     return (
         <Container maxWidth="lg">
@@ -61,8 +59,14 @@ export default function CollectionsList(props) {
                 m={2}
                 mx="auto"
             >
-                 <Typography variant="h4">Your Previous Donations</Typography>
+                 <Typography variant="h4">{userCollections.length ? "Your Previous Donations" : "You don't have any donations yet!"}</Typography>
                 {collections}
+                {!userCollections.length ?
+                <Box m={3} textAlign="center">
+                 <Typography  variant="h2">Start donating to earn points!</Typography>
+                    <Box my={3}><Button component={Link} to="/donate">Donate</Button></Box>
+                 </Box>
+                : null}
             </Box>
         </Container>
        

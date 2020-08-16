@@ -29,7 +29,6 @@ export default function Ticket(props) {
 
     const numBooks = props.queued.length
     const points = numBooks * 12
-    console.log(props)
     return (
         <Card maxWidth="md">
             <Box

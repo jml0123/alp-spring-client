@@ -52,7 +52,6 @@ export default class App extends Component {
         return res.json();
       })
       .then((res) => {
-        console.log(res)
         this.setUser(res);
         return res;
       })
@@ -65,10 +64,8 @@ export default class App extends Component {
       ...this.state,
       user: user
     })
-    console.log(this.state.user)
   }
   setCollections = (collections) => {
-    console.log(collections)
     this.setState({
       ...this.state,
       collections: collections
@@ -76,9 +73,6 @@ export default class App extends Component {
   }
 
   render() {
-    console.log(this.state)
-  
-  
     const AuthContextVal = {
       user: this.state.user,
       collections: this.state.collections,

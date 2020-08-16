@@ -38,14 +38,12 @@ export default class DonorConsole extends Component {
         
         async componentWillMount(){ 
             const userContext = this.context;
-            console.log(userContext.user)
             await this.setState({
                 ...this.state,
                 user: userContext.user
             })
             await this.fetchUserCollections(userContext.user.id)
             await this.fetchNearestDonors(userContext.user.location.coordinates)
-            console.log(this.state)
         }
         
         handleSelectCondition = (bookKey, cond) => {
@@ -58,7 +56,6 @@ export default class DonorConsole extends Component {
         }
 
         handleAddBook = (newBook) => {
-            console.log(newBook.id)
             this.setState({
                 ...this.state,
                 books: [
@@ -69,7 +66,6 @@ export default class DonorConsole extends Component {
         }
 
         handleRemoveBook = (bookId) => {
-            console.log(bookId)
             const booksQueue = [...this.state.books]
             booksQueue.splice(bookId, 1)
             this.setState({
@@ -140,7 +136,6 @@ export default class DonorConsole extends Component {
         }
 
         setUserCollections = (userCollections) => {
-            console.log(userCollections)
             this.context.setCollections(userCollections)
         }
 
@@ -161,7 +156,6 @@ export default class DonorConsole extends Component {
                 },
                 body: JSON.stringify(collection)}).then(res => 
                     res.json()).then(data => {
-                        console.log(data)
                         const cID = data._id
                         this.handleCreateQRCode(cID)
                         this.context.handleAddCollection(data)
@@ -175,7 +169,6 @@ export default class DonorConsole extends Component {
                 ...this.state,
                 _cID: cID
             })
-            console.log(this.state)
         }
 
         handlePurgeQueue = () => {
