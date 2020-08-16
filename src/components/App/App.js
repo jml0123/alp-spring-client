@@ -1,6 +1,9 @@
 import React, {Component} from 'react';
 import { Route } from "react-router-dom";
 
+import config from '../../config'
+import TokenService from '../../services/token-service'
+
 import AuthContext from "../../AuthContext";
 
 import DonationPage from "../../views/DonationPage"
@@ -9,7 +12,6 @@ import CollectionsPage from '../../views/CollectionsPage';
 import LandingPage from '../../views/LandingPage';
 import SignUpPage from '../../views/SignUpPage';
 import LoginPage from '../../views/LoginPage';
-
 
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import ListItemStyle from '../../themes/ListItem.style'
@@ -27,11 +29,36 @@ export default class App extends Component {
     }
   }
 
+  async componentDidMount() {
+    this.getUserData();
+  }
+
+  getUserData = async () => {
+    const userId = TokenService.getUserId()
+    fetch(`${config.API_ENDPOINT}/users/user/${userId}`, {
+      method: "GET",
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+        return res.json();
+      })
+      .then((res) => {
+        console.log(res)
+        this.setUser(res);
+        return res;
+      })
+      .catch((error) => this.setState({ error }));
+  };
+
+
   setUser = (user) => {
     this.setState({
       ...this.state,
       user: user
     })
+    console.log(this.state.user)
   }
   setCollections = (collections) => {
     console.log(collections)
@@ -43,7 +70,9 @@ export default class App extends Component {
 
   render() {
     console.log(this.state)
-  const AuthContextVal = {
+  
+  
+    const AuthContextVal = {
       user: this.state.user,
       collections: this.state.collections,
       setUser: this.setUser,

@@ -31,6 +31,7 @@ function Nav(props) {
   const handleLogoutClick = () => {
     setAnchorEl(null);
     TokenService.clearAuthToken();
+    TokenService.clearUserId();
     userContext.setUser(null)
   };
   
