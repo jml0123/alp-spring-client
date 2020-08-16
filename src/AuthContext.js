@@ -2,11 +2,11 @@ import React from "react";
 
 const AuthContext = React.createContext({
   user: "",
-  id: "",
   collections: "",
   coordinates: "",
   setCollections: () => {},
-  setUser: () => {}
+  setUser: () => {},
+  loaded: ""
 });
 
 export default AuthContext;

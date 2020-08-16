@@ -16,21 +16,28 @@ import LoginPage from '../../views/LoginPage';
 import ThemeProvider from '@material-ui/styles/ThemeProvider';
 import ListItemStyle from '../../themes/ListItem.style'
 
+import PrivateRoute from "../../utils/PrivateRoute";
+import PublicOnlyRoute from "../../utils/PublicOnlyRoute";
+
 export default class App extends Component {
   state = {
     user: {
-      class: "",
-      name: "",
-      id: "",
+      class: null,
+      name: null,
+      _id: null,
       location: {
         coordinates: []
       },
-      collections: ""
-    }
+      collections: null
+    },
+    loaded: false
   }
 
   async componentDidMount() {
-    this.getUserData();
+    await this.getUserData();
+    this.setState({
+      loaded: true
+    })
   }
 
   getUserData = async () => {
@@ -76,9 +83,13 @@ export default class App extends Component {
       user: this.state.user,
       collections: this.state.collections,
       setUser: this.setUser,
-      setCollections: this.setCollections
+      setCollections: this.setCollections,
+      loaded: this.state.loaded
   };
   return (
+    
+    <>
+    {this.state.loaded? 
     <>
     <AuthContext.Provider value={AuthContextVal}>
       <ThemeProvider theme={ListItemStyle}>
@@ -87,33 +98,35 @@ export default class App extends Component {
             path={"/"}
             component={LandingPage}
         />
-        <Route
+        <PrivateRoute
             exact
             path={"/donate"}
             component={DonationPage}
         />
-        <Route
+        <PrivateRoute
             exact
             path={"/partners"}
             component={CollectionPage}
         />
-        <Route
+        <PublicOnlyRoute
             exact
             path={"/login"}
             component={LoginPage}
         />
-        <Route
+        <PublicOnlyRoute
             exact
             path={"/join"}
             component={SignUpPage}
         />
-        <Route
+        <PrivateRoute
           exact
           path={"/collections"}
           component={CollectionsPage}
         />
         </ThemeProvider>
       </AuthContext.Provider>
+      </>
+      : null}
     </>
   );
 }

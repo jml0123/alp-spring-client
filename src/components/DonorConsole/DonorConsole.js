@@ -38,6 +38,7 @@ export default class DonorConsole extends Component {
         
         async componentWillMount(){ 
             const userContext = this.context;
+            console.log(userContext.user)
             await this.setState({
                 ...this.state,
                 user: userContext.user
@@ -343,7 +344,9 @@ export default class DonorConsole extends Component {
         if (!this.state.books.length && this.state.currentPhase !== 0) {
             preQueue = true;
         }
-
+        if (!this.context.loaded) {
+            return null
+        }
         return (
             <>
                 <Container maxWidth="lg">
