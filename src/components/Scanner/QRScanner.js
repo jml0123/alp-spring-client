@@ -1,23 +1,20 @@
 import React, {Component} from 'react';
 import QRScannerCore from 'react-qr-reader'
+import config from '../../config'
+
 
 import UserContext from '../../UserContext';
 
 import BookList from '../BookList';
 
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
+import {Typography, Container, IconButton, Button, Box} from '@material-ui/core';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
-
-import jsonpack from 'jsonpack'
+import Alert from '@material-ui/lab/Alert';
 
 export default class QRScanner extends Component {
   state = {
     scanned: [],   
-        toggled: false,
+    toggled: false,
   }
 
   static contextType = UserContext;
@@ -35,19 +32,34 @@ export default class QRScanner extends Component {
         ...this.state,
         scanned: []
     })
-}
+  }
 
   handleScan = (data) => {
       if(data) {
-        console.log(data)
-        const unpackedJSON = jsonpack.unpack(data)
-        this.setState({
-            ...this.state,
-            scanned: unpackedJSON
-        })
+        this.getCollection(data)
       }
   }
 
+  getCollection = (c_id) => {
+    fetch(`${config.API_ENDPOINT}/collections/${c_id}`).then((res) => {
+        if (!res.ok) {
+          throw new Error(res.status);
+        }
+        return res.json()
+        .then(res => this.setCollection(res))
+      })
+      .catch((error) => this.setState({ error: "Invalid QR Code"}));
+  }
+
+  setCollection = (collection) => {
+      console.log(collection)
+      const books = collection[0].books
+      this.setState({
+          ...this.state,
+          scanned: books
+      })
+      console.log(this.state)
+  }
   handleError = (e) => {
     window.alert("Error" + e)
   }
@@ -61,8 +73,10 @@ export default class QRScanner extends Component {
   }
 
   render() {
+ 
       return (
             <Container maxWidth="lg">
+               {(this.state.error)  ? <Alert severity="info">{this.state.error}</Alert> : null}
                 <Box
                     display="flex"
                     alignItems="center"

@@ -26,7 +26,7 @@ export default class LoginForm extends Component {
         username.value = "";
         password.value = "";
         TokenService.saveAuthToken(res.authToken);
-        this.handleLoginSuccess("dashboard");
+        this.handleLoginSuccess("/");
         // Redirect to appropriate console (collector or donor)
       })
       .catch((res) => {
