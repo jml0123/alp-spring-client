@@ -37,14 +37,13 @@ export default class CollectorConsole extends Component {
 
         async componentDidMount() {
             const userContext = this.context;
-            console.log(userContext)
+    
             await this.setState({
                 ...this.state,
                 user: userContext.user
             })
             await this.fetchUserCollections(userContext.user.id)
             await this.fetchUserDrive(userContext.user.id)
-            console.log(this.state)
         }
 
         
@@ -111,7 +110,6 @@ export default class CollectorConsole extends Component {
                 },
                 body: JSON.stringify(collection)}).then(res => 
                     res.json()).then(data => {
-                        console.log(data)
                         const cID = data._id
                         this.handleCreateQRCode(cID)
                         this.context.handleAddCollection(data)
@@ -125,7 +123,6 @@ export default class CollectorConsole extends Component {
                 ...this.state,
                 _cID: cID
             })
-            console.log(this.state)
         }
 
         handlePurgeDrive = () => {
@@ -195,21 +192,18 @@ export default class CollectorConsole extends Component {
                 books: newQueue,
                 currentPhase: 1
             })
-            console.log(this.state.books)
             this.patchUserDrive()
         }
 
    
 
         handleRemoveBook = (bookId) => {
-            console.log(bookId)
             const booksQueue = [...this.state.books]
             booksQueue.splice(bookId, 1)
             this.setState({
                 ...this.state,
                 books: booksQueue
             })
-            console.log(this.state.books.length)
             this.patchUserDrive()
         }
 
@@ -226,7 +220,6 @@ export default class CollectorConsole extends Component {
                 ...this.state,
                 currentPhase: (phase)
             })
-            console.log(this.state.currentPhase)
         }
  
 

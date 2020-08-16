@@ -45,8 +45,6 @@ export default class SignUpForm extends Component {
     }
 
     handleSetData = async (e) => {
-        console.log(e.target.value)
-        console.log(e.target.name)
         await this.setState({
             ...this.state,
             user: {
@@ -79,10 +77,9 @@ export default class SignUpForm extends Component {
             newUser.description = description;
             newUser.hours = hours
         }
-        console.log(newUser)
         this.postUser(newUser).then(res => {
-            console.log(res)
             TokenService.saveAuthToken(res.token);
+            TokenService.saveUserId(res.user.id);
             this.context.setUser(res.user)
             this.setPhase(8)
             }).catch(err => {
@@ -114,7 +111,6 @@ export default class SignUpForm extends Component {
                 area: formatted
             }
         })
-        console.log(this.state.user)
     }
 
     render() {

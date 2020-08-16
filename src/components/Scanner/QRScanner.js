@@ -54,7 +54,6 @@ export default class QRScanner extends Component {
   }
 
   setCollection = (collection) => {
-      console.log(collection)
       const books = collection[0].books
       const id = collection[0]._id
       this.setState({
@@ -62,7 +61,6 @@ export default class QRScanner extends Component {
           scanned: books,
           _cID: id
       })
-      console.log(this.state)
   }
   handleError = (e) => {
     window.alert("Error" + e)

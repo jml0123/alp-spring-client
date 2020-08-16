@@ -25,8 +25,6 @@ export default class LoginForm extends Component {
   static contextType = AuthContext
 
   handleSetData = async (e) => {
-    console.log(e.target.value)
-    console.log(e.target.name)
     await this.setState({
         ...this.state,
         [e.target.name]: e.target.value
@@ -37,22 +35,18 @@ export default class LoginForm extends Component {
   handleSubmit = (e) => {
     this.setState({ ...this.state, error: null });
     const { username, password } = this.state;
-    console.log(username, password)
     AuthApiService.postLogin({
         email: username,
         password: password
      })
       .then((res) => {
-        console.log(res)
         this.context.setUser(res.user)
         TokenService.saveAuthToken(res.token);
         TokenService.saveUserId(res.user._id);
-        console.log(res.user.id)
         this.setState({
           ...this.state,
           message: `Success! Welcome back ${this.context.user.name}!`
         })
-        console.log(this.state)
         // Redirect to appropriate console (collector or donor)
       })
       .catch((res) => {

@@ -25,7 +25,6 @@ export default class BarcodeScanner extends Component {
     const newState = this.state.scanned[0]
     newState['condition'] = c
 
-    console.log(newState)
     this.setState({
       ...this.state,
       scanned: [newState]
@@ -49,7 +48,6 @@ export default class BarcodeScanner extends Component {
       scanned: [book],
       error: null,
     })
-    console.log(this.state)
   }
 
   setManualInput = () => {
@@ -80,7 +78,6 @@ export default class BarcodeScanner extends Component {
             [e.target.name]: value
         }  
     })
-    console.log(this.state.manualInput)
 }
   getBookInfo = (isbn) => {
     const serializedBookData = {
@@ -97,13 +94,11 @@ export default class BarcodeScanner extends Component {
     .then((data) =>{
         if (data.totalItems !== 0) {
             const bookData = data.items[0]
-            console.log(bookData)
             serializedBookData.isbn = isbn
             serializedBookData.title = bookData.volumeInfo.title
             serializedBookData.authors = (!bookData.volumeInfo.authors)? [] : bookData.volumeInfo.authors
             serializedBookData.publishedDate = bookData.volumeInfo.publishedDate
             serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks.thumbnail)? '' : bookData.volumeInfo.imageLinks.thumbnail
-            console.log(serializedBookData)
             this.setScannedState(serializedBookData)
          
         }
