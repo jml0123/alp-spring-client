@@ -63,17 +63,21 @@ export default class SignUpForm extends Component {
                 email: email,
                 class: type,
                 location: {
+                    type: "Point",
+                    // Get long lat of area.
+                    // Hardcoded values for now.
                     coordinates: [-74.155096, 40.745951],
                 },
                 password: password,
                 password2: confirmPass,
         }
         if (newUser.class.toLowerCase() === "collector") {
-            const {phoneNum, orgName, address, hours, description} = this.state
-            newUser.number = phoneNum;
+            const {phoneNum, orgName, address, hours, description} = this.state.user
+            newUser.phone = phoneNum;
             newUser.orgName = orgName;
             newUser.address = address;
-            newUser.description = description
+            newUser.description = description;
+            newUser.hours = hours
         }
         console.log(newUser)
         this.postUser(newUser).then(res => {
@@ -226,7 +230,7 @@ export default class SignUpForm extends Component {
                 <TextField fullWidth id="phoneNum" value={this.state.user.phoneNum}  name="phoneNum" label="Phone Number" variant="standard" onChange={(e) => this.handleSetData(e)} />
                 <Box my={2}>
                     <Typography fullWidth variant="h2" align="center">When are you available for donations?<br/>(E.g. Monday-Friday, 9am-5pm)</Typography>
-                    <TextField fullWidth id="hours" value={this.state.user.hours}  name="hours" label="Availability" variant="standard" onChange={(e) => this.handleSetData(e)} inputProps={{ maxLength: 1 }}/>
+                    <TextField fullWidth id="hours" value={this.state.user.hours}  name="hours" label="Availability" variant="standard" onChange={(e) => this.handleSetData(e)}/>
                 </Box>
                 <Box my={2}>
                 <Typography variant="h2" align="center">Other important info?<br/>(E.g. Call to coordinate)</Typography>

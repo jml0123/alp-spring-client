@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Link} from 'react-router-dom';
 import './Nav.css';
 
@@ -11,9 +11,13 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import TokenService from '../../services/token-service'
+import AuthContext from '../../AuthContext';
+
 
 function Nav(props) {
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const userContext = useContext(AuthContext)
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -22,6 +26,14 @@ function Nav(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+
+  const handleLogoutClick = () => {
+    setAnchorEl(null);
+    TokenService.clearAuthToken();
+    userContext.setUser(null)
+  };
+  
 
   const theme = useTheme();
   const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
@@ -55,7 +67,7 @@ function Nav(props) {
         </Box>
         </Link>
         <Box>
-        {props.activeUser === true? 
+        {props.activeUser === true || userContext.user? 
         <>
           <Button 
             aria-controls="simple-menu" 
@@ -74,7 +86,7 @@ function Nav(props) {
             >
               <MenuItem component={Link} to="/donate" onClick={handleClose}>Donate Books</MenuItem>
               <MenuItem component={Link} to="/collections"  onClick={handleClose}>Collections</MenuItem>
-              <MenuItem component={Link} to="/login"  onClick={handleClose}>Sign Out</MenuItem>
+              <MenuItem component={Link} to="/login"  onClick={handleLogoutClick}>Sign Out</MenuItem>
             </Menu>
           </>
           :

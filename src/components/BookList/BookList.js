@@ -14,7 +14,7 @@ export default function BookList(props) {
             <BookItem 
                 book={book} 
                 key={i} 
-                id={book.id}
+                id={i}
                 authors={book.authors} 
                 listId={i} 
                 activeListItem={props.readOnly? false: true} 
