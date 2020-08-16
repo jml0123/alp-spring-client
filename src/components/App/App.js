@@ -17,10 +17,12 @@ import ListItemStyle from '../../themes/ListItem.style'
 export default class App extends Component {
   state = {
     user: {
-      class: "donor",
-      name: "Miguel",
-      id: "5f384437f47a7acd6b71c4c5",
-      coordinates: [-74.155096, 40.745951],
+      class: "",
+      name: "",
+      id: "",
+      location: {
+        coordinates: []
+      },
       collections: ""
     }
   }

@@ -102,7 +102,6 @@ export default function BookItem(props) {
                 : null
                 }
         </ButtonGroup> 
-        console.log(props.book)
         let authorString = ""
         if (!props.book.authors || !props.book.authors.length) {
             authorString = null

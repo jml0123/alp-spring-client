@@ -23,17 +23,10 @@ import AuthContext from '../../AuthContext';
 export default class DonorConsole extends Component {
     state = {
             user: null,
-            books: [{
-                authors: [],
-                condition: "",
-                isbn: "9781250038821",
-                publishedDate: "2013-10-15",
-                thumbnail: "http://books.google.com/books/content?id=tWVEAQAAQBAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api",
-                title: "Humans of New York"
-            }],
+            books: [],
             partners: [],
             selectedPartner: null,
-            currentPhase: 3,
+            currentPhase: 1,
             _cID: null
         }
 
@@ -46,11 +39,10 @@ export default class DonorConsole extends Component {
                 user: userContext.user
             })
             await this.fetchUserCollections(userContext.user.id)
-            await this.fetchNearestDonors(userContext.user.coordinates)
+            await this.fetchNearestDonors(userContext.user.location.coordinates)
             console.log(this.state)
         }
         
-        // Refactor to use bookId
         handleSelectCondition = (bookKey, cond) => {
             const newBookState = this.state.books
             newBookState[bookKey]['condition'] = cond
@@ -72,10 +64,12 @@ export default class DonorConsole extends Component {
         }
 
         handleRemoveBook = (bookId) => {
-            const booksQueue = this.state.books
+            console.log(bookId)
+            const booksQueue = [...this.state.books]
+            booksQueue.splice(bookId, 1)
             this.setState({
                 ...this.state,
-                books: this.state.books.filter(book => book.id !== bookId )
+                books: booksQueue
             })
         }
 

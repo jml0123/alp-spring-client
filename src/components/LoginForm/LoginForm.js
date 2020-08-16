@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {Link} from 'react-router-dom';
 import Nav from "../../components/Nav";
 
 import {Typography, Container, Box,
@@ -8,25 +9,48 @@ import TokenService from "../../services/token-service";
 import AuthApiService from "../../services/auth-api-service";
 
 import "./LoginForm.css";
+import AuthContext from '../../AuthContext';
+
+import Alert from '@material-ui/lab/Alert';
 
 
 export default class LoginForm extends Component {
-  state = { error: null };
+  state = { 
+    username: null,
+    password: null,
+    error: null,
+    message: null,
+  };
+
+  static contextType = AuthContext
+
+  handleSetData = async (e) => {
+    console.log(e.target.value)
+    console.log(e.target.name)
+    await this.setState({
+        ...this.state,
+        [e.target.name]: e.target.value
+ 
+    })
+}
 
   handleSubmit = (e) => {
-    e.preventDefault();
-    this.setState({ error: null });
-    const { username, password } = e.target;
-
+    this.setState({ ...this.state, error: null });
+    const { username, password } = this.state;
+    console.log(username, password)
     AuthApiService.postLogin({
-        username: username.value,
-        password: password.value
+        email: username,
+        password: password
      })
       .then((res) => {
-        username.value = "";
-        password.value = "";
-        TokenService.saveAuthToken(res.authToken);
-        this.handleLoginSuccess("/");
+        console.log(res)
+        this.context.setUser(res.user)
+        TokenService.saveAuthToken(res.token);
+        this.setState({
+          ...this.state,
+          message: `Success! Welcome back ${this.context.user.name}!`
+        })
+        console.log(this.state)
         // Redirect to appropriate console (collector or donor)
       })
       .catch((res) => {
@@ -34,25 +58,25 @@ export default class LoginForm extends Component {
       });
   };
 
-  handleLoginSuccess = (path) => {
-    const { location, history } = this.props;
-    const destination = (location.state || {}).from || `/${path}`;
-    history.push(destination);
-  };
-
 render() {
     return (
         <Box className="form-container">
                 <Typography variant = "h1" align="center" className="console-header">Welcome Back!</Typography>
                 <Box mx="auto" w={0.88}>
-                    <TextField fullWidth id="email" name="email"  label="E-mail" variant="standard" />
-                    <TextField fullWidth id="password" name="password" label="Password" type="password"  variant="standard" />
+                    <TextField fullWidth id="username" name="username"  label="E-mail" variant="standard" onChange={e => this.handleSetData(e)}/>
+                    <TextField fullWidth id="password" name="password" label="Password" type="password"  variant="standard" onChange={e => this.handleSetData(e)} />
                 </Box>
                 <div className="form-controls">
-                <Button color="secondary">Login</Button>
+                {(!this.state.message)? <Button color="secondary" onClick={() => this.handleSubmit()}>Login</Button> : null}
                     {this.state.error ? 
                         <Typography variant="h2" color="secondary">{this.state.error}</Typography>
                         : null
+                    }
+                    {this.state.message ?
+                          <Box flexDirection="column" alignItems="center" justifyContent="center">
+                         <Alert severity="success">{this.state.message}</Alert> 
+                         <Link to={(this.context.user.class === "donor" ? "/donate" : "/partners")}><Button color="secondary" onClick={() => this.handleSubmit()}>Go To Dashboard</Button></Link> 
+                          </Box> : null
                     }
                 </div>
         </Box>

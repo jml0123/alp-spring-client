@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import uuid from 'react-uuid'
+import config from '../../config'
 
 import HorizontalLinearStepper from '../Stepper';
 import BookList from '../BookList'
@@ -19,23 +19,151 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import './CollectorConsole.css'
 import { Typography } from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
+import AuthContext from '../../AuthContext';
 
 export default class CollectorConsole extends Component {
     state = {
-            name: "Usman",
+            user: {
+                name: null,
+                id: null,
+                drive: []
+            },
             books: [],
-            partners: [],
-            selectedPartner: null,
-            currentPhase: 1
+            currentPhase: 1,
+            _cID: null,
         }
 
+        static contextType = AuthContext
 
-        componentDidMount() {
-            // TODO
-            // GET USER INFORMATION
-            // GET USER COLLECTIONS
-            // GET USER DRIVE
+        async componentDidMount() {
+            const userContext = this.context;
+            console.log(userContext)
+            await this.setState({
+                ...this.state,
+                user: userContext.user
+            })
+            await this.fetchUserCollections(userContext.user.id)
+            await this.fetchUserDrive(userContext.user.id)
+            console.log(this.state)
         }
+
+        
+        fetchUserCollections = async (id) => {
+            fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).then(res => this.setUserCollections(res))
+              .catch((error) => this.setState({ error }));
+        }
+        
+        fetchUserDrive = (id) => {
+            fetch(`${config.API_ENDPOINT}/users/${id}/drive`).then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).then(res => this.setUserDrive(res))
+              .catch((error) => this.setState({ error }));
+        }
+
+        patchUserDrive = () => {
+            fetch(`${config.API_ENDPOINT}/users/${this.state.user.id}/drive`, 
+            {   
+                method: "PUT",
+                headers: {"content-type": "application/json"},
+                body: JSON.stringify(this.state.books)
+            }
+            )
+            .then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).then(res => this.setUserDrive(res))
+              .catch((error) => this.setState({ error }));
+        }
+
+        setUserDrive = (bookList) => {
+            this.setState({
+                books: bookList
+            })
+        }
+
+        setUserCollections = (userCollections) => {
+            this.context.setCollections(userCollections)
+        }
+
+        handleFinalizeDonation = async () => {
+            this.handleCreateCollection()
+        }
+
+        handleCreateCollection = async () => {
+            const collection = {
+                books: this.state.books,
+                donorId: this.state.user.id,
+            }
+            fetch(`${config.API_ENDPOINT}/collections/new`, {
+                method: "POST",
+                headers: {
+                  "content-type": "application/json",
+                },
+                body: JSON.stringify(collection)}).then(res => 
+                    res.json()).then(data => {
+                        console.log(data)
+                        const cID = data._id
+                        this.handleCreateQRCode(cID)
+                        this.context.handleAddCollection(data)
+                    }).catch((error) => {
+                        this.setState({ error })
+                    })  
+        }
+
+        handleCreateQRCode = (cID) => {
+            this.setState({
+                ...this.state,
+                _cID: cID
+            })
+            console.log(this.state)
+        }
+
+        handlePurgeDrive = () => {
+            this.setState({
+                ...this.state,
+                books: []
+            })
+            this.patchUserDrive()
+        }
+ 
+        handlePatchCollection = (c_id, queued) => {
+            let newPoints = 0; 
+
+            for (const book of queued) {
+                newPoints++
+            }
+
+            let newData = {
+                books: queued,
+                points: newPoints,
+                status: "finished"
+            }
+
+            fetch(`${config.API_ENDPOINT}/collections/${c_id}`, 
+            {   
+                method: "PUT",
+                headers: {"content-type": "application/json"},
+                body: JSON.stringify(newData)
+            }
+            )
+            .then((res) => {
+                if (!res.ok) {
+                  throw new Error(res.status);
+                }
+                return res.json();
+              }).catch((error) => console.log(error));
+        }
+
 
 
         handleSelectCondition = (bookKey, cond) => {
@@ -48,7 +176,6 @@ export default class CollectorConsole extends Component {
         }
 
         handleAddBook = (newBook) => {
-            console.log(newBook.id)
             this.setState({
                 ...this.state,
                 books: [
@@ -56,9 +183,9 @@ export default class CollectorConsole extends Component {
                     newBook
                 ]
             })
-            // PATCH USER DRIVE
-         
+            this.patchUserDrive()
         }
+
         handleAddCollection = (collectionArray) => {
             window.alert(`added ${collectionArray.length} books to queue`)
             const currQueue = Array.from(this.state.books)
@@ -69,21 +196,21 @@ export default class CollectorConsole extends Component {
                 currentPhase: 1
             })
             console.log(this.state.books)
-            // PATCH USER DRIVE
+            this.patchUserDrive()
         }
 
-        handlePatchCollection = (c_id) => {
-            // Patch collection id
-            // Status = finished
-            // Points = books * 12
-        }
+   
 
         handleRemoveBook = (bookId) => {
-            const booksQueue = this.state.books
+            console.log(bookId)
+            const booksQueue = [...this.state.books]
+            booksQueue.splice(bookId, 1)
             this.setState({
                 ...this.state,
-                books: this.state.books.filter(book => book.id !== bookId )
+                books: booksQueue
             })
+            console.log(this.state.books.length)
+            this.patchUserDrive()
         }
 
         handleSelectPartner = (partnerId) => {
@@ -100,27 +227,10 @@ export default class CollectorConsole extends Component {
                 currentPhase: (phase)
             })
             console.log(this.state.currentPhase)
-
         }
  
 
-        a = (collection) => {
-            // TODO 
-            // CREATE NEW COLLECTION WITH APPROPRIATE VALUE OF BOOKS
-            // POST NEW COLLECTION
-            // THEN cID ---> handleCreateQRCode
-            // Then purge queue
-        }
 
-        b = (API, cID) => {
-            // TODO 
-            // create QR CODE using (a string) 
-            // QR Code will have the value of API + cID
-            // e.g. https://{kitabu_api}/collections/cID
-            // Redirect to new page with QR CODE
-        }
-
-    
 
  
     render() {
@@ -146,7 +256,7 @@ export default class CollectorConsole extends Component {
             mx="auto"
             textAlign="center"
         >    
-            <Typography>Welcome {this.state.name}!</Typography>
+            <Typography>Welcome {this.state.user.name}!</Typography>
             <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={3.33}>
                 <Typography>Start scanning QR Codes to add to your book drive!</Typography>
             </Box>
@@ -210,7 +320,7 @@ export default class CollectorConsole extends Component {
         const qrScannerView = 
         <>
             <UserContext.Provider value = {userContextVal}>
-                <QRScanner collection={true} onAddCollection={(c) => this.handleAddCollection(c)}/>
+                <QRScanner collection={true} onPatchCollection = {this.handlePatchCollection} onAddCollection={(c) => this.handleAddCollection(c)}/>
                 <Box
                     display="flex"
                     flexDirection="row"
@@ -286,23 +396,22 @@ export default class CollectorConsole extends Component {
 
         const exportView = 
         <>  
-            <Ticket queued={this.state.books}/>
-            <Box
-                m={4}
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                justifyContent="space-evenly"
-            >
-                <Button size="small" onClick={() => this.setPhase(1)}>
-                    Add more books first!
-                </Button>
-                <Button variant="contained"  size="small"  color="primary" onClick={() => {window.alert("export summary with QR CODE")}}>
-                    Confirm Collection Details
-                </Button>
-   
-            </Box>
-        </>
+                <Ticket 
+                    user={this.state.user}
+                    queued={this.state.books} 
+                    QRVal={this.state._cID}
+                />
+                <Box
+                        m={4}
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="space-evenly"
+                >
+                    <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
+                    <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>Confirm Donation</Button>
+                </Box>
+            </>
 
         let currentView;
         if (this.state.currentPhase !== -1 && this.state.currentPhase !== 0) {

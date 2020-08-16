@@ -15,15 +15,17 @@ export default class QRScanner extends Component {
   state = {
     scanned: [],   
     toggled: false,
+    _cID: null
   }
 
   static contextType = UserContext;
 
   handleDiscard = (bookId) => {
-        const preQueue = this.state.scanned
+        const preQueue = [...this.state.scanned]
+        preQueue.splice(bookId, 1)
         this.setState({
             ...this.state,
-            scanned: preQueue.filter(book => book.id !== bookId )
+            scanned: preQueue
         })
   }
 
@@ -54,9 +56,11 @@ export default class QRScanner extends Component {
   setCollection = (collection) => {
       console.log(collection)
       const books = collection[0].books
+      const id = collection[0]._id
       this.setState({
           ...this.state,
-          scanned: books
+          scanned: books,
+          _cID: id
       })
       console.log(this.state)
   }
@@ -64,7 +68,9 @@ export default class QRScanner extends Component {
     window.alert("Error" + e)
   }
 
-  onAcceptCollection = () => {
+  handleAcceptCollection = () => {
+      this.props.onAddCollection(this.state.scanned)
+      this.props.onPatchCollection(this.state._cID, this.state.scanned)
       // PATCH COLLECTION
       // TAKES this.state.scanned
       // Calculate points based on # of books in that array
@@ -138,7 +144,7 @@ export default class QRScanner extends Component {
                             variant="contained" 
                             size="small" 
                             color="primary" onClick={() => {
-                            this.props.onAddCollection(this.state.scanned)
+                            this.handleAcceptCollection()
                             }}
                         >
                             Add all to queue
