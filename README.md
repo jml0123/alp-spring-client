@@ -61,4 +61,4 @@ Collectors may eventually also have points for every collection that gets succes
 - Google Books API
 
 Here's a 
-[link]() to the Kitabu API repo.
+[link](https://github.com/gonsaje/Kitabu) to the Kitabu API repo.
