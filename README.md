@@ -4,6 +4,8 @@ Kitabu is a seamless digital portal to donate, collect and catalogue books. The 
 
 [Link to Site](https://kitabu-client.vercel.app/)
 
+[Link to Brainstorming / Project Sheet](https://hackmd.io/@qx4nBj4oTKmi5J5EA9Ylhg/H1UMkBJMv)
+
 ## Purpose
 - Broaden ALP's donor and collector base through a digtal portal 
 - Develop an incentivized, points-based donation process that facilitates consistent use
