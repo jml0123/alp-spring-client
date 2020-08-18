@@ -1,5 +1,5 @@
 # Kitabu *(Client-site)*
-Kitabu is a seamless digital portal to donate, collect and catalogue books. The platform makes it easy for collectors to scan QR codes and catalogue donations, and donors to scan barcodes and recieve points for every gently used book that they donate. Kitabu was created for the African Library Project as a part of Microsoft's Hack for Africa Challenge *(1st-runner up in the Education/Literacy category)*
+Kitabu is a seamless digital portal to donate, collect and catalogue books. The platform makes it easy for collectors to scan QR codes and catalogue donations, and donors to scan barcodes and recieve points for every gently used book that they donate. Kitabu was created for the [African Library Project](https://www.africanlibraryproject.org/) as a part of Microsoft's Hack for Africa Challenge *(1st-runner up in the Education/Literacy category)*
 
 
 [Link to Site](https://kitabu-client.vercel.app/)
