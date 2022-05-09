@@ -1,17 +1,15 @@
-import React, {Component, createRef} from 'react';
+import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import config from '../../../../config'
 import Autocomplete from 'react-google-autocomplete';
 
 import {Typography, Container, Box, 
-    Button, TextField, Input, FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
-import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
+    Button, TextField, FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
 
 import "./SignUpForm.css"
 import AuthContext from '../../context/AuthContext';
 import TokenService from "../../services/token-service";
-
-const google = window.google;
+import CoreHttpService from '../../services/core-http-service';
 
 export default class SignUpForm extends Component {
 
@@ -34,7 +32,7 @@ export default class SignUpForm extends Component {
                 description: "",
             },
             currentPhase: 0,
-            error: null
+            error: false
         } 
         
     setPhase = (phase) => {
@@ -55,7 +53,7 @@ export default class SignUpForm extends Component {
     }
 
     handleSubmitUser = () => {
-        const {email, name, location, password, confirmPass, type} = this.state.user
+        const {email, name, password, confirmPass, type} = this.state.user
         const newUser = {
                 name: name,
                 email: email,
@@ -77,31 +75,23 @@ export default class SignUpForm extends Component {
             newUser.description = description;
             newUser.hours = hours
         }
-        console.log(newUser)
-        this.postUser(newUser).then(res => {
-            TokenService.saveAuthToken(res.token);
-            TokenService.saveUserId(res.user.id);
-            this.context.setUser(res.user)
-            this.setPhase(8)
-            }).catch(err => {
-            this.setState({
-                ...this.state,
-                error: err
-            })
-        })
+        this.postUser(newUser);
     }
 
-    postUser = (user) => {
-        return fetch(`${config.API_ENDPOINT}/users/register`, {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }).then((res) => {
-          return !res.ok ? res.json().then((e) => Promise.reject(e)) : res.json();
-        });
-      }
+    postUser = async (userData) => {
+        const newUser = await CoreHttpService.postUser(userData)
+        if (!newUser) {
+            this.setState({
+                ...this.state,
+                error: true
+            })
+        } else {
+            TokenService.saveAuthToken(newUser.token);
+            TokenService.saveUserId(newUser.user.id);
+            this.context.setUser(newUser.user);
+            this.setPhase(8)
+        }
+    }
 
     handleSetLocation = (location) => {
         const formatted = location.formatted_address
@@ -281,10 +271,8 @@ export default class SignUpForm extends Component {
         </>
         
         let currentView;
-        let preQueue = false;
         if (this.state.currentPhase === 0) {
             currentView = startView;
-            preQueue = true;
         }
         else {
             currentView = this.state.currentPhase === 1 ? nameView

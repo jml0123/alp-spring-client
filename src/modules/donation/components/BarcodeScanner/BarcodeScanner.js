@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CoreScanner from './__barcodeScanner.core';
 
 import BookItem from '../BookItem'
-import UserContext from '../../../../modules/core/context/UserContext';
+import UserContext from '../../../core/context/UserContext';
 
 import {Container, Box, Button, TextField, Typography} from '@material-ui/core';
 import AddToLibraryIcon from '@material-ui/icons/LibraryAdd';

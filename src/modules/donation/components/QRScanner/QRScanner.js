@@ -3,7 +3,7 @@ import QRScannerCore from 'react-qr-reader'
 import config from '../../../../config'
 
 
-import UserContext from '../../../../modules/core/context/UserContext';
+import UserContext from '../../../core/context/UserContext';
 
 import BookList from '../BookList';
 
@@ -38,11 +38,11 @@ export default class QRScanner extends Component {
 
   handleScan = (data) => {
       if(data) {
-        this.getCollection(data)
+        this.getCollectionByQRCode(data)
       }
   }
 
-  getCollection = (c_id) => {
+  getCollectionByQRCode = (c_id) => {
     fetch(`${config.API_ENDPOINT}/collections/${c_id}`).then((res) => {
         if (!res.ok) {
           throw new Error(res.status);

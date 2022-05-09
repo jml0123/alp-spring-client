@@ -3,7 +3,7 @@ import config from '../../../../config'
 
 import BookList from '../BookList'
 import PartnerList from '../PartnerList';
-import BarcodeScanner from '../Scanner/BarcodeScanner';
+import BarcodeScanner from '../BarcodeScanner/BarcodeScanner';
 import Ticket from '../Ticket/Ticket';
 
 import UserContext from '../../../../modules/core/context/UserContext';
@@ -32,11 +32,12 @@ export default class DonorConsole extends Component {
         
         async componentWillMount(){ 
             const userContext = this.context;
+            console.log(userContext);
             await this.setState({
                 ...this.state,
                 user: userContext.user
             })
-            await this.fetchUserCollections(userContext.user.id)
+            await this.fetchUserCollections(userContext.id)
             // await this.fetchNearestDonors(userContext.user.location.coordinates)
             this.setPartners();
         }
@@ -85,6 +86,8 @@ export default class DonorConsole extends Component {
         }
 
         fetchUserCollections = async (id) => {
+            console.log('USER ID:');
+            console.log(id);
             fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
                 if (!res.ok) {
                   throw new Error(res.status);

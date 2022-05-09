@@ -70,7 +70,7 @@ console.log(userContext.user)
         </Box>
         </Link>
         <Box>
-        {userContext.user && userContext.user._id !== "" ? 
+        {userContext.user && userContext.id!== "" ? 
         <>
           <Button 
             aria-controls="simple-menu" 

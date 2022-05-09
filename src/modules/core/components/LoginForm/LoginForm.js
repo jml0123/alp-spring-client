@@ -1,17 +1,16 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
-import Nav from "../Nav";
 
-import {Typography, Container, Box,
-    Button, TextField, Input, FormControlLabel} from '@material-ui/core';
+import {Typography, Box,
+    Button, TextField} from '@material-ui/core';
     
 import TokenService from "../../services/token-service";
-import AuthApiService from "../../services/auth-api-service";
 
 import "./LoginForm.css";
 import AuthContext from '../../context/AuthContext';
 
 import Alert from '@material-ui/lab/Alert';
+import CoreHttpService from '../../services/core-http-service';
 
 
 export default class LoginForm extends Component {
@@ -24,35 +23,38 @@ export default class LoginForm extends Component {
 
   static contextType = AuthContext
 
-  handleSetData = async (e) => {
-    await this.setState({
+  handleSetData = (e) => {
+    this.setState({
         ...this.state,
         [e.target.name]: e.target.value
  
     })
 }
 
-  handleSubmit = (e) => {
-    this.setState({ ...this.state, error: null });
+  handleSubmit = async (e) => {
+    this.setState({ ...this.state, error: false });
     const { username, password } = this.state;
-    AuthApiService.postLogin({
+    const loginStatus = await CoreHttpService.loginUser({
         email: username,
         password: password
-     })
-      .then((res) => {
-        this.context.setUser(res.user)
-        TokenService.saveAuthToken(res.token);
-        TokenService.saveUserId(res.user._id);
-        this.setState({
-          ...this.state,
-          message: `Success! Welcome back ${this.context.user.name}!`
-        })
-        // Redirect to appropriate console (collector or donor)
-      })
-      .catch((res) => {
-        this.setState({ error: res.error });
-      });
+    });
+    if (!loginStatus) {
+      this.setState({...this.state, error: true});
+    } else {
+      console.log(loginStatus)
+      this.context.setUser(loginStatus.user);
+      TokenService.saveAuthToken(loginStatus.token);
+      TokenService.saveUserId(loginStatus.user._id);
+      this.showWelcomeMessage();
+    }
   };
+
+  showWelcomeMessage() {
+    this.setState({
+      ...this.state,
+      message: `Success! Welcome back ${this.context.user.name}!`
+    });
+  }
 
 render() {
     let button;

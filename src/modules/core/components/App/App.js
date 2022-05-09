@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import { Route } from "react-router-dom";
 
-import config from '../../../../config'
 import TokenService from '../../services/token-service'
+import CoreHttpService from '../../services/core-http-service';
 
 import AuthContext from "../../context/AuthContext";
 
@@ -30,7 +30,8 @@ export default class App extends Component {
       },
       collections: null
     },
-    loaded: false
+    loaded: false,
+    error: false
   }
 
   async componentDidMount() {
@@ -41,23 +42,14 @@ export default class App extends Component {
   }
 
   getUserData = async () => {
-    const userId = TokenService.getUserId()
-    fetch(`${config.API_ENDPOINT}/users/user/${userId}`, {
-      method: "GET",
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error(res.status);
-        }
-        return res.json();
-      })
-      .then((res) => {
-        this.setUser(res);
-        return res;
-      })
-      .catch((error) => this.setState({ error }));
+    const userId = TokenService.getUserId();
+    const userData = await CoreHttpService.getUserData(userId);
+    if (!userData) {
+      this.setState({...this.state, error: true});
+    } else {
+      this.setUser(userData);
+    }
   };
-
 
   setUser = (user) => {
     this.setState({
@@ -75,6 +67,7 @@ export default class App extends Component {
   render() {
     const AuthContextVal = {
       user: this.state.user,
+      id: this.state.user?._id,
       collections: this.state.collections,
       setUser: this.setUser,
       setCollections: this.setCollections,

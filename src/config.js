@@ -10,4 +10,3 @@ export default {
     gAPI_KEY: "AIzaSyD4RrXXgTTAfOitL33YA-sXdHSvBcWSU_Q"
   };
   
-  // TODO: Break into multiple exports

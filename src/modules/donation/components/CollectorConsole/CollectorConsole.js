@@ -4,8 +4,8 @@ import config from '../../../../config'
 import HorizontalLinearStepper from '../Stepper';
 import BookList from '../BookList'
 import PartnerList from '../PartnerList';
-import BarcodeScanner from '../Scanner/BarcodeScanner';
-import QRScanner from '../Scanner/QRScanner';
+import BarcodeScanner from '../BarcodeScanner/BarcodeScanner';
+import QRScanner from '../QRScanner/QRScanner';
 
 import Ticket from '../Ticket/Ticket';
 import UserContext from '../../../../modules/core/context/UserContext';
@@ -22,12 +22,12 @@ export default class CollectorConsole extends Component {
     state = {
             user: {
                 name: null,
-                id: null,
                 drive: []
             },
+            userId: null,
             books: [],
             currentPhase: 1,
-            _cID: null,
+            _cID: null, // Collection ID
         }
 
         static contextType = AuthContext
@@ -37,14 +37,17 @@ export default class CollectorConsole extends Component {
     
             await this.setState({
                 ...this.state,
-                user: userContext.user
+                user: userContext.user,
+                userId: userContext.id
             })
-            await this.fetchUserCollections(userContext.user.id)
-            await this.fetchUserDrive(userContext.user.id)
+            await this.fetchUserCollections(userContext.id)
+            await this.fetchUserDrive(userContext.id)
         }
 
         
         fetchUserCollections = async (id) => {
+            console.log('USER ID:');
+            console.log(id);
             fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
                 if (!res.ok) {
                   throw new Error(res.status);
@@ -55,17 +58,20 @@ export default class CollectorConsole extends Component {
         }
         
         fetchUserDrive = (id) => {
-            fetch(`${config.API_ENDPOINT}/users/${id}/drive`).then((res) => {
-                if (!res.ok) {
-                  throw new Error(res.status);
-                }
-                return res.json();
-              }).then(res => this.setUserDrive(res))
-              .catch((error) => this.setState({ error }));
+            if (id) {
+                fetch(`${config.API_ENDPOINT}/users/${id}/drive`).then((res) => {
+                    if (!res.ok) {
+                      throw new Error(res.status);
+                    }
+                    return res.json();
+                  }).then(res => this.setUserDrive(res))
+                  .catch((error) => this.setState({ error }));
+            }
         }
 
         patchUserDrive = () => {
-            fetch(`${config.API_ENDPOINT}/users/${this.state.user.id}/drive`, 
+            if (this.state.userId) {
+            fetch(`${config.API_ENDPOINT}/users/${this.state.userId}/drive`, 
             {   
                 method: "PUT",
                 headers: {"content-type": "application/json"},
@@ -74,13 +80,14 @@ export default class CollectorConsole extends Component {
             )
             .then((res) => {
                 if (!res.ok) {
-                  throw new Error(res.status);
+                    throw new Error(res.status);
                 }
                 return res.json();
-              }).then(res => this.setUserDrive(res))
-              .catch((error) => this.setState({ error }));
+                }).then(res => this.setUserDrive(res))
+                .catch((error) => this.setState({ error }));
+            }
         }
-
+            
         setUserDrive = (bookList) => {
             this.setState({
                 books: bookList
@@ -98,7 +105,7 @@ export default class CollectorConsole extends Component {
         handleCreateCollection = async () => {
             const collection = {
                 books: this.state.books,
-                donorId: this.state.user.id,
+                donorId: this.state.userId,
             }
             fetch(`${config.API_ENDPOINT}/collections/new`, {
                 method: "POST",
@@ -224,7 +231,7 @@ export default class CollectorConsole extends Component {
 
  
     render() {
-        const unloggedConditions = this.state.books.filter(book => book.condition === "Select").length
+        const unloggedConditions = this.state.books?.filter(book => book.condition === "Select").length
         const userContextVal = {
             books: this.state.books,
             handleSelectCondition: this.handleSelectCondition, 
