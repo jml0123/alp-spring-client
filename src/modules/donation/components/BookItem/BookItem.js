@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import UserContext from '../../../../modules/core/context/UserContext'
 
 import './BookItem.css'
@@ -23,6 +23,9 @@ import defaultBookIcon from '../../../../assets/img/book.png';
 export default function BookItem(props) {
 
     let [toggled, setToggled] = useState(false);
+
+    useEffect(() => setToggled(false), [props.book]);
+
     const theme = useTheme();
     const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const xsScreen = useMediaQuery(theme.breakpoints.down(550));
@@ -50,8 +53,10 @@ export default function BookItem(props) {
                         onChange=
                             {(props.bookScan)? (e) => props.handleSelectConditionScanner(e.target.value)
                             : (e) => donationContext.handleSelectCondition(props.listId, e.target.value)}
-                            defaultValue={props.condition}>
-                            {selectList}
+                        defaultValue="Select"
+                        value={props.condition}  
+                    >
+                        {selectList}
                     </Select> 
                 </Box>
                 </>
@@ -131,7 +136,7 @@ export default function BookItem(props) {
                         borderRadius = "5px"
                         p= {smScreen? 0.3 : 1}
                     >
-                        <img src={(!props.book.image)? defaultBookIcon: props.book.image} className="book-img"/>
+                        <img src={(!props.book.image)? defaultBookIcon: props.book.image} className="book-img" alt={props.book.title}/>
                     </Box>
                 </CardContent>
                 <CardContent display="flex" flexDirection="column" className="book-img-wrapper">

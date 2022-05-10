@@ -47,7 +47,7 @@ export default class BarcodeScanner extends Component {
   handleScanSuccess = (results) => {
     const isbn =(results[0].barcodeText) 
     createNewNotification({
-      message: `${results[0].barcodeText} successfully added to donation queue!`
+      message: `Book ${results[0].barcodeText} found!`
     })
     this.getBookInfo(isbn)
   }
@@ -151,6 +151,7 @@ export default class BarcodeScanner extends Component {
                         <BookItem 
                           book={this.state.scanned[0]} 
                           bookScan={true} 
+                          condition={this.state.scanned[0]?.condition}
                           handleSelectConditionScanner={(e) => this.handleSelectConditionScanner(e)}
                         />
                         : 
@@ -179,7 +180,6 @@ export default class BarcodeScanner extends Component {
                           <Button className="alternate-box--btn" onClick={e => this.closeManualInput()}>Use the Scanner?</Button>
                         </Box>
                       </Box>
-                      
                       </>
                         : null
                       }  
@@ -189,4 +189,3 @@ export default class BarcodeScanner extends Component {
     }
 }
 
-// Create a separate slide out widget when scan is successful
