@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import CoreScanner from './__barcodeScanner.core';
 
 import BookItem from '../BookItem'
-import UserContext from '../../../core/context/UserContext';
+import DonationContext from '../../context/DonationContext';
 
 import {Container, Box, Button, TextField, Typography} from '@material-ui/core';
 import AddToLibraryIcon from '@material-ui/icons/LibraryAdd';
@@ -25,7 +25,7 @@ export default class BarcodeScanner extends Component {
     
   }
 
-  static contextType = UserContext;
+  static contextType = DonationContext;
 
   handleSelectConditionScanner = (c) => {
     const newState = this.state.scanned[0]

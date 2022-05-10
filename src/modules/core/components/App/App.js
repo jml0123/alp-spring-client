@@ -21,6 +21,13 @@ import PublicOnlyRoute from "../../utils/PublicOnlyRoute";
 import Notifications from '../../../notifications/components/Notifications';
 
 export default class App extends Component {
+
+  /* 
+  * App component defines and provides global state via Context API
+  * This state is consumed by components further down the tree 
+  * This would be better off refactored into a reducer with actions, effects and selectors
+  * Context API was used for due to time constraints
+  */
   state = {
     user: {
       class: null,

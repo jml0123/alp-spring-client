@@ -7,7 +7,7 @@ import BarcodeScanner from '../BarcodeScanner/BarcodeScanner';
 import QRScanner from '../QRScanner/QRScanner';
 
 import Ticket from '../Ticket/Ticket';
-import UserContext from '../../../../modules/core/context/UserContext';
+import DonationContext from '../../context/DonationContext';
 import Container from '@material-ui/core/Container';
 
 import Box from '@material-ui/core/Box';
@@ -278,7 +278,7 @@ export default class CollectorConsole extends Component {
 
         const barcodeScannerView = 
         <>
-            <UserContext.Provider value = {userContextVal}>
+            <DonationContext.Provider value = {userContextVal}>
                 <BarcodeScanner/>
                 <Box
                     display="flex"
@@ -298,12 +298,12 @@ export default class CollectorConsole extends Component {
                         </Button>
                     </Box>
                 </Box>
-            </UserContext.Provider>
+            </DonationContext.Provider>
         </>
         
         const qrScannerView = 
         <>
-            <UserContext.Provider value = {userContextVal}>
+            <DonationContext.Provider value = {userContextVal}>
                 <QRScanner collection={true} onPatchCollection = {this.handlePatchCollection} onAddCollection={(c) => this.handleAddCollection(c)}/>
                 <Box
                     display="flex"
@@ -323,13 +323,13 @@ export default class CollectorConsole extends Component {
                         </Button>
                     </Box>
                 </Box>
-            </UserContext.Provider>
+            </DonationContext.Provider>
         </>
         
 
         const listView =  
         <>
-            <UserContext.Provider value = {userContextVal}>
+            <DonationContext.Provider value = {userContextVal}>
                 <BookList books={this.state.books} listType="condensed" collection={true}/>
                 <Box
                     m={2}
@@ -354,12 +354,12 @@ export default class CollectorConsole extends Component {
                     : null}
                 </Box>
                 
-            </UserContext.Provider>
+            </DonationContext.Provider>
         </>
 
         const locationView = 
         <>
-        <UserContext.Provider value = {userContextVal}>
+        <DonationContext.Provider value = {userContextVal}>
             <PartnerList partners={this.state.partners} selected={this.state.selectedPartner}/>
             <Box
                 m={4}
@@ -375,7 +375,7 @@ export default class CollectorConsole extends Component {
                     Summary
                 </Button>
             </Box>
-         </UserContext.Provider>
+         </DonationContext.Provider>
          </>
 
         const exportView = 

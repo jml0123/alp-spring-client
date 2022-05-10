@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import UserContext from '../../../core/context/UserContext'
+import DonationContext from '../../context/DonationContext'
 import './PartnerItem.css'
 
 
@@ -21,7 +21,7 @@ import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 
 
 export default function PartnerItem(props) {
-    const donationContext = useContext(UserContext)
+    const donationContext = useContext(DonationContext)
 
     return (
         <>

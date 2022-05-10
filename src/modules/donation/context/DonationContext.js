@@ -1,6 +1,6 @@
 import React from "react";
 
-const UserContext = React.createContext({
+const DonationContext = React.createContext({
   books: [],
   partners: [],
   handleSelectCondition: () => {},
@@ -10,4 +10,4 @@ const UserContext = React.createContext({
   setPhase: () => {}
 });
 
-export default UserContext;
+export default DonationContext;

@@ -112,5 +112,3 @@ console.log(userContext.user)
 }
 
 export default Nav;
-
-// Add user info beside menu

@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import UserContext from '../../../../modules/core/context/UserContext'
+import DonationContext from '../../context/DonationContext'
 
 import './BookItem.css'
 
@@ -30,7 +30,7 @@ export default function BookItem(props) {
     const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const xsScreen = useMediaQuery(theme.breakpoints.down(550));
 
-    const donationContext = useContext(UserContext)
+    const donationContext = useContext(DonationContext)
     const conditions = ["Select", "New", "Very good", "Slightly Used", "Very Used"]
     let conditionArea;
     let controls;

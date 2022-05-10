@@ -1,7 +1,6 @@
 import React, { useEffect, useState} from 'react'
 import { Alert } from '@material-ui/lab';
 import { Snackbar } from '@material-ui/core';
-// A signal is an entry point to react-rxjs. It's equivalent to using a subject
 import { NotificationFacadeService } from '../services/notification-facade-service';
 
 const { 
@@ -22,7 +21,7 @@ export default function Notifications() {
     }
 
     useEffect(() => {
-        const notificationSub = getNotification$().subscribe(notification => {
+        getNotification$().subscribe(notification => {
             if (notification) {
                 setNotification(notification);
                 openNotification(true);

@@ -3,7 +3,7 @@ import QRScannerCore from 'react-qr-reader'
 import config from '../../../../config'
 
 
-import UserContext from '../../../core/context/UserContext';
+import DonationContext from '../../context/DonationContext';
 
 import BookList from '../BookList';
 
@@ -24,7 +24,7 @@ export default class QRScanner extends Component {
     _cID: null
   }
 
-  static contextType = UserContext;
+  static contextType = DonationContext;
 
   handleDiscard = (bookId) => {
         const preQueue = [...this.state.scanned]

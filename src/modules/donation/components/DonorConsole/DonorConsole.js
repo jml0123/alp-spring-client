@@ -6,7 +6,7 @@ import PartnerList from '../PartnerList';
 import BarcodeScanner from '../BarcodeScanner/BarcodeScanner';
 import Ticket from '../Ticket/Ticket';
 
-import UserContext from '../../../../modules/core/context/UserContext';
+import DonationContext from '../../context/DonationContext';
 
 import Container from '@material-ui/core/Container';
 import Box from '@material-ui/core/Box';
@@ -238,7 +238,7 @@ class DonorConsole extends Component {
 
         const scannerView = 
         <>
-            <UserContext.Provider value = {userContextVal}>
+            <DonationContext.Provider value = {userContextVal}>
                 <BarcodeScanner/>
                 <Box
                     m={4}
@@ -251,12 +251,12 @@ class DonorConsole extends Component {
                             I'm done scanning
                         </Button>
                 </Box>
-            </UserContext.Provider>
+            </DonationContext.Provider>
         </>
         
         const listView =  
         <>
-            <UserContext.Provider value = {userContextVal}>
+            <DonationContext.Provider value = {userContextVal}>
                 <BookList books={this.state.books}/>
                 <Box
                     m={4}
@@ -283,12 +283,12 @@ class DonorConsole extends Component {
                     : null}
                 </Box>
                 
-            </UserContext.Provider>
+            </DonationContext.Provider>
         </>
 
         const locationView = 
         <>
-        <UserContext.Provider value = {userContextVal}>
+        <DonationContext.Provider value = {userContextVal}>
             <PartnerList partners={this.state.partners} selected={this.state.selectedPartner}/>
                 <Box
                     m={4}
@@ -311,7 +311,7 @@ class DonorConsole extends Component {
                         Summary Page
                 </Button>
             </Box>
-         </UserContext.Provider>
+         </DonationContext.Provider>
          </>
 
         const exportView = 
