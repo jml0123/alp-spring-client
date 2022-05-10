@@ -11,7 +11,7 @@ class BarcodeScannerCore extends React.Component {
     }
     async componentDidMount(){
         try{
-            this.scanner = this.scanner || await Dynamsoft.BarcodeScanner.createInstance();
+            this.scanner = this.scanner || await Dynamsoft.DBR.BarcodeScanner.createInstance();
 
             if(this.bDestroyed){
                 this.scanner.destroy();
@@ -22,16 +22,12 @@ class BarcodeScannerCore extends React.Component {
             this.scanner.onFrameRead = results => {
                 if(results.length){
                     this.props.onScan(results)
-                }
-                
-            };
-            this.scanner.onUnduplicatedRead = (txt, result) => {
-                
+                }  
             };
             await this.scanner.updateVideoSettings({ video: { width: 500, height: 500, facingMode: "environment" } });
             await this.scanner.open();
 
-        }catch(ex){
+        } catch(ex){
             console.error(ex);
         }
     }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import config from '../../../../config'
+import { withRouter } from 'react-router';
 
 import BookList from '../BookList'
 import PartnerList from '../PartnerList';
@@ -17,15 +17,18 @@ import { Typography } from '@material-ui/core';
 import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import AuthContext from '../../../../modules/core/context/AuthContext';
+import DonationHttpService from '../../services/donation-http-service';
 
-export default class DonorConsole extends Component {
+class DonorConsole extends Component {
+    
     state = {
             user: null,
             books: [],
             partners: [],
             selectedPartner: null,
             currentPhase: 1,
-            _cID: null
+            qrCreated: false,
+            _cID: null,
         }
 
         static contextType = AuthContext
@@ -33,15 +36,50 @@ export default class DonorConsole extends Component {
         async componentWillMount(){ 
             const userContext = this.context;
             console.log(userContext);
-            await this.setState({
+            this.setState({
                 ...this.state,
                 user: userContext.user
             })
             await this.fetchUserCollections(userContext.id)
-            // await this.fetchNearestDonors(userContext.user.location.coordinates)
+            // await this.fetchNearestBookDrives(userContext.user.location.coordinates)
             this.setPartners();
         }
         
+        fetchUserCollections = async (id) => {
+            const userCollections = await DonationHttpService.fetchUserCollections(id);
+            console.log('USER COLLECTIONS');
+            console.log(userCollections);
+            if (!userCollections) {
+                this.setState({...this.state, error: true});
+            } else {
+                this.setUserCollections(userCollections);
+            }
+        }
+
+        fetchNearestBookDrives = async (coords) => {
+            const nearestBookDrives = await DonationHttpService.fetchNearestBookCollectors({long: coords[0], lat: coords[1]});
+            if (!nearestBookDrives) {
+                this.setState({...this.state, error: true });
+            } else {
+                this.setPartners(nearestBookDrives);
+            }
+        }
+
+        handleCreateCollection = async () => {
+            const collection = {
+                books: this.state.books,
+                donorId: this.state.user.id,
+            }
+            const newCollection = await DonationHttpService.createNewCollection(collection);
+            if (!newCollection) {
+                this.setState({...this.state, error: true});
+            } else {
+                const cID = newCollection._id;
+                this.handleCreateQRCode(cID);
+                this.context.handleAddCollection(newCollection)
+            }
+        }
+
         handleSelectCondition = (bookKey, cond) => {
             const newBookState = this.state.books
             newBookState[bookKey]['condition'] = cond
@@ -71,7 +109,8 @@ export default class DonorConsole extends Component {
         }
 
         handleSelectPartner = (partnerId) => {
-            const selectedP = this.state.partners.filter(partner => partner.id === partnerId)[0]
+            const selectedP = this.state.partners.filter(partner => partner.donorId === partnerId)[0]
+            console.log(selectedP);
             this.setState({
                 ...this.state,
                 selectedPartner: selectedP
@@ -85,50 +124,26 @@ export default class DonorConsole extends Component {
             })
         }
 
-        fetchUserCollections = async (id) => {
-            console.log('USER ID:');
-            console.log(id);
-            fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
-                if (!res.ok) {
-                  throw new Error(res.status);
-                }
-                return res.json();
-              }).then(res => this.setUserCollections(res))
-              .catch((error) => this.setState({ error }));
-        }
-
-        fetchNearestDonors = (coords) => {
-            fetch(`${config.API_ENDPOINT}/users/index?long=${coords[0]}&latt=${coords[1]}`).then((res) => {
-                if (!res.ok) {
-                  throw new Error(res.status);
-                }
-                return res.json();
-              }).then(res => this.setPartners(res))
-              .catch((error) => this.setState({ error }));
-        }
-
-
         setPartners = (nearbyDrives) => {
             this.setState({
                 ...this.state,
                 partners: [
                     {
-                    donorId: 1,
-                    name: "Bobst Library (DEMO)",
-                    address: "14 Bleecker Street",
-                    hours: "24/7",
-                    description: "Call to coordinate",
-                    contactNum: "888-222-3333"
+                        donorId: '1',
+                        name: "Bobst Library (DEMO)",
+                        address: "14 Bleecker Street",
+                        hours: "24/7",
+                        description: "Call to coordinate",
+                        contactNum: "888-222-3333"
                     },
                     {
-                    donorId: 2,
-                    name: "Battery Park Collective (DEMO)",
-                    address: "88 Battery Place",
-                    hours: "M-F 9am - 5pm",
-                    description: "Come anytime during business hours",
-                    contactNum: "222-544-1123"
-                },
-
+                        donorId: '2',
+                        name: "Battery Park Collective (DEMO)",
+                        address: "88 Battery Place",
+                        hours: "M-F 9am - 5pm",
+                        description: "Come anytime during business hours",
+                        contactNum: "222-544-1123"
+                    }
                 ]
             })
         }
@@ -138,34 +153,19 @@ export default class DonorConsole extends Component {
         }
 
 
-        handleFinalizeDonation = async () => {
-            this.handleCreateCollection()
-        }
-
-        handleCreateCollection = async () => {
-            const collection = {
-                books: this.state.books,
-                donorId: this.state.user.id,
+        handleFinalizeDonation = () => {
+            if (this.state.qrCreated) {
+                this.props.history.push('/collections');
+            } else {
+                this.handleCreateCollection()
             }
-            fetch(`${config.API_ENDPOINT}/collections/new`, {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(collection)}).then(res => 
-                    res.json()).then(data => {
-                        const cID = data._id
-                        this.handleCreateQRCode(cID)
-                        this.context.handleAddCollection(data)
-                    }).catch((error) => {
-                        this.setState({ error })
-                    })  
         }
 
         handleCreateQRCode = (cID) => {
             this.setState({
                 ...this.state,
-                _cID: cID
+                _cID: cID,
+                qrCreated: true,
             })
         }
 
@@ -271,13 +271,13 @@ export default class DonorConsole extends Component {
         <>
         <UserContext.Provider value = {userContextVal}>
             <PartnerList partners={this.state.partners} selected={this.state.selectedPartner}/>
-            <Box
-                       m={4}
-                       display="flex"
-                       flexDirection="row"
-                       alignItems="center"
-                       justifyContent="space-evenly"
-            >
+                <Box
+                    m={4}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="space-evenly"
+                >
                 <Button 
                     size="small"  
                     onClick={() => this.setPhase(1)}>
@@ -311,7 +311,7 @@ export default class DonorConsole extends Component {
                       justifyContent="space-evenly"
             >
                 <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
-                <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>Confirm Donation</Button>
+                <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>{!this.state.qrCreated ? 'Confirm Donation' : 'Back to dashboard'}</Button>
             </Box>
         </>
 
@@ -356,3 +356,4 @@ export default class DonorConsole extends Component {
     }
 }
 
+export default withRouter(DonorConsole);

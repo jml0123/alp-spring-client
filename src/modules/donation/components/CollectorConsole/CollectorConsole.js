@@ -17,9 +17,10 @@ import Button from '@material-ui/core/Button';
 import './CollectorConsole.css'
 import { Typography } from '@material-ui/core';
 import AuthContext from '../../../../modules/core/context/AuthContext';
+import DonationHttpService from '../../services/donation-http-service';
 
 export default class CollectorConsole extends Component {
-    state = {
+        state = {
             user: {
                 name: null,
                 drive: []
@@ -27,6 +28,7 @@ export default class CollectorConsole extends Component {
             userId: null,
             books: [],
             currentPhase: 1,
+            qrCreated: false,
             _cID: null, // Collection ID
         }
 
@@ -41,103 +43,55 @@ export default class CollectorConsole extends Component {
                 userId: userContext.id
             })
             await this.fetchUserCollections(userContext.id)
-            await this.fetchUserDrive(userContext.id)
+            await this.fetchUserBookDrive(userContext.id)
         }
 
         
         fetchUserCollections = async (id) => {
-            console.log('USER ID:');
-            console.log(id);
-            fetch(`${config.API_ENDPOINT}/collections/${id}/index`).then((res) => {
-                if (!res.ok) {
-                  throw new Error(res.status);
-                }
-                return res.json();
-              }).then(res => this.setUserCollections(res))
-              .catch((error) => this.setState({ error }));
+            const userCollections = await DonationHttpService.fetchUserCollections(id);
+            if (!userCollections) {
+                this.setState({...this.state, error: true})
+            } else {
+                this.setUserCollections(userCollections);
+            }
         }
         
-        fetchUserDrive = (id) => {
-            if (id) {
-                fetch(`${config.API_ENDPOINT}/users/${id}/drive`).then((res) => {
-                    if (!res.ok) {
-                      throw new Error(res.status);
-                    }
-                    return res.json();
-                  }).then(res => this.setUserDrive(res))
-                  .catch((error) => this.setState({ error }));
+        fetchUserBookDrive =  async (id) => {
+            const userBookDrive = await DonationHttpService.fetchUserDrive(id);
+            if (!userBookDrive) {
+                this.setState({...this.state, error: true})
+            } else {
+                this.setUserDrive(userBookDrive);
             }
         }
 
-        patchUserDrive = () => {
+        updateUserDrive = async () => {
             if (this.state.userId) {
-            fetch(`${config.API_ENDPOINT}/users/${this.state.userId}/drive`, 
-            {   
-                method: "PUT",
-                headers: {"content-type": "application/json"},
-                body: JSON.stringify(this.state.books)
-            }
-            )
-            .then((res) => {
-                if (!res.ok) {
-                    throw new Error(res.status);
+                const updatedDrive = await DonationHttpService.patchUserDrive(this.state.userId);
+                if (!updatedDrive) {
+                    this.setState({...this.state, error: true})
+                } else {
+                    this.setUserDrive(updatedDrive);
                 }
-                return res.json();
-                }).then(res => this.setUserDrive(res))
-                .catch((error) => this.setState({ error }));
             }
         }
             
-        setUserDrive = (bookList) => {
-            this.setState({
-                books: bookList
-            })
-        }
-
-        setUserCollections = (userCollections) => {
-            this.context.setCollections(userCollections)
-        }
-
-        handleFinalizeDonation = async () => {
-            this.handleCreateCollection()
-        }
-
         handleCreateCollection = async () => {
             const collection = {
                 books: this.state.books,
                 donorId: this.state.userId,
             }
-            fetch(`${config.API_ENDPOINT}/collections/new`, {
-                method: "POST",
-                headers: {
-                  "content-type": "application/json",
-                },
-                body: JSON.stringify(collection)}).then(res => 
-                    res.json()).then(data => {
-                        const cID = data._id
-                        this.handleCreateQRCode(cID)
-                        this.context.handleAddCollection(data)
-                    }).catch((error) => {
-                        this.setState({ error })
-                    })  
+            const newCollection = await DonationHttpService.createNewCollection(collection);
+            if (!newCollection) {
+                this.setState({...this.state, error: true})
+            } else {
+                const cID = newCollection._id
+                this.handleCreateQRCode(cID);
+                this.context.handleAddCollection(newCollection);
+            }
         }
 
-        handleCreateQRCode = (cID) => {
-            this.setState({
-                ...this.state,
-                _cID: cID
-            })
-        }
-
-        handlePurgeDrive = () => {
-            this.setState({
-                ...this.state,
-                books: []
-            })
-            this.patchUserDrive()
-        }
- 
-        handlePatchCollection = (c_id, queued) => {
+        handlePatchCollection = async (c_id, queued) => {
             let newPoints = 0; 
 
             for (const book of queued) {
@@ -150,23 +104,48 @@ export default class CollectorConsole extends Component {
                 status: "finished"
             }
 
-            fetch(`${config.API_ENDPOINT}/collections/${c_id}`, 
-            {   
-                method: "PUT",
-                headers: {"content-type": "application/json"},
-                body: JSON.stringify(newData)
+            const updatedCollection = await DonationHttpService.patchCollection({books: newData.books, points: newData.points, status: newData.status, c_id});
+            if (!updatedCollection) {
+                this.setState({...this.state, error: true});
+            } else {
+                return;
             }
-            )
-            .then((res) => {
-                if (!res.ok) {
-                  throw new Error(res.status);
-                }
-                return res.json();
-              }).catch((error) => console.log(error));
         }
 
+        setUserDrive = (bookList) => {
+            this.setState({
+                books: bookList
+            })
+        }
 
+        setUserCollections = (userCollections) => {
+            this.context.setCollections(userCollections)
+        }
 
+        handleFinalizeDonation = async () => {
+            if (this.state.qrCreated) {
+                this.props.history.push('/collections');
+            } else {
+                this.handleCreateCollection()
+            }
+        }
+
+        handleCreateQRCode = (cID) => {
+            this.setState({
+                ...this.state,
+                _cID: cID,
+                qrCreated: true,
+            })
+        }
+
+        handlePurgeDrive = () => {
+            this.setState({
+                ...this.state,
+                books: []
+            })
+            this.updateUserDrive()
+        }
+ 
         handleSelectCondition = (bookKey, cond) => {
             const newBookState = this.state.books
             newBookState[bookKey]['condition'] = cond
@@ -406,7 +385,7 @@ export default class CollectorConsole extends Component {
                         justifyContent="space-evenly"
                 >
                     <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
-                    <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>Confirm Donation</Button>
+                    <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>{!this.state.qrCreated ? 'Confirm Donation' : 'Back to dashboard'}</Button>
                 </Box>
             </>
 

@@ -10,7 +10,7 @@ import AddToLibraryIcon from '@material-ui/icons/LibraryAdd';
 import Alert from '@material-ui/lab/Alert';
 
 import config from "../../../../config";
-
+import './BarcodeScanner.css'
 export default class BarcodeScanner extends Component {
   state = {
     scanned: [],
@@ -117,8 +117,10 @@ export default class BarcodeScanner extends Component {
       : this.state.scanned.length?
       <Alert severity="success">Book found! {this.state.scanned[0].title}</Alert>    
       : null)
+
       return (
             <Container maxWidth="lg">
+                  {!this.state.manualInput ? 
                   <Box
                     minHeight="30vh"
                     maxWidth="500px"
@@ -127,22 +129,25 @@ export default class BarcodeScanner extends Component {
                   >
                     <CoreScanner onScan={this.handleScanSuccess}/>
                     {message}
-                  </Box>
+                  </Box> : <></>
+                  }
                   <Box
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
                   >
-                    {this.state.scanned.length? 
-                      <BookItem 
-                        book={this.state.scanned[0]} 
-                        bookScan={true} 
-                        handleSelectConditionScanner={(e) => this.handleSelectConditionScanner(e)}
-                      />
-                      : 
-                        this.state.error && !this.state.manualInput? <Button onClick={e => this.setManualInput()}>Type Manually?</Button> : null
+                    {
+                      this.state.scanned.length? 
+                        <BookItem 
+                          book={this.state.scanned[0]} 
+                          bookScan={true} 
+                          handleSelectConditionScanner={(e) => this.handleSelectConditionScanner(e)}
+                        />
+                        : 
+                        !this.state.manualInput? <Button onClick={e => this.setManualInput()}>Manual Input</Button> : null
                       }
-                      {this.state.manualInput? 
+                      {
+                      this.state.manualInput? 
                       <>
                       <Box display="flex" flexDirection="column">
                         <TextField label="Title" id="title" name="title" onChange={e => this.handleSetData(e)} />
@@ -158,9 +163,13 @@ export default class BarcodeScanner extends Component {
                                 this.handleAddBook(this.state.manualInput)
                             }}>
                               Add to Box
-                      </Button>
-                    </Box>
-                      <Button onClick={e => this.closeManualInput()}>Use the Scanner?</Button>
+                        </Button>
+                        <Box className="alternate-box" display="flex" flexDirection="column">
+                          <Typography variant="h2">OR</Typography> 
+                          <Button className="alternate-box--btn" onClick={e => this.closeManualInput()}>Use the Scanner?</Button>
+                        </Box>
+                      </Box>
+                      
                       </>
                         : null
                       }  

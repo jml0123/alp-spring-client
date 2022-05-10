@@ -64,6 +64,14 @@ export default class App extends Component {
     })
   }
 
+  handleAddCollection = (newCollection) => {
+    const updatedCollections = [...this.state.collections, newCollection]
+    this.setState({
+      ...this.state,
+      collections: updatedCollections
+    })
+  }
+
   render() {
     const AuthContextVal = {
       user: this.state.user,
@@ -71,6 +79,7 @@ export default class App extends Component {
       collections: this.state.collections,
       setUser: this.setUser,
       setCollections: this.setCollections,
+      handleAddCollection: this.handleAddCollection,
       loaded: this.state.loaded
   };
   return (

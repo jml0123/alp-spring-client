@@ -5,11 +5,11 @@ import PointsCircle from '../PointsCircle';
 import './CollectionList.css';
 
 
-import {Button, ButtonGroup, Box, Container, Typography, Chip} from "@material-ui/core"
+import {Button, Box, Container, Typography, Chip} from "@material-ui/core"
 import AuthContext from '../../../core/context/AuthContext'; 
 
 export default function CollectionsList(props) {
-    const userContext = React.useContext(AuthContext);
+    const userContext = useContext(AuthContext);
     const userCollections = userContext.collections ? userContext.collections : []
     const collections  = userCollections.map(collection => {
         return(
@@ -40,7 +40,6 @@ export default function CollectionsList(props) {
                     justifyContent="flex-end"
                     className="collection-wrapper"
                 >
-                    <Button>Edit</Button>
                     <Button>Cancel</Button>
                 </Box>
                 : null
@@ -61,12 +60,10 @@ export default function CollectionsList(props) {
             >
                  <Typography variant="h4">{userCollections.length ? "Your Previous Donations" : "You don't have any donations yet!"}</Typography>
                 {collections}
-                {!userCollections.length ?
                 <Box m={3} textAlign="center">
-                 <Typography  variant="h2">Start donating to earn points!</Typography>
+                <Typography  variant="h2">Start donating to earn points!</Typography>
                     <Box my={3}><Button component={Link} to="/donate">Donate</Button></Box>
-                 </Box>
-                : null}
+                </Box>
             </Box>
         </Container>
        

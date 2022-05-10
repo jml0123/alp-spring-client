@@ -1,8 +1,7 @@
 import React from 'react';
 import PartnerItem from '../PartnerItem';
 
-import { sizing } from '@material-ui/system';
-import { useTheme, createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 import Container from '@material-ui/core/Container';
@@ -11,17 +10,17 @@ import './PartnerList.css'
 
 export default function PartnerList(props) {
     console.log(props.partners);
+    console.log(props.selected);
     const theme = useTheme();
     const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
-
     const partners = props.partners.map((partner, i) => {
         return(
             <PartnerItem 
                 data={partner} 
                 key={i} 
-                partnerId = {partner.id} 
+                partnerId = {partner.donorId} 
                 listId={i} 
-                selected = {(props.selected && partner.id === props.selected.id) ? true : false} 
+                selected = {props.selected && (partner.donorId === props.selected.donorId)} 
             />
         )
     })
@@ -37,5 +36,3 @@ export default function PartnerList(props) {
         </Container>
     )
 }
-
-// This component can use a Material UI Grid
