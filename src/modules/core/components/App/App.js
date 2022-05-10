@@ -18,6 +18,7 @@ import ListItemStyle from '../../../donation/themes/ListItem.style'
 
 import PrivateRoute from "../../utils/PrivateRoute";
 import PublicOnlyRoute from "../../utils/PublicOnlyRoute";
+import Notifications from '../../../notifications/components/Notifications';
 
 export default class App extends Component {
   state = {
@@ -85,10 +86,11 @@ export default class App extends Component {
   return (
     
     <>
-    {this.state.loaded? 
+    {this.state.loaded ? 
     <>
     <AuthContext.Provider value={AuthContextVal}>
       <ThemeProvider theme={ListItemStyle}>
+      <Notifications/>
       <Route
             exact
             path={"/"}

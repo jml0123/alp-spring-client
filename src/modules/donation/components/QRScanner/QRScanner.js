@@ -10,6 +10,12 @@ import BookList from '../BookList';
 import {Typography, Container, Button, Box} from '@material-ui/core';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import Alert from '@material-ui/lab/Alert';
+import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+
+const { 
+  createNewNotification
+} = NotificationFacadeService();
+
 
 export default class QRScanner extends Component {
   state = {
@@ -63,7 +69,10 @@ export default class QRScanner extends Component {
       })
   }
   handleError = (e) => {
-    window.alert("Error" + e)
+    createNewNotification({
+      message: `There was a problem with the QR Reader: ${e}`,
+      type: 'error'
+    })
   }
 
   handleAcceptCollection = () => {

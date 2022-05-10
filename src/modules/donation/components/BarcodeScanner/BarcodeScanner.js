@@ -11,6 +11,12 @@ import Alert from '@material-ui/lab/Alert';
 
 import config from "../../../../config";
 import './BarcodeScanner.css'
+import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+
+const { 
+  createNewNotification
+} = NotificationFacadeService();
+
 export default class BarcodeScanner extends Component {
   state = {
     scanned: [],
@@ -32,13 +38,17 @@ export default class BarcodeScanner extends Component {
   }
 
   handleAddBook = () => {
-    this.context.handleAddBook(this.state.manualInput)
-    window.alert("Manually added book")
+    this.context.handleAddBook(this.state.manualInput);
+    createNewNotification({
+      message: `Manually added book to donation queue!`
+    })
   }
 
   handleScanSuccess = (results) => {
     const isbn =(results[0].barcodeText) 
-    window.alert(results[0].barcodeText)
+    createNewNotification({
+      message: `${results[0].barcodeText} successfully added to donation queue!`
+    })
     this.getBookInfo(isbn)
   }
 
@@ -98,7 +108,7 @@ export default class BarcodeScanner extends Component {
             serializedBookData.title = bookData.volumeInfo.title
             serializedBookData.authors = (!bookData.volumeInfo.authors)? [] : bookData.volumeInfo.authors
             serializedBookData.publishedDate = bookData.volumeInfo.publishedDate
-            serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks.thumbnail)? '' : bookData.volumeInfo.imageLinks.thumbnail
+            serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks?.thumbnail)? '' : bookData.volumeInfo.imageLinks?.thumbnail
             this.setScannedState(serializedBookData)
          
         }

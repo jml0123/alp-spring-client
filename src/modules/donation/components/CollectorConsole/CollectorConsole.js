@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import config from '../../../../config'
 
 import HorizontalLinearStepper from '../Stepper';
 import BookList from '../BookList'
@@ -18,6 +17,12 @@ import './CollectorConsole.css'
 import { Typography } from '@material-ui/core';
 import AuthContext from '../../../../modules/core/context/AuthContext';
 import DonationHttpService from '../../services/donation-http-service';
+import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+
+const { 
+    createNewNotification
+  } = NotificationFacadeService();
+
 
 export default class CollectorConsole extends Component {
         state = {
@@ -167,7 +172,10 @@ export default class CollectorConsole extends Component {
         }
 
         handleAddCollection = (collectionArray) => {
-            window.alert(`added ${collectionArray.length} books to queue`)
+            createNewNotification({
+                message: `Added ${collectionArray.length} books to queue`,
+                type: 'success'
+            });
             const currQueue = Array.from(this.state.books)
             const newQueue = currQueue.concat(collectionArray)
             this.setState({

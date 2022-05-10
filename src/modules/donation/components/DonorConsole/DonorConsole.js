@@ -18,6 +18,11 @@ import AutorenewOutlinedIcon from '@material-ui/icons/AutorenewOutlined';
 import HorizontalLinearStepper from '../Stepper/Stepper';
 import AuthContext from '../../../../modules/core/context/AuthContext';
 import DonationHttpService from '../../services/donation-http-service';
+import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+
+const { 
+    createNewNotification
+  } = NotificationFacadeService();
 
 class DonorConsole extends Component {
     
@@ -47,10 +52,12 @@ class DonorConsole extends Component {
         
         fetchUserCollections = async (id) => {
             const userCollections = await DonationHttpService.fetchUserCollections(id);
-            console.log('USER COLLECTIONS');
-            console.log(userCollections);
             if (!userCollections) {
                 this.setState({...this.state, error: true});
+                createNewNotification({
+                    message: 'There was a problem fetching user collections',
+                    type: 'error'
+                })
             } else {
                 this.setUserCollections(userCollections);
             }
@@ -60,6 +67,10 @@ class DonorConsole extends Component {
             const nearestBookDrives = await DonationHttpService.fetchNearestBookCollectors({long: coords[0], lat: coords[1]});
             if (!nearestBookDrives) {
                 this.setState({...this.state, error: true });
+                createNewNotification({
+                    message: 'There was a problem fetching nearest book drives',
+                    type: 'error'
+                })
             } else {
                 this.setPartners(nearestBookDrives);
             }
@@ -73,6 +84,10 @@ class DonorConsole extends Component {
             const newCollection = await DonationHttpService.createNewCollection(collection);
             if (!newCollection) {
                 this.setState({...this.state, error: true});
+                createNewNotification({
+                    message: 'There was a problem creating a new collection',
+                    type: 'error'
+                })
             } else {
                 const cID = newCollection._id;
                 this.handleCreateQRCode(cID);
@@ -174,6 +189,10 @@ class DonorConsole extends Component {
                 ...this.state,
                 books: []
             })
+        }
+        
+        showNotification = ({message, type}) => {
+            createNewNotification({message, type});
         }
  
  
