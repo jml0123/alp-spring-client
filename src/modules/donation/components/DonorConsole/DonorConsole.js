@@ -25,7 +25,10 @@ const {
   } = NotificationFacadeService();
 
 class DonorConsole extends Component {
-    
+    /* 
+    * Improvements
+    ** Make views into separate components
+    */
     state = {
             user: null,
             books: [],

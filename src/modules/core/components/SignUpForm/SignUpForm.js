@@ -149,7 +149,7 @@ export default class SignUpForm extends Component {
             <Typography variant = "h2" align="center" className="console-header">You said {this.state.user.email}</Typography>
             <Typography variant = "h1" align="center" className="console-header">Where are you from?</Typography>
             <Box my={0.5}><Autocomplete
-                apiKey={config.gAPI_KEY}
+                apiKey={config.GOOGLE_API_KEY}
                 className="auto-fill-loc"
                 onPlaceSelected={(place) => {
                     this.handleSetLocation(place)

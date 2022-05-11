@@ -11,6 +11,7 @@ import {Typography, Container, Button, Box} from '@material-ui/core';
 import AutorenewIcon from '@material-ui/icons/Autorenew';
 import Alert from '@material-ui/lab/Alert';
 import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+import DonationHttpService from '../../services/donation-http-service';
 
 const { 
   createNewNotification
@@ -48,15 +49,16 @@ export default class QRScanner extends Component {
       }
   }
 
-  getCollectionByQRCode = (c_id) => {
-    fetch(`${config.API_ENDPOINT}/collections/${c_id}`).then((res) => {
-        if (!res.ok) {
-          throw new Error(res.status);
-        }
-        return res.json()
-        .then(res => this.setCollection(res))
+  getCollectionByQRCode = async (c_id) => {
+    const fetchedCollection = await DonationHttpService.getCollectionByQrCode(c_id);
+    if (!fetchedCollection) {
+      this.setState({
+        ...this.state,
+        error: 'There was an issue fetching the collection with the given QR code.'
       })
-      .catch((error) => this.setState({ error: "Invalid QR Code"}));
+    } else {
+      this.setCollection(fetchedCollection);
+    }
   }
 
   setCollection = (collection) => {
@@ -65,7 +67,8 @@ export default class QRScanner extends Component {
       this.setState({
           ...this.state,
           scanned: books,
-          _cID: id
+          _cID: id,
+          error: false
       })
   }
   handleError = (e) => {
@@ -78,11 +81,6 @@ export default class QRScanner extends Component {
   handleAcceptCollection = () => {
       this.props.onAddCollection(this.state.scanned)
       this.props.onPatchCollection(this.state._cID, this.state.scanned)
-      // PATCH COLLECTION
-      // TAKES this.state.scanned
-      // Calculate points based on # of books in that array
-      // Modify original collection (points, books, status)
-      // Then call this.props.HandleAddCollection
   }
 
   render() {
@@ -164,5 +162,3 @@ export default class QRScanner extends Component {
         );
     }
 }
-
-// Create a separate slide out widget when scan is successful

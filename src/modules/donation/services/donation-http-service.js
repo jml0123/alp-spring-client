@@ -2,6 +2,8 @@ import axios from 'axios';
 import config from '../../../config';
 
 export default class DonationHttpService {
+    static googleBooksUrl = "https://www.googleapis.com/books/v1"
+    static googleBooksApiKey = config.GOOGLE_API_KEY;
     static rootUrl = config.API_ENDPOINT;
 
     static async fetchUserCollections(userId) {
@@ -22,7 +24,7 @@ export default class DonationHttpService {
         }
       }
 
-    static async patchUserDrive(userId, books) {
+    static async updateUserDrive(userId, books) {
         try {
             const res = await axios.put(`${this.rootUrl}/users/${userId}/drive`, books);
             return res.data
@@ -40,7 +42,7 @@ export default class DonationHttpService {
       }
     }
 
-    static async patchCollection({books, points, status, collectionId}) {
+    static async updateCollection({books, points, status, collectionId}) {
         try {
             const res = await axios.put(`${this.rootUrl}/collections/${collectionId}`, {books, points, status});
             return res.data
@@ -51,7 +53,7 @@ export default class DonationHttpService {
 
     static async getCollectionByQrCode(collectionId) {
         try {
-            const res = await axios.get(`${this.rootUrl}collections/${collectionId}`);
+            const res = await axios.get(`${this.rootUrl}/collections/${collectionId}`);
             return res.data
         } catch(err) {
             return;
@@ -67,4 +69,12 @@ export default class DonationHttpService {
       }
     }
 
+    static async getBookInfo(isbn) {
+        try {
+            const res = await axios.get(`${this.googleBooksUrl}/volumes?q=isbn:${isbn}&key=${this.googleBooksApiKey}`);
+            return res.data
+        } catch (err) {
+            return;
+        }
+    }
 }

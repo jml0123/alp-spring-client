@@ -18,13 +18,14 @@ import { Typography } from '@material-ui/core';
 import AuthContext from '../../../../modules/core/context/AuthContext';
 import DonationHttpService from '../../services/donation-http-service';
 import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+import { withRouter } from 'react-router-dom';
 
 const { 
     createNewNotification
   } = NotificationFacadeService();
 
 
-export default class CollectorConsole extends Component {
+class CollectorConsole extends Component {
         state = {
             user: {
                 name: null,
@@ -42,7 +43,7 @@ export default class CollectorConsole extends Component {
         async componentDidMount() {
             const userContext = this.context;
     
-            await this.setState({
+            this.setState({
                 ...this.state,
                 user: userContext.user,
                 userId: userContext.id
@@ -72,7 +73,7 @@ export default class CollectorConsole extends Component {
 
         updateUserDrive = async () => {
             if (this.state.userId) {
-                const updatedDrive = await DonationHttpService.patchUserDrive(this.state.userId);
+                const updatedDrive = await DonationHttpService.updateUserDrive(this.state.userId);
                 if (!updatedDrive) {
                     this.setState({...this.state, error: true})
                 } else {
@@ -81,7 +82,7 @@ export default class CollectorConsole extends Component {
             }
         }
             
-        handleCreateCollection = async () => {
+        handleCreateCollection = async () => {   
             const collection = {
                 books: this.state.books,
                 donorId: this.state.userId,
@@ -109,7 +110,7 @@ export default class CollectorConsole extends Component {
                 status: "finished"
             }
 
-            const updatedCollection = await DonationHttpService.patchCollection({books: newData.books, points: newData.points, status: newData.status, c_id});
+            const updatedCollection = await DonationHttpService.updateCollection({books: newData.books, points: newData.points, status: newData.status, c_id});
             if (!updatedCollection) {
                 this.setState({...this.state, error: true});
             } else {
@@ -168,7 +169,7 @@ export default class CollectorConsole extends Component {
                     newBook
                 ]
             })
-            this.patchUserDrive()
+            this.updateUserDrive()
         }
 
         handleAddCollection = (collectionArray) => {
@@ -183,7 +184,7 @@ export default class CollectorConsole extends Component {
                 books: newQueue,
                 currentPhase: 1
             })
-            this.patchUserDrive()
+            this.updateUserDrive()
         }
 
    
@@ -195,7 +196,7 @@ export default class CollectorConsole extends Component {
                 ...this.state,
                 books: booksQueue
             })
-            this.patchUserDrive()
+            this.updateUserDrive()
         }
 
         handleSelectPartner = (partnerId) => {
@@ -439,4 +440,6 @@ export default class CollectorConsole extends Component {
         )
     }
 }
+
+export default withRouter(CollectorConsole);
 

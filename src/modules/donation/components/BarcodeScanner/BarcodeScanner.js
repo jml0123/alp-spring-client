@@ -12,6 +12,7 @@ import Alert from '@material-ui/lab/Alert';
 import config from "../../../../config";
 import './BarcodeScanner.css'
 import { NotificationFacadeService } from '../../../notifications/services/notification-facade-service';
+import DonationHttpService from '../../services/donation-http-service';
 
 const { 
   createNewNotification
@@ -89,7 +90,7 @@ export default class BarcodeScanner extends Component {
         }  
     })
 }
-  getBookInfo = (isbn) => {
+  getBookInfo = async (isbn) => {
     const serializedBookData = {
       isbn: "",
       title: "",
@@ -99,26 +100,29 @@ export default class BarcodeScanner extends Component {
       condition: "",
     }
 
-    const GBooksAPI = "https://www.googleapis.com/books/v1"
-    fetch(`${GBooksAPI}/volumes?q=isbn:${isbn}&key=${config.gAPI_KEY}`).then(res => res.json())
-    .then((data) =>{
-        if (data.totalItems !== 0) {
-            const bookData = data.items[0]
+    const googleBookData = await DonationHttpService.getBookInfo(isbn);
+
+    if (!googleBookData) {
+      this.setState({
+        ...this.state,
+        error: "There was a problem fetching book data"
+      })
+    } else {
+      if (googleBookData.totalItems !== 0) {
+        const bookData = googleBookData.items[0]
             serializedBookData.isbn = isbn
             serializedBookData.title = bookData.volumeInfo.title
             serializedBookData.authors = (!bookData.volumeInfo.authors)? [] : bookData.volumeInfo.authors
             serializedBookData.publishedDate = bookData.volumeInfo.publishedDate
             serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks?.thumbnail)? '' : bookData.volumeInfo.imageLinks?.thumbnail
             this.setScannedState(serializedBookData)
-         
-        }
-        else {
-            this.setState({
-              ...this.state,
-              error: "Book not found. Try again"
-            })
-        }
-    })
+      } else {
+        this.setState({
+          ...this.state,
+          error: "Book not found. Try again"
+        });
+      }
+    }
 }
 
   render() {
