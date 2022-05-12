@@ -6,7 +6,7 @@ export default function PointsCircle(props) {
   return (
     <div className="circle-pts-wrapper">
       <Typography variant="h1">{props.pointsVal}</Typography>
-      <Typography variant="p">Points</Typography>
+      <Typography>Points</Typography>
     </div>
   );
 }

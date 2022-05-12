@@ -35,7 +35,7 @@ export default class App extends Component {
       location: {
         coordinates: [],
       },
-      collections: null,
+      collections: [],
     },
     loaded: false,
     error: false,

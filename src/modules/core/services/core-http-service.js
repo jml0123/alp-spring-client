@@ -8,7 +8,7 @@ export default class CoreHttpService {
       const res = await axios.get(`${this.rootUrl}/users/user/${userId}`);
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -17,7 +17,7 @@ export default class CoreHttpService {
       const res = await axios.post(`${this.rootUrl}/users/register`, newUser);
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -27,7 +27,7 @@ export default class CoreHttpService {
       const res = await axios.post(`${this.rootUrl}/users/login`, credentials);
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 }

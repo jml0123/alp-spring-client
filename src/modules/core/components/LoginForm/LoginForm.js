@@ -10,7 +10,9 @@ import AuthContext from "../../context/AuthContext";
 import Alert from "@material-ui/lab/Alert";
 import CoreHttpService from "../../services/core-http-service";
 import { withRouter } from "react-router-dom";
+import { NotificationFacadeService } from "../../../notifications/services/notification-facade-service";
 
+const { createNewNotification } = NotificationFacadeService();
 class LoginForm extends Component {
   state = {
     username: null,
@@ -37,6 +39,7 @@ class LoginForm extends Component {
     });
     if (!loginStatus) {
       this.setState({ ...this.state, error: true });
+      createNewNotification({message: 'There was a problem logging in. Please try again', type: "error"})
     } else {
       this.context.setUser(loginStatus.user);
       TokenService.saveAuthToken(loginStatus.token);
@@ -93,11 +96,6 @@ class LoginForm extends Component {
             <Button color="secondary" onClick={() => this.handleSubmit()}>
               Login
             </Button>
-          ) : null}
-          {this.state.error ? (
-            <Typography variant="h2" color="secondary">
-              {this.state.error}
-            </Typography>
           ) : null}
           {this.state.message ? (
             <Box

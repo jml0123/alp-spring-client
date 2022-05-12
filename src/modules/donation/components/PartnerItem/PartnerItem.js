@@ -40,10 +40,10 @@ export default function PartnerItem(props) {
           <CardContent>
             <Typography variant="h1">{props.data.name}</Typography>
             <Box display="flex" flexDirection="column" minHeight="100px">
-              <Typography variant="p">{props.data.address}</Typography>
-              <Typography variant="p">Hours: {props.data.hours}</Typography>
-              <Typography variant="p">{props.data.description}</Typography>
-              <Typography variant="p">
+              <Typography>{props.data.address}</Typography>
+              <Typography>Hours: {props.data.hours}</Typography>
+              <Typography>{props.data.description}</Typography>
+              <Typography>
                 Contact: {props.data.contactNum}
               </Typography>
             </Box>

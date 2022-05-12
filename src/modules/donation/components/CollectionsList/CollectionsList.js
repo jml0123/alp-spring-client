@@ -12,7 +12,7 @@ export default function CollectionsList(props) {
   const userCollections = userContext.collections
     ? userContext.collections
     : [];
-  const collections = userCollections.map((collection) => {
+  const collections = userCollections.map((collection, i) => {
     return (
       <Box
         border="1px solid #0f0f0f"
@@ -21,6 +21,7 @@ export default function CollectionsList(props) {
         justifyContent="left"
         alignItems="center"
         w={1}
+        key={i}
       >
         <Box
           display="flex"

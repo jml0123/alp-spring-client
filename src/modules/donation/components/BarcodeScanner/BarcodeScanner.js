@@ -30,23 +30,6 @@ export default class BarcodeScanner extends Component {
 
   static contextType = DonationContext;
 
-  handleSelectConditionScanner = (c) => {
-    const newState = this.state.scanned[0];
-    newState["condition"] = c;
-
-    this.setState({
-      ...this.state,
-      scanned: [newState],
-    });
-  };
-
-  handleAddBook = () => {
-    this.context.handleAddBook(this.state.manualInput);
-    createNewNotification({
-      message: `Manually added book to donation queue!`,
-    });
-  };
-
   handleScanSuccess = (results) => {
     const isbn = results[0].barcodeText;
     createNewNotification({
@@ -55,43 +38,6 @@ export default class BarcodeScanner extends Component {
     this.getBookInfo(isbn);
   };
 
-  setScannedState = (book) => {
-    this.setState({
-      ...this.state,
-      scanned: [book],
-      error: null,
-    });
-  };
-
-  setManualInput = () => {
-    this.setState({
-      ...this.state,
-      manualInput: {
-        title: null,
-        authors: null,
-        isbn: null,
-      },
-    });
-  };
-
-  closeManualInput = () => {
-    this.setState({
-      ...this.state,
-      manualInput: false,
-    });
-  };
-
-  handleSetData = async (e) => {
-    const value =
-      e.target.name === "authors" ? e.target.value.split(",") : e.target.value;
-    await this.setState({
-      ...this.state,
-      manualInput: {
-        ...this.state.manualInput,
-        [e.target.name]: value,
-      },
-    });
-  };
   getBookInfo = async (isbn) => {
     const serializedBookData = {
       isbn: "",
@@ -130,6 +76,62 @@ export default class BarcodeScanner extends Component {
         });
       }
     }
+  };
+
+  setScannedState = (book) => {
+    this.setState({
+      ...this.state,
+      scanned: [book],
+      error: null,
+    });
+  };
+
+
+  handleSelectConditionScanner = (c) => {
+    const newState = this.state.scanned[0];
+    newState["condition"] = c;
+
+    this.setState({
+      ...this.state,
+      scanned: [newState],
+    });
+  };
+
+  handleAddBook = () => {
+    this.context.handleAddBook(this.state.manualInput);
+    createNewNotification({
+      message: `Manually added book to donation queue!`,
+    });
+  };
+
+  setManualInput = () => {
+    this.setState({
+      ...this.state,
+      manualInput: {
+        title: null,
+        authors: null,
+        isbn: null,
+      },
+    });
+  };
+
+  closeManualInput = () => {
+    this.setState({
+      ...this.state,
+      manualInput: false,
+    });
+  };
+
+  handleSetData = async (e) => {
+    const value =
+      e.target.name === "authors" ? e.target.value.split(",") : e.target.value;
+      this.setState({
+      ...this.state,
+      manualInput: {
+        ...this.state.manualInput,
+        [e.target.name]: value,
+      },
+    });
   };
 
   render() {

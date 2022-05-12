@@ -48,7 +48,6 @@ class CollectorConsole extends Component {
       userId: userContext.id,
     });
     await this.fetchUserCollections(userContext.id);
-    await this.fetchUserBookDrive(userContext.id);
   }
 
   fetchUserCollections = async (id) => {
@@ -57,28 +56,6 @@ class CollectorConsole extends Component {
       this.setState({ ...this.state, error: true });
     } else {
       this.setUserCollections(userCollections);
-    }
-  };
-
-  fetchUserBookDrive = async (id) => {
-    const userBookDrive = await DonationHttpService.fetchUserDrive(id);
-    if (!userBookDrive) {
-      this.setState({ ...this.state, error: true });
-    } else {
-      this.setUserDrive(userBookDrive);
-    }
-  };
-
-  updateUserDrive = async () => {
-    if (this.state.userId) {
-      const updatedDrive = await DonationHttpService.updateUserDrive(
-        this.state.userId
-      );
-      if (!updatedDrive) {
-        this.setState({ ...this.state, error: true });
-      } else {
-        this.setUserDrive(updatedDrive);
-      }
     }
   };
 
@@ -116,7 +93,7 @@ class CollectorConsole extends Component {
       books: newData.books,
       points: newData.points,
       status: newData.status,
-      c_id,
+      collectionId: c_id,
     });
     if (!updatedCollection) {
       this.setState({ ...this.state, error: true });
@@ -156,7 +133,6 @@ class CollectorConsole extends Component {
       ...this.state,
       books: [],
     });
-    this.updateUserDrive();
   };
 
   handleSelectCondition = (bookKey, cond) => {
@@ -173,7 +149,6 @@ class CollectorConsole extends Component {
       ...this.state,
       books: [...this.state.books, newBook],
     });
-    this.updateUserDrive();
   };
 
   handleAddCollection = (collectionArray) => {
@@ -188,7 +163,6 @@ class CollectorConsole extends Component {
       books: newQueue,
       currentPhase: 1,
     });
-    this.updateUserDrive();
   };
 
   handleRemoveBook = (bookId) => {
@@ -198,7 +172,6 @@ class CollectorConsole extends Component {
       ...this.state,
       books: booksQueue,
     });
-    this.updateUserDrive();
   };
 
   handleSelectPartner = (partnerId) => {
@@ -219,10 +192,10 @@ class CollectorConsole extends Component {
   };
 
   render() {
-    const unloggedConditions = this.state.books?.filter(
+    const unloggedConditions = this.state.books.filter(
       (book) => book.condition === "Select"
     ).length;
-    const userContextVal = {
+    const donationContextVal = {
       books: this.state.books,
       handleSelectCondition: this.handleSelectCondition,
       handleSelectPartner: this.handleSelectPartner,
@@ -290,7 +263,7 @@ class CollectorConsole extends Component {
 
     const barcodeScannerView = (
       <>
-        <DonationContext.Provider value={userContextVal}>
+        <DonationContext.Provider value={donationContextVal}>
           <BarcodeScanner />
           <Box
             display="flex"
@@ -316,7 +289,7 @@ class CollectorConsole extends Component {
 
     const qrScannerView = (
       <>
-        <DonationContext.Provider value={userContextVal}>
+        <DonationContext.Provider value={donationContextVal}>
           <QRScanner
             collection={true}
             onPatchCollection={this.handlePatchCollection}
@@ -346,7 +319,7 @@ class CollectorConsole extends Component {
 
     const listView = (
       <>
-        <DonationContext.Provider value={userContextVal}>
+        <DonationContext.Provider value={donationContextVal}>
           <BookList
             books={this.state.books}
             listType="condensed"

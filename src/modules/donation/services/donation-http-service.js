@@ -13,7 +13,7 @@ export default class DonationHttpService {
       );
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -34,7 +34,7 @@ export default class DonationHttpService {
       );
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -58,7 +58,7 @@ export default class DonationHttpService {
       );
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -69,7 +69,7 @@ export default class DonationHttpService {
       );
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -80,7 +80,7 @@ export default class DonationHttpService {
       );
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 
@@ -91,7 +91,7 @@ export default class DonationHttpService {
       );
       return res.data;
     } catch (err) {
-      return;
+      return null;
     }
   }
 }

@@ -68,6 +68,10 @@ class DonorConsole extends Component {
     });
   }
 
+  setUserCollections = (userCollections) => {
+    this.context.setCollections(userCollections);
+  };
+
   fetchNearestBookDrives = async (coords) => {
     const nearestBookDrives = await DonationHttpService.fetchNearestBookCollectors(
       { long: coords[0], lat: coords[1] }
@@ -170,10 +174,6 @@ class DonorConsole extends Component {
     });
   };
 
-  setUserCollections = (userCollections) => {
-    this.context.setCollections(userCollections);
-  };
-
   handleFinalizeDonation = () => {
     if (this.state.qrCreated) {
       this.props.history.push("/collections");
@@ -205,7 +205,7 @@ class DonorConsole extends Component {
     const unloggedConditions = this.state.books.filter(
       (book) => book.condition === "Select" || book.condition === ""
     ).length;
-    const userContextVal = {
+    const donationContextVal = {
       books: this.state.books,
       handleSelectCondition: this.handleSelectCondition,
       handleSelectPartner: this.handleSelectPartner,
@@ -252,7 +252,7 @@ class DonorConsole extends Component {
 
     const scannerView = (
       <>
-        <DonationContext.Provider value={userContextVal}>
+        <DonationContext.Provider value={donationContextVal}>
           <BarcodeScanner />
           <Box
             m={4}
@@ -275,7 +275,7 @@ class DonorConsole extends Component {
 
     const listView = (
       <>
-        <DonationContext.Provider value={userContextVal}>
+        <DonationContext.Provider value={donationContextVal}>
           <BookList books={this.state.books} />
           <Box
             m={4}
@@ -310,7 +310,7 @@ class DonorConsole extends Component {
 
     const locationView = (
       <>
-        <DonationContext.Provider value={userContextVal}>
+        <DonationContext.Provider value={donationContextVal}>
           <PartnerList
             partners={this.state.partners}
             selected={this.state.selectedPartner}
