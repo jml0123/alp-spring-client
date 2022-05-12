@@ -136,7 +136,7 @@ export default function BookItem(props) {
                         borderRadius = "5px"
                         p= {smScreen? 0.3 : 1}
                     >
-                        <img src={(!props.book.image)? defaultBookIcon: props.book.image} className="book-img" alt={props.book.title}/>
+                        <img src={(!props.book.thumbnail)? defaultBookIcon: props.book.thumbnail} className="book-img" alt={props.book.title}/>
                     </Box>
                 </CardContent>
                 <CardContent display="flex" flexDirection="column" className="book-img-wrapper">

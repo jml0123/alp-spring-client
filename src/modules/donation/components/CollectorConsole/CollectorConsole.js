@@ -26,6 +26,11 @@ const {
 
 
 class CollectorConsole extends Component {
+        /* 
+        * Improvements
+        ** Make views into separate components
+        */
+        static contextType = AuthContext
         state = {
             user: {
                 name: null,
@@ -38,7 +43,6 @@ class CollectorConsole extends Component {
             _cID: null, // Collection ID
         }
 
-        static contextType = AuthContext
 
         async componentDidMount() {
             const userContext = this.context;
@@ -230,10 +234,10 @@ class CollectorConsole extends Component {
         }
         
         const beginView = 
-        <Container maxWidth="small">
+        <Container maxWidth="sm">
         <Box
             display="flex"
-            alignItemx="center"
+            alignitemx="center"
             justifyContent="center"
             flexDirection="column"
             m={3}

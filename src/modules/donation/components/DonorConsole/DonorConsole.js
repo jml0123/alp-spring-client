@@ -29,8 +29,11 @@ class DonorConsole extends Component {
     * Improvements
     ** Make views into separate components
     */
+    static contextType = AuthContext
     state = {
-            user: null,
+            user: {
+                name: null,
+            },
             books: [],
             partners: [],
             selectedPartner: null,
@@ -38,31 +41,33 @@ class DonorConsole extends Component {
             qrCreated: false,
             _cID: null,
         }
-
-        static contextType = AuthContext
         
-        async componentWillMount(){ 
+        async componentDidMount(){ 
             const userContext = this.context;
             this.setState({
-                ...this.state,
-                user: userContext.user
-            })
-            await this.fetchUserCollections(userContext.id)
+                ...this.state, 
+                user: userContext.user,
+            });
             // await this.fetchNearestBookDrives(userContext.user.location.coordinates)
+            await this.fetchUserCollections(userContext.id);
             this.setPartners();
         }
         
         fetchUserCollections = async (id) => {
             const userCollections = await DonationHttpService.fetchUserCollections(id);
             if (!userCollections) {
-                this.setState({...this.state, error: true});
-                createNewNotification({
-                    message: 'There was a problem fetching user collections',
-                    type: 'error'
-                })
+                this.setGetCollectionError();
             } else {
                 this.setUserCollections(userCollections);
             }
+        }
+
+        setGetCollectionError() {
+            this.setState({...this.state, error: true});
+            createNewNotification({
+                message: 'There was a problem fetching user collections',
+                type: 'error'
+            })
         }
 
         fetchNearestBookDrives = async (coords) => {
@@ -165,7 +170,7 @@ class DonorConsole extends Component {
         }
 
         setUserCollections = (userCollections) => {
-            this.context.setCollections(userCollections)
+            this.context.setCollections(userCollections);
         }
 
 
@@ -209,10 +214,10 @@ class DonorConsole extends Component {
         }
         
         const beginView = 
-        <Container maxWidth="small">
+        <Container maxWidth="sm">
         <Box
             display="flex"
-            alignItemx="center"
+            alignitemx="center"
             justifyContent="center"
             flexDirection="column"
             m={3}
@@ -265,7 +270,7 @@ class DonorConsole extends Component {
                     flexDirection="row"
                     alignItems="center"
                     justifyContent="space-evenly"
-                 >
+                    >
                     {this.state.books.length? 
                     <>
                         <Button 
@@ -312,8 +317,8 @@ class DonorConsole extends Component {
                         Summary Page
                 </Button>
             </Box>
-         </DonationContext.Provider>
-         </>
+            </DonationContext.Provider>
+            </>
 
         const exportView = 
         <>  
@@ -324,11 +329,11 @@ class DonorConsole extends Component {
                 QRVal={this.state._cID}
             />
             <Box
-                      m={4}
-                      display="flex"
-                      flexDirection="row"
-                      alignItems="center"
-                      justifyContent="space-evenly"
+                        m={4}
+                        display="flex"
+                        flexDirection="row"
+                        alignItems="center"
+                        justifyContent="space-evenly"
             >
                 <Button variant="contained" size="small" onClick={() => this.setPhase(1)}>I've changed my mind</Button>
                 <Button size="small"  color="primary" onClick={() => this.handleFinalizeDonation()}>{!this.state.qrCreated ? 'Confirm Donation' : 'Back to dashboard'}</Button>

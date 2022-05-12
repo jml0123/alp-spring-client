@@ -36,7 +36,7 @@ export default class QRScanner extends Component {
         })
   }
 
-  handleClearQueue = (bookId) => {
+  handleClearQueue = () => {
     this.setState({
         ...this.state,
         scanned: []

@@ -73,7 +73,7 @@ function Nav(props) {
         <>
           <Button 
             aria-controls="simple-menu" 
-            aria-haspopup="true"  d
+            aria-haspopup="true"
             onClick={handleClick}
             color="primary"
           >

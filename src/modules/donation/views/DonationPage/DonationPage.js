@@ -6,7 +6,7 @@ export default function DonationPage() {
 
   return (
     <>
-      <Nav activeUser={true}/>
+      <Nav/>
       <DonorConsole />
     </>
   );

@@ -114,7 +114,7 @@ export default class BarcodeScanner extends Component {
             serializedBookData.title = bookData.volumeInfo.title
             serializedBookData.authors = (!bookData.volumeInfo.authors)? [] : bookData.volumeInfo.authors
             serializedBookData.publishedDate = bookData.volumeInfo.publishedDate
-            serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks?.thumbnail)? '' : bookData.volumeInfo.imageLinks?.thumbnail
+            serializedBookData.thumbnail = (!bookData.volumeInfo.imageLinks?.thumbnail)? '' : bookData.volumeInfo.imageLinks.thumbnail
             this.setScannedState(serializedBookData)
       } else {
         this.setState({

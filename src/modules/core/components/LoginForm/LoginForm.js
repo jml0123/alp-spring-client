@@ -58,8 +58,6 @@ class LoginForm extends Component {
   }
 
   navigateToConsole() {
-    console.log('NAVIGATING TO CONSOLE')
-    console.log(this.context.user);
     if (!this.context.user) {
       return;
     }
