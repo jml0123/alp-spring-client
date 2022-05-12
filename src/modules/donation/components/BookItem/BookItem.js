@@ -79,7 +79,7 @@ export default function BookItem(props) {
 
   let finalDetails = props.ready ? (
     <>
-      <Typography variant="h2">Id: {props.book.id}</Typography>
+      <Typography variant="h2">Id: {props.book._id}</Typography>
       <Typography variant="h2">Condition: {props.condition}</Typography>
     </>
   ) : null;
