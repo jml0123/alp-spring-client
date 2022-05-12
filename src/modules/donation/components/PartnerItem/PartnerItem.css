@@ -1,0 +1,45 @@
+.partner-item {
+  display: flex;
+  flex-direction: column;
+  width: 66%;
+  margin: 0 auto;
+}
+
+.partner-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+.partner-img {
+  max-height: 100%;
+  width: auto;
+}
+.partner-description-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  width: 50%;
+}
+.partner-description-wrapper > h1 {
+  margin-bottom: 0.75em;
+}
+.partner-wrapper button {
+  width: 180px;
+  margin: 2em auto 0;
+}
+
+.select-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 10%;
+}
+.select-box {
+  border-radius: 5px;
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+}

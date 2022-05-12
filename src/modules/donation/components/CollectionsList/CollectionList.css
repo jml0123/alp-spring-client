@@ -1,0 +1,12 @@
+.collection-row {
+  width: 88%;
+  margin: 1em;
+  padding: 0.5em;
+}
+
+.collection-wrapper {
+  width: 33%;
+}
+.collection-wrapper > * {
+  margin: 1em;
+}

@@ -1,0 +1,35 @@
+nav {
+}
+nav ul {
+  justify-self: right;
+}
+nav ul > li {
+  display: inline;
+  margin: 0 0.5em;
+}
+.nav-img {
+  max-width: 66px;
+  min-width: 33px;
+  width: 10vw;
+}
+
+.nav-logo-wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.nav-logo {
+  text-decoration: none;
+  color: initial;
+}
+
+.nav-ctrls {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.nav-ctrls > * {
+  margin: 0 0.66em;
+}

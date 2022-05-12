@@ -1,10 +1,9 @@
 export default {
-    DEVELOPMENT: ``,
-    PRODUCTION: ``,
-    TOKEN_KEY: '',
-    USER_ID:'',
-    API_ENDPOINT: `https://kitabu-api-alp-hackathon.herokuapp.com/api`,
-    PRODUCT_KEY: 't0068NQAAAF99HGwRJ9EuwsC08wMYh26EgMvuRMXfDr/5mbhMa7mOug8W8E5PNMrak38ags5vRckkajg9x8UDSSv8cjHQkU0=',
-    gAPI_KEY: "AIzaSyD4RrXXgTTAfOitL33YA-sXdHSvBcWSU_Q"
-  };
-  
+  AUTH_TOKEN: "",
+  USER_ID: "",
+  API_ENDPOINT: process.env.REACT_APP_API_ENDPOINT,
+  DYNAMSOFT_PRODUCT_KEY: process.env.REACT_APP_DYNAMSOFT_PRODUCT_KEY,
+  DYNAMSOFT_ORG_ID: process.env.REACT_APP_DYNAMSOFT_ORG_ID,
+  GOOGLE_API_KEY: process.env.REACT_APP_GOOGLE_API_KEY,
+  GOOGLE_BOOKS_API_ENDPOINT: "",
+};

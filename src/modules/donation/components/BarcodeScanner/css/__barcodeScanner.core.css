@@ -1,0 +1,64 @@
+.component-barcode-scanner {
+  width: 100%;
+  height: 300px;
+  max-width: 100vw;
+  max-height: 500px;
+  position: relative;
+  resize: both;
+}
+.dbrScanner-bg-camera {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  margin: auto;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+.dbrScanner-video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.dbrScanner-cvs-drawarea {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.dbrScanner-cvs-scanarea {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+.dbrScanner-scanlight {
+  width: 100%;
+  height: 4px;
+  position: absolute;
+  animation: 3s infinite dbrScanner-scanlight;
+  border-radius: 0%;
+  box-shadow: 0px 0px 2vw 1px #d5d4d6;
+  background: #fff;
+}
+@keyframes dbrScanner-rotate {
+  from {
+    transform: rotate(0turn);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+@keyframes dbrScanner-scanlight {
+  from {
+    top: 0;
+  }
+  to {
+    top: 100%;
+  }
+}

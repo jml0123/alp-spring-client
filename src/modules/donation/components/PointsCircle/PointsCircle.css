@@ -1,0 +1,11 @@
+.circle-pts-wrapper {
+  width: 80px;
+  height: 80px;
+  border: 4px solid slateblue;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  margin: 5%;
+}
