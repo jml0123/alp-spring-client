@@ -30,6 +30,9 @@ export default class BarcodeScanner extends Component {
 
   static contextType = DonationContext;
 
+  /*
+  * Fetch book data from GBooks API when scan is successful
+  */
   handleScanSuccess = (results) => {
     const isbn = results[0].barcodeText;
     createNewNotification({
@@ -77,7 +80,9 @@ export default class BarcodeScanner extends Component {
       }
     }
   };
-
+  /*
+  * Sets the state of the scanner with the new book
+  */
   setScannedState = (book) => {
     this.setState({
       ...this.state,
@@ -104,6 +109,9 @@ export default class BarcodeScanner extends Component {
     });
   };
 
+  /*
+  * Allow a user to select manual input of book 
+  */
   setManualInput = () => {
     this.setState({
       ...this.state,

@@ -16,6 +16,10 @@ export default function Notifications() {
     openNotification(false);
   };
 
+  /*
+  * Monitor for any changes in the notification$ observable, and update the notification accordingly
+  * Everytime the value changes, we will also open the notification
+  */
   useEffect(() => {
     getNotification$().subscribe((notification) => {
       if (notification) {

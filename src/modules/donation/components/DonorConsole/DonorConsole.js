@@ -39,7 +39,9 @@ class DonorConsole extends Component {
     qrCreated: false,
     _cID: null,
   };
-
+  /*
+   * Uses auth context and fetches current collections
+   */
   async componentDidMount() {
     const userContext = this.context;
     this.setState({
@@ -71,7 +73,9 @@ class DonorConsole extends Component {
   setUserCollections = (userCollections) => {
     this.context.setCollections(userCollections);
   };
-
+  /*
+   * Gets nearest book collectors based on user location for a dropoff
+   */
   fetchNearestBookDrives = async (coords) => {
     const nearestBookDrives = await DonationHttpService.fetchNearestBookCollectors(
       { long: coords[0], lat: coords[1] }
@@ -86,7 +90,10 @@ class DonorConsole extends Component {
       this.setPartners(nearestBookDrives);
     }
   };
-
+  /*
+   * Creates a new donation collection
+   * If creation is successful, generate a QR code, rendering the QR component
+   */
   handleCreateCollection = async () => {
     const collection = {
       books: this.state.books,
@@ -142,14 +149,18 @@ class DonorConsole extends Component {
       selectedPartner: selectedP,
     });
   };
-
+  /*
+   * Sets the current phase of the donation flow
+   */
   setPhase = (phase) => {
     this.setState({
       ...this.state,
       currentPhase: phase,
     });
   };
-
+  /*
+   * Mock function to show partners in the area
+   */
   setPartners = (nearbyDrives) => {
     this.setState({
       ...this.state,
@@ -205,6 +216,9 @@ class DonorConsole extends Component {
     const unloggedConditions = this.state.books.filter(
       (book) => book.condition === "Select" || book.condition === ""
     ).length;
+    /*
+    * Define the context provided by DonationContext
+    */
     const donationContextVal = {
       books: this.state.books,
       handleSelectCondition: this.handleSelectCondition,
@@ -214,6 +228,10 @@ class DonorConsole extends Component {
       setPhase: this.setPhase,
     };
 
+    /*
+    * Define the views of each step in the donation flow
+    * Some views will consume the context defined for DonationContext
+    */
     const beginView = (
       <Container maxWidth="sm">
         <Box
@@ -372,6 +390,9 @@ class DonorConsole extends Component {
       </>
     );
 
+    /*
+    * Show view and text depending on current phase
+    */
     const currentView =
       !this.state.books.length && this.state.currentPhase !== 0
         ? beginView
