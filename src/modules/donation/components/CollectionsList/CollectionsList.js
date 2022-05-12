@@ -79,7 +79,7 @@ export default function CollectionsList(props) {
         <Box m={3} textAlign="center">
           <Typography variant="h2">Start donating to earn points!</Typography>
           <Box my={3}>
-            <Button component={Link} to="/donate">
+            <Button component={Link} to={userContext.user.class === 'Donor' ? "/donate" : "/partners"}>
               Donate
             </Button>
           </Box>
