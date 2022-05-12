@@ -39,7 +39,6 @@ function Nav(props) {
   const theme = useTheme();
   const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-console.log(userContext.user)
   return (
     <nav>
         <Box

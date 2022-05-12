@@ -43,7 +43,6 @@ class DonorConsole extends Component {
         
         async componentWillMount(){ 
             const userContext = this.context;
-            console.log(userContext);
             this.setState({
                 ...this.state,
                 user: userContext.user
@@ -128,7 +127,6 @@ class DonorConsole extends Component {
 
         handleSelectPartner = (partnerId) => {
             const selectedP = this.state.partners.filter(partner => partner.donorId === partnerId)[0]
-            console.log(selectedP);
             this.setState({
                 ...this.state,
                 selectedPartner: selectedP

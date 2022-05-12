@@ -9,8 +9,6 @@ import Box from '@material-ui/core/Box';
 import './PartnerList.css'
 
 export default function PartnerList(props) {
-    console.log(props.partners);
-    console.log(props.selected);
     const theme = useTheme();
     const smScreen = useMediaQuery(theme.breakpoints.down('sm'));
     const partners = props.partners.map((partner, i) => {

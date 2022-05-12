@@ -11,9 +11,10 @@ import AuthContext from '../../context/AuthContext';
 
 import Alert from '@material-ui/lab/Alert';
 import CoreHttpService from '../../services/core-http-service';
+import { withRouter } from 'react-router-dom';
 
 
-export default class LoginForm extends Component {
+class LoginForm extends Component {
   state = { 
     username: null,
     password: null,
@@ -41,11 +42,11 @@ export default class LoginForm extends Component {
     if (!loginStatus) {
       this.setState({...this.state, error: true});
     } else {
-      console.log(loginStatus)
       this.context.setUser(loginStatus.user);
       TokenService.saveAuthToken(loginStatus.token);
       TokenService.saveUserId(loginStatus.user._id);
       this.showWelcomeMessage();
+      setTimeout(() => this.navigateToConsole(), 1000);
     }
   };
 
@@ -56,18 +57,21 @@ export default class LoginForm extends Component {
     });
   }
 
-render() {
-    let button;
+  navigateToConsole() {
+    console.log('NAVIGATING TO CONSOLE')
+    console.log(this.context.user);
     if (!this.context.user) {
-      button = null
+      return;
     }
-    else if (this.context.user.class === "donor") {
-      button =  <Button component = {Link} to ="/donate" color="secondary">Go To Dashboard</Button>
+    else if (this.context.user.class === "Donor") {
+      this.props.history.push('/donate');
+    }
+    else if (this.context.user.class === "Collector") {
+      this.props.history.push('/partners');
+    }
+  }
 
-    }
-    else if (this.context.user.class === "collector") {
-        button =  <Button component = {Link} to ="/partners" color="secondary">Go To Dashboard</Button>
-    }
+render() {
     return (
         <Box className="form-container">
                 <Typography variant = "h1" align="center" className="console-header">Welcome Back!</Typography>
@@ -84,7 +88,6 @@ render() {
                     {this.state.message?
                           <Box flexDirection="column" alignItems="center" justifyContent="center">
                          <Alert severity="success">{this.state.message}</Alert> 
-                         {button}
                           </Box> : null
                     }
                 </div>
@@ -92,3 +95,5 @@ render() {
     );
   }
 }
+
+export default withRouter(LoginForm);
