@@ -7,7 +7,7 @@ const AuthContext = React.createContext({
   setCollections: () => {},
   setUser: () => {},
   handleAddCollection: () => {},
-  loaded: ""
+  loaded: "",
 });
 
 export default AuthContext;

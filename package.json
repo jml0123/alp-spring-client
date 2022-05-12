@@ -27,6 +27,7 @@
   "scripts": {
     "dev": "webpack --env.ENVIRONMENT=development --config webpack.config.dev.js",
     "start": "react-app-env start",
+    "fix:prettier": "prettier --write .",
     "build": "react-app-env --env-file=config/${BUILD_ENV}.env build",
     "build:staging": "BUILD_ENV=staging npm run build",
     "build:production": "BUILD_ENV=production npm run build",

@@ -7,7 +7,7 @@ const DonationContext = React.createContext({
   handleRemoveBook: () => {},
   handleAddBook: () => {},
   handleSelectPartner: () => {},
-  setPhase: () => {}
+  setPhase: () => {},
 });
 
 export default DonationContext;

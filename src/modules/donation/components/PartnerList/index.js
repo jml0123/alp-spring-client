@@ -1,3 +1,3 @@
-import PartnerList from './PartnerList.js';
+import PartnerList from "./PartnerList.js";
 
 export default PartnerList;

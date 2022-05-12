@@ -1,3 +1,3 @@
-import PointsCircle from './PointsCircle.js';
+import PointsCircle from "./PointsCircle.js";
 
 export default PointsCircle;

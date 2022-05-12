@@ -1,15 +1,15 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import React from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import Stepper from "@material-ui/core/Stepper";
+import Step from "@material-ui/core/Step";
+import StepLabel from "@material-ui/core/StepLabel";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
+    width: "100%",
   },
   button: {
     marginRight: theme.spacing(1),
@@ -21,30 +21,30 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function getSteps() {
-  return ['Scan', 'Collect', 'Donate'];
+  return ["Scan", "Collect", "Donate"];
 }
 
 function getStepContent(step) {
   switch (step) {
     case 0:
-      return 'Scan Used Books or Collections';
+      return "Scan Used Books or Collections";
     case 1:
-      return 'Kitabu = book in Swahili';
+      return "Kitabu = book in Swahili";
     case 2:
-      return 'Finalize Drop-off and Shipping Details';
+      return "Finalize Drop-off and Shipping Details";
     default:
-      return 'Kitabu';
+      return "Kitabu";
   }
 }
 
 export default function HorizontalLinearStepper(props) {
   const classes = useStyles();
-  const activeStep = props.activeStep
+  const activeStep = props.activeStep;
   const steps = getSteps();
 
   return (
     <div className={classes.root}>
-      <Stepper activeStep={props.preQueue? 0: props.activeStep}>
+      <Stepper activeStep={props.preQueue ? 0 : props.activeStep}>
         {steps.map((label, index) => {
           const stepProps = {};
           const labelProps = {};
@@ -55,23 +55,17 @@ export default function HorizontalLinearStepper(props) {
           );
         })}
       </Stepper>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-    >
+      <Box display="flex" alignItems="center" justifyContent="center">
         {activeStep === steps.length ? (
-    
-        <Typography variant="h2">
+          <Typography variant="h2">
             All steps completed - you&apos;re finished!
-        </Typography>
-
+          </Typography>
         ) : (
-        <Typography variant="h2">
-           {getStepContent(props.activeStep)}
-        </Typography>
+          <Typography variant="h2">
+            {getStepContent(props.activeStep)}
+          </Typography>
         )}
-        </Box>
+      </Box>
     </div>
   );
 }

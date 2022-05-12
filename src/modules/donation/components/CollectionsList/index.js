@@ -1,3 +1,3 @@
-import CollectionsList from './CollectionsList.js';
+import CollectionsList from "./CollectionsList.js";
 
 export default CollectionsList;
