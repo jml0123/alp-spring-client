@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import HorizontalLinearStepper from "../Stepper";
 import BookList from "../BookList";
-import PartnerList from "../PartnerList";
 import BarcodeScanner from "../BarcodeScanner/BarcodeScanner";
 import QRScanner from "../QRScanner/QRScanner";
 
@@ -372,41 +371,6 @@ class CollectorConsole extends Component {
                 </Button>
               </>
             ) : null}
-          </Box>
-        </DonationContext.Provider>
-      </>
-    );
-
-    const locationView = (
-      <>
-        <DonationContext.Provider value={userContextVal}>
-          <PartnerList
-            partners={this.state.partners}
-            selected={this.state.selectedPartner}
-          />
-          <Box
-            m={4}
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-evenly"
-          >
-            <Button
-              variant="contained"
-              size="small"
-              onClick={() => this.setPhase(1)}
-            >
-              Back to your queue
-            </Button>
-            <Button
-              variant="contained"
-              size="small"
-              color="primary"
-              onClick={() => this.setPhase(3)}
-              disabled={!this.state.selectedPartner ? true : false}
-            >
-              Summary
-            </Button>
           </Box>
         </DonationContext.Provider>
       </>

@@ -53,9 +53,9 @@ export default function LandingPage() {
           <div className="features">
             Scan your gently used books with Kitabu's barcode reader
           </div>
-          <CropFreeIcon marginTop="10px" fontSize="large"></CropFreeIcon>
+          <CropFreeIcon margintop="10px" fontSize="large"></CropFreeIcon>
         </Box>
-        <Box className="feature-box" backgroundColor="F3AE52">
+        <Box className="feature-box" backgroundcolor="F3AE52">
           <div className="features" fontFamily="Press Start 2P">
             Find an active book drive in your area
           </div>

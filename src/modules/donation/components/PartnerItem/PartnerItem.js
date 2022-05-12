@@ -3,18 +3,13 @@ import DonationContext from "../../context/DonationContext";
 import "./PartnerItem.css";
 
 import ListItemStyle from "../../themes/ListItem.style";
-import { useTheme } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import ThemeProvider from "@material-ui/styles/ThemeProvider";
 
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
 
 import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 
@@ -38,6 +33,7 @@ export default function PartnerItem(props) {
               <img
                 className="partner-img"
                 src="https://i.pinimg.com/originals/48/bc/d6/48bcd68d718226b7febeb4407548953d.png"
+                alt="Kitabu Partner"
               />
             </Box>
           </CardContent>

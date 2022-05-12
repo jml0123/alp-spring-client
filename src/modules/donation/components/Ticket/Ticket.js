@@ -8,7 +8,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTheme } from "@material-ui/core/styles";
 
 import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
 import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -18,14 +17,6 @@ import "./Ticket.css";
 export default function Ticket(props) {
   const theme = useTheme();
   const smScreen = useMediaQuery(theme.breakpoints.down("sm"));
-
-  const copyAddress = (e) => {
-    if (document.queryCommandSupported("copy")) {
-      props.partners.address.select();
-      document.execCommand("copy");
-    }
-    // Add a button that copies address
-  };
 
   const numBooks = props.queued.length;
   const points = numBooks * 12;

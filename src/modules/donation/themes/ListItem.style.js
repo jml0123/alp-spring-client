@@ -1,4 +1,3 @@
-import { sizing } from "@material-ui/system";
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core/styles";
 
 let ListItemStyle = createMuiTheme({
